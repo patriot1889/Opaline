@@ -198,6 +198,14 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         return [title, author]
     }
     func updateStatusLabel(_ text: String) {
+        // Stream preparation reports progress from the playback transport queue.
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.updateStatusLabel(text)
+            }
+            return
+        }
+        guard !closed else { return }
         status.text = "  \(text)  "
         status.isHidden = false
     }
