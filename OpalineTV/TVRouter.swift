@@ -38,7 +38,17 @@ final class TVRouter {
             }
         }
         screen.loader = { token, completion in
-            let done: (Result<FeedPage, Error>) -> Void = { completion($0.map(TVBrowsePage.init)) }
+            let done: (Result<FeedPage, Error>) -> Void = { result in
+                completion(result.map { feedPage in
+                    var page = TVBrowsePage(feedPage)
+                    if case .home = destination {
+                        for index in page.sections.indices {
+                            page.sections[index].scrollsHorizontally = true
+                        }
+                    }
+                    return page
+                })
+            }
             switch destination {
             case .home:
                 if let token { services.feedService.fetchNextPage(continuation: token, completion: done) }
