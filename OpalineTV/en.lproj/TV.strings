@@ -35,3 +35,4 @@
 "TV.off" = "Off";
 "TV.save" = "Save";
 "TV.skipSegment" = "Skip %@";
+"TV.viewAll" = "View All";

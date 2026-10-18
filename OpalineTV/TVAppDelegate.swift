@@ -75,15 +75,7 @@ final class TVRootController: UITabBarController {
         let home = router.feed(.home)
         let subscriptions = router.feed(.subscriptions)
         let search = TVSearchController(router: router)
-        let library = TVMenuController(title: "library.title".localized)
-        library.rows = [
-            TVMenuRow("library.history".localized) { [weak library] in
-                library?.navigationController?.pushViewController(router.feed(.history), animated: true)
-            },
-            TVMenuRow("library.playlists".localized) { [weak library] in
-                library?.navigationController?.pushViewController(router.playlists(), animated: true)
-            }
-        ]
+        let library = router.library()
         let settings = TVSettingsController()
         let screens: [(UIViewController, String, String)] = [
             (home, "home.title".localized, "house"), (search, "search.title".localized, "magnifyingglass"),

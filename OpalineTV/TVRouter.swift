@@ -120,6 +120,36 @@ final class TVRouter {
         sender.present(player, animated: true)
     }
 
+    func library() -> TVGridController {
+        let screen = TVGridController(title: "library.title".localized)
+        screen.requiresAccount = true
+        screen.selection = { [self] item, sender in open(item, from: sender) }
+        screen.loader = { [self, weak screen] _, done in
+            dependencies.historyService.fetchHistory { [self] historyResult in
+                dependencies.playlistService.fetchPlaylists { playlistsResult in
+                    let result = historyResult.flatMap { history in
+                        playlistsResult.map { playlists in
+                            var historyItems = history.videos.filter { !$0.isShort }.map(TVItem.video)
+                            if history.continuation != nil || !(history.shelfContinuations ?? []).isEmpty {
+                                historyItems.append(.action("TV.viewAll".tvLocalized) { [weak screen, self] in
+                                    screen?.navigationController?.pushViewController(feed(.history), animated: true)
+                                })
+                            }
+                            return TVBrowsePage(sections: [
+                                TVSection(title: "library.history".localized, items: historyItems,
+                                          scrollsHorizontally: true),
+                                TVSection(title: "library.playlists".localized, items: playlists.map(TVItem.playlist),
+                                          scrollsHorizontally: true)
+                            ])
+                        }
+                    }
+                    done(result)
+                }
+            }
+        }
+        return screen
+    }
+
     func playlists() -> TVGridController {
         let screen = TVGridController(title: "library.playlists".localized)
         screen.requiresAccount = true
