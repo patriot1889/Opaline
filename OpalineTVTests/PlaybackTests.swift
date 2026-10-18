@@ -3,6 +3,58 @@ import XCTest
 @testable import OpalineTV
 
 final class PlaybackTests: XCTestCase {
+    func testSABRSkipsRepeatedVideoSegmentBeforeRequestedSequence() {
+        let collector = sabrCollector(sequence: 37)
+        collector.append(sabrSegment(headerID: 1, sequence: 36, bytes: [0xAA]))
+        XCTAssertFalse(collector.isDone)
+        XCTAssertNil(collector.segment)
+        XCTAssertNil(collector.deliveredRange)
+
+        // Audio and later video segments can also share the response.
+        collector.append(sabrSegment(headerID: 2, sequence: 37, itag: 140, bytes: [0xBB]))
+        let wanted = sabrSegment(headerID: 3, sequence: 37, bytes: [0xCC, 0xDD])
+        // Exercise framing across transport chunks as well as header selection.
+        collector.append(Data(wanted.prefix(5)))
+        collector.append(Data(wanted.dropFirst(5)))
+        collector.append(sabrSegment(headerID: 4, sequence: 38, bytes: [0xEE]))
+        XCTAssertTrue(collector.isDone)
+        XCTAssertEqual(collector.segment, Data([0xCC, 0xDD]))
+        XCTAssertEqual(collector.deliveredRange?.startSequence, 37)
+    }
+
+    func testSABRInitDoesNotRequireMediaSequence() {
+        let collector = sabrCollector(sequence: 1, initRange: 1)
+        collector.append(sabrSegment(headerID: 1, sequence: 0, isInit: true, bytes: [0xAA, 0xBB]))
+        XCTAssertTrue(collector.isDone)
+        XCTAssertEqual(collector.segment, Data([0xAA]))
+        XCTAssertNil(collector.deliveredRange)
+    }
+
+    private func sabrCollector(sequence: Int, initRange: Int? = nil) -> SABRSegmentCollector {
+        func format(_ itag: Int) -> SabrFormatInfo {
+            SabrFormatInfo(itag: itag, lastModified: nil, xtags: nil, audioTrackId: nil,
+                           isDrc: false, mimeType: nil, bitrate: nil, width: nil, height: nil)
+        }
+        return SABRSegmentCollector(request: SABRSegmentRequest(
+            format: format(137), other: format(140), sequence: sequence,
+            timeMs: 192_191, initRange: initRange
+        ))
+    }
+
+    private func sabrSegment(headerID: UInt8, sequence: Int, itag: Int = 137,
+                             isInit: Bool = false, bytes: [UInt8]) -> Data {
+        func part(_ type: UMPPartType, _ payload: Data) -> Data {
+            // Fixture payloads fit the single-byte UMP length encoding.
+            precondition(payload.count < 128)
+            return Data([UInt8(type.rawValue), UInt8(payload.count)]) + payload
+        }
+        let header = Protobuf.int(1, Int(headerID)) + Protobuf.int(3, itag)
+            + Protobuf.int(8, isInit ? 1 : 0) + Protobuf.int(9, sequence)
+        return part(.mediaHeader, header)
+            + part(.media, Data([headerID] + bytes))
+            + part(.mediaEnd, Data([headerID]))
+    }
+
     func testSourceFailureFallsBackAndReleasesResources() {
         let failed = FixtureSource(fails: true)
         let success = FixtureSource()
