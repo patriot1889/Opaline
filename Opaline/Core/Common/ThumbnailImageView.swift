@@ -111,14 +111,15 @@ class ThumbnailImageView: UIImageView {
         loadToken = ThumbnailLoader.shared.load(
             url: url,
             maxPixelSize: target,
+            completion: { [weak self] result in
+                self?.handleLoadResult(
+                    result,
+                    url: url,
+                    target: target
+                )
+            },
             videoId: currentVideoId
-        ) { [weak self] result in
-            self?.handleLoadResult(
-                result,
-                url: url,
-                target: target
-            )
-        }
+        )
     }
 
     /// Paints a memory-cached thumbnail synchronously, so a recycled cell

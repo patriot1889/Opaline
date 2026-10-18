@@ -12,7 +12,7 @@ final class TVSettingsController: TVMenuController {
             TVMenuRow("TV.region".localized, detail: DefaultLocalePreferences().gl) { [weak self] in
                 self?.edit("TV.region".localized, value: DefaultLocalePreferences().gl) { region in
                     let normalized = region.uppercased()
-                    guard normalized.count == 2, Locale.isoRegionCodes.contains(normalized), normalized != "CN" else { return false }
+                    guard normalized.count == 2, Locale.Region.isoRegions.contains(where: { $0.identifier == normalized }), normalized != "CN" else { return false }
                     UserDefaults.standard.set(normalized, forKey: UserDefaultsKeys.Localization.region)
                     return true
                 }

@@ -25,7 +25,15 @@ struct DefaultLocalePreferences: LocalePreferences {
     var gl: String {
         let region = UserDefaults.standard.string(
             forKey: UserDefaultsKeys.Localization.region
-        ) ?? Locale.current.regionCode ?? "US"
+        ) ?? systemRegion ?? "US"
         return region == "CN" ? "US" : region
+    }
+
+    private var systemRegion: String? {
+        if #available(iOS 16, tvOS 16, *) {
+            return Locale.current.region?.identifier
+        } else {
+            return Locale.current.regionCode
+        }
     }
 }

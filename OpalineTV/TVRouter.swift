@@ -103,7 +103,7 @@ final class TVRouter {
         player.onChannelRequested = { [weak player, weak sender, self] id, name in
             player?.dismiss(animated: true) {
                 guard let sender else { return }
-                pushChannel(id: id, name: name, from: sender)
+                self.pushChannel(id: id, name: name, from: sender)
             }
         }
         player.modalPresentationStyle = .fullScreen
