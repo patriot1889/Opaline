@@ -2,6 +2,7 @@
 
 "TV.refresh" = "Refresh";
 "TV.channels" = "Channels";
+"TV.all" = "All";
 "TV.loading" = "Loading…";
 "TV.empty" = "Nothing here yet.";
 "TV.retry" = "Try Again";

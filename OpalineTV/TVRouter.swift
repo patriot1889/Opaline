@@ -10,7 +10,46 @@ final class TVRouter {
     let dependencies: ServiceDependencies
     init(dependencies: ServiceDependencies) { self.dependencies = dependencies }
 
-    func feed(_ destination: TVFeed) -> TVGridController {
+    func feed(_ destination: TVFeed) -> UIViewController {
+        if case .subscriptions = destination {
+            let screen = TVSubscriptionsController(
+                channelsLoader: dependencies.subscribedChannelsService.fetchSubscribedChannels,
+                videosLoader: { [dependencies] channel, token, completion in
+                    let done: (Result<FeedPage, Error>) -> Void = { result in
+                        completion(result.map { feed in
+                            var page = TVBrowsePage(feed)
+                            if let channel {
+                                for index in page.sections.indices {
+                                    page.sections[index].items = page.sections[index].items.map { item in
+                                        guard case .video(var video) = item else { return item }
+                                        if video.channelId == nil { video.channelId = channel.id }
+                                        if video.channelName.isEmpty { video.channelName = channel.title }
+                                        if video.channelAvatarURL == nil { video.channelAvatarURL = channel.avatarURL }
+                                        return .video(video)
+                                    }
+                                }
+                            }
+                            return page
+                        })
+                    }
+                    if let channel {
+                        if let token {
+                            dependencies.channelTabService.fetchChannelTabNextPage(continuation: token, completion: done)
+                        } else {
+                            dependencies.channelTabService.fetchChannelTab(channelId: channel.id, params: ChannelTabParams.videos) {
+                                done($0.map(\.feedPage))
+                            }
+                        }
+                    } else if let token {
+                        dependencies.feedService.fetchSubscriptionsNextPage(continuation: token, completion: done)
+                    } else {
+                        dependencies.feedService.fetchSubscriptionFeed(completion: done)
+                    }
+                }
+            )
+            screen.grid.selection = { [self] item, sender in open(item, from: sender) }
+            return screen
+        }
         let title: String
         switch destination {
         case .home: title = "home.title".localized
@@ -25,18 +64,6 @@ final class TVRouter {
         default: break
         }
         let services = dependencies
-        if case .subscriptions = destination {
-            screen.contentHeading = "channel.tab.videos".localized
-            screen.leadingSectionsLoader = { completion in
-                services.subscribedChannelsService.fetchSubscribedChannels { result in
-                    completion(result.map { channels in
-                        [TVSection(title: "TV.channels".tvLocalized, items: channels.map {
-                            .channel($0.id, $0.title, $0.avatarURL)
-                        }, scrollsHorizontally: true)]
-                    })
-                }
-            }
-        }
         screen.loader = { token, completion in
             let done: (Result<FeedPage, Error>) -> Void = { result in
                 completion(result.map { feedPage in

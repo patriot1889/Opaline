@@ -192,6 +192,7 @@ class TVGridController: UICollectionViewController {
     var leadingSectionsLoader: ((@escaping (Result<[TVSection], Error>) -> Void) -> Void)?
     var selection: ((TVItem, UIViewController) -> Void)?
     var requiresAccount = false
+    var onRefresh: (() -> Void)?
     var contentHeading: String?
     var sections: [TVSection] {
         var content = contentSections
@@ -260,7 +261,8 @@ class TVGridController: UICollectionViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(navigationController?.viewControllers.first === self, animated: animated)
+        let root = navigationController?.viewControllers.first
+        navigationController?.setNavigationBarHidden(root === self || root === parent, animated: animated)
         if requiresAccount && !OAuthClient.shared.isSignedIn {
             showSignIn()
         } else if !didLoad && loader != nil { refresh() }
@@ -291,6 +293,7 @@ class TVGridController: UICollectionViewController {
     }
     @objc func refresh() {
         if requiresAccount && !OAuthClient.shared.isSignedIn { showSignIn(); return }
+        onRefresh?()
         generation += 1
         loading = false
         failed = false

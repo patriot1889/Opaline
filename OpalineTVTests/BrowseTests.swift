@@ -4,6 +4,89 @@ import UIKit
 
 final class BrowseTests: XCTestCase {
     @MainActor
+    func testSubscriptionsSidebarSwitchesFeedsAndIgnoresOldResponses() throws {
+        var requests: [(String?, String?, TVGridController.Completion)] = []
+        let channels = [SubscribedChannel(id: "UCfirst", title: "First", avatarURL: nil),
+                        SubscribedChannel(id: "UCsecond", title: "Second", avatarURL: nil)]
+        let screen = TVSubscriptionsController(channelsLoader: { $0(.success(channels)) }) { channel, token, done in
+            requests.append((channel?.id, token, done))
+        }
+        screen.loadViewIfNeeded()
+        screen.grid.requiresAccount = false
+        screen.grid.refresh()
+        drainBrowseQueue()
+        XCTAssertEqual(screen.tableView(screen.sidebar, numberOfRowsInSection: 0), 3)
+        let all = screen.tableView(screen.sidebar, cellForRowAt: IndexPath(row: 0, section: 0))
+        XCTAssertEqual(all.accessibilityIdentifier, "TV.allSubscriptions")
+        XCTAssertEqual(all.accessoryType, .checkmark)
+        XCTAssertNil(requests[0].0)
+
+        screen.tableView(screen.sidebar, didSelectRowAt: IndexPath(row: 1, section: 0))
+        screen.tableView(screen.sidebar, didSelectRowAt: IndexPath(row: 2, section: 0))
+        XCTAssertEqual(requests.map { $0.0 }, [nil, "UCfirst", "UCsecond"])
+        requests[2].2(.success(TVBrowsePage(FeedPage(videos: [Video(id: "second")], continuation: "second-page"))))
+        requests[1].2(.success(TVBrowsePage(FeedPage(videos: [Video(id: "stale")], continuation: "stale-page"))))
+        requests[0].2(.success(TVBrowsePage(FeedPage(videos: [Video(id: "old-all")], continuation: nil))))
+        drainBrowseQueue()
+        let ids = screen.grid.sections.flatMap(\.items).compactMap { item -> String? in
+            if case .video(let video) = item { return video.id }; return nil
+        }
+        XCTAssertEqual(ids, ["second"])
+        XCTAssertEqual(screen.grid.continuation, "second-page")
+        screen.grid.collectionView(screen.grid.collectionView, willDisplay: UICollectionViewCell(),
+                                   forItemAt: IndexPath(item: 0, section: 0))
+        XCTAssertEqual(requests.last?.0, "UCsecond")
+        XCTAssertEqual(requests.last?.1, "second-page")
+
+        screen.tableView(screen.sidebar, didSelectRowAt: IndexPath(row: 0, section: 0))
+        XCTAssertNil(screen.selectedChannel)
+        XCTAssertNil(requests.last?.0)
+        XCTAssertNil(requests.last?.1)
+        requests.last?.2(.success(TVBrowsePage(FeedPage(videos: [Video(id: "all")], continuation: nil))))
+        drainBrowseQueue()
+        XCTAssertEqual(screen.grid.sections.count, 1)
+        guard case .video(let video) = screen.grid.sections[0].items[0] else { return XCTFail("Expected video") }
+        XCTAssertEqual(video.id, "all")
+    }
+
+    @MainActor
+    func testSubscriptionsSidebarRemainsBesideGridAndRetriesChannelList() {
+        var attempts = 0
+        let screen = TVSubscriptionsController(channelsLoader: { done in
+            attempts += 1
+            if attempts == 1 { done(.failure(URLError(.notConnectedToInternet))) }
+            else { done(.success([SubscribedChannel(id: "UCfixture", title: "Fixture", avatarURL: nil)])) }
+        }, videosLoader: { _, _, done in done(.success(TVBrowsePage(sections: []))) })
+        screen.loadViewIfNeeded()
+        screen.grid.requiresAccount = false
+        let navigation = UINavigationController(rootViewController: screen)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+        window.rootViewController = navigation
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+        window.layoutIfNeeded()
+        screen.view.layoutIfNeeded()
+        drainBrowseQueue()
+        XCTAssertTrue(navigation.isNavigationBarHidden)
+        XCTAssertEqual(screen.sidebar.frame.width, 360)
+        XCTAssertGreaterThan(screen.grid.view.frame.minX, screen.sidebar.frame.maxX)
+        XCTAssertEqual(screen.tableView(screen.sidebar, numberOfRowsInSection: 0), 2)
+        XCTAssertEqual(screen.tableView(screen.sidebar, cellForRowAt: IndexPath(row: 1, section: 0))
+            .accessibilityIdentifier, "TV.retryChannels")
+        screen.tableView(screen.sidebar, didSelectRowAt: IndexPath(row: 1, section: 0))
+        drainBrowseQueue()
+        XCTAssertEqual(attempts, 2)
+        XCTAssertEqual(screen.channels.first?.id, "UCfixture")
+    }
+
+    @MainActor
+    private func drainBrowseQueue() {
+        let drained = expectation(description: "Browse callbacks delivered")
+        DispatchQueue.main.async { drained.fulfill() }
+        wait(for: [drained], timeout: 2)
+    }
+
+    @MainActor
     func testVideosHeadingStaysWithFeedWhenChannelsArrive() {
         let grid = TVGridController(title: "Subscriptions")
         grid.contentHeading = "Videos"
