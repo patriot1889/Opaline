@@ -110,6 +110,10 @@ When Google dropped support for the official YouTube app on older devices, there
 </div>
 </details>
 
+## Apple TV
+
+The **OpalineTV** scheme supports tvOS 17+ with a remote-driven interface and native playback controls. See [Apple TV setup, builds, and validation](docs/tvos.md).
+
 ## Installation
 
 Opaline runs on devices with **iOS 12 and above**.

@@ -79,6 +79,7 @@ final class SponsorBlockService {
             let processed = self.processResult(result, videoId: videoId)
             // A saved video carries its segments; without this the skips it
             // was downloaded with disappear the moment the network does.
+            #if os(iOS)
             guard case .failure = processed,
                   let stored = DownloadStore.segments(for: videoId) else {
                 completion(processed)
@@ -86,6 +87,9 @@ final class SponsorBlockService {
             }
             AppLog.sponsorBlock("serving \(stored.count) stored segments")
             completion(.success(stored))
+            #else
+            completion(processed)
+            #endif
         }
     }
 

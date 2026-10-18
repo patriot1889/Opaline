@@ -4,4 +4,6 @@ import Foundation
 struct SearchPage {
     let videos: [Video]
     let continuation: String?
+    var channels: [SubscribedChannel] = []
+    var playlists: [Playlist] = []
 }

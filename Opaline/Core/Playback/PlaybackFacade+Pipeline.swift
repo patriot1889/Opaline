@@ -13,7 +13,8 @@ extension PlaybackFacade {
             videoId: videoId
         ) { [weak self] urls in
             guard let urls,
-                  let self
+                  let self,
+                  self.currentVideoId == videoId
             else {
                 return
             }

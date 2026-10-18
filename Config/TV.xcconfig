@@ -1,0 +1,3 @@
+// Default TV identity; Local.xcconfig may override it and the signing team.
+OPALINE_TV_BUNDLE_IDENTIFIER = com.example.OpalineTV
+#include? "Local.xcconfig"

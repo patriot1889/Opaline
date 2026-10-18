@@ -101,7 +101,7 @@ extension HLSStreamResolver {
         jsPath: String?,
         completion: @escaping (String?) -> Void
     ) {
-        guard #available(iOS 14.0, *) else {
+        guard #available(iOS 14.0, tvOS 14.0, *) else {
             AppLog.player("hlsResolve: on-device solve needs iOS 14+")
             completion(nil)
             return

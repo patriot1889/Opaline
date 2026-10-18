@@ -1,0 +1,61 @@
+name: Build Apple TV
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "source/**"
+      - "**.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tvos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Configure local build settings
+        run: cp Config/Local.xcconfig.example Config/Local.xcconfig
+      - name: Ensure tvOS platform is installed
+        run: xcodebuild -downloadPlatform tvOS
+      - name: Build simulator Debug and Release
+        run: |
+          for configuration in Debug Release; do
+            xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+              -destination 'generic/platform=tvOS Simulator' \
+              -configuration "$configuration" -derivedDataPath "$RUNNER_TEMP/OpalineTV" \
+              CODE_SIGNING_ALLOWED=NO build
+          done
+      - name: Run TV fixture tests
+        run: |
+          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          print(next(d["udid"] for runtime, entries in devices.items() if "tvOS" in runtime for d in entries if d["isAvailable"]))
+          ')
+          xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+            -destination "platform=tvOS Simulator,id=$DEVICE_ID" \
+            -derivedDataPath "$RUNNER_TEMP/OpalineTV" \
+            -resultBundlePath "$RUNNER_TEMP/OpalineTVTests.xcresult" \
+            CODE_SIGNING_ALLOWED=NO test
+      - name: Archive unsigned TV app
+        run: |
+          xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+            -destination 'generic/platform=tvOS' -configuration Release \
+            -archivePath "$RUNNER_TEMP/OpalineTV.xcarchive" CODE_SIGNING_ALLOWED=NO archive
+          ditto -c -k --keepParent "$RUNNER_TEMP/OpalineTV.xcarchive" "$RUNNER_TEMP/OpalineTV.xcarchive.zip"
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpalineTV-unsigned-archive
+          path: ${{ runner.temp }}/OpalineTV.xcarchive.zip
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpalineTV-test-results
+          path: ${{ runner.temp }}/OpalineTVTests.xcresult
+          if-no-files-found: ignore

@@ -76,6 +76,7 @@ final class ImageDiskCache {
     }
 
     func store(data: Data, for url: URL) {
+        try? fm.createDirectory(at: cacheDir, withIntermediateDirectories: true)
         let fileURL = cacheDir.appendingPathComponent(
             cacheKey(for: url)
         )
@@ -84,8 +85,11 @@ final class ImageDiskCache {
         // lose the entry.
         try? data.write(
             to: fileURL,
-            options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
+            options: CacheStorage.writeOptions
         )
+        #if os(tvOS)
+        CacheStorage.trim(cacheDir, maximumBytes: 64 * 1_024 * 1_024)
+        #endif
     }
 
     func clear() {

@@ -42,9 +42,13 @@ enum ServiceContainer {
     static var subscribedChannels: SubscribedChannelsService { client }
     /// Wrapped so a downloaded video keeps its page when the network is
     /// gone; online it is the plain client.
+    #if os(iOS)
     static var watch: WatchService { offlineWatch }
-
     private static let offlineWatch = OfflineWatchService(wrapping: client)
+    #else
+    static var watch: WatchService { client }
+    #endif
+
     static var engagement: EngagementService { client }
     static var account: AccountService { client }
     static var shorts: ShortsService { client }
