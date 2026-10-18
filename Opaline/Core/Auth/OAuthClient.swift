@@ -41,9 +41,9 @@ final class OAuthClient {
     /// A RAW transport (no AuthorizingTransport) — OAuth's own token requests
     /// must never trigger the 401-refresh cross-cut, which would recurse.
     private let transport: HTTPTransport
-    init(transport: HTTPTransport = URLSessionTransport(), loadStoredTokens: Bool = true) {
+    private init(transport: HTTPTransport = URLSessionTransport()) {
         self.transport = transport
-        tokens = loadStoredTokens ? loadFromKeychain() : nil
+        tokens = loadFromKeychain()
     }
 }
 
@@ -78,12 +78,11 @@ extension OAuthClient {
     }
     func performRequest(
         _ request: HTTPRequest,
-        cancellationToken: CancellationToken? = nil,
         completion: @escaping (Result<Data, Error>) -> Void
     ) {
         // OAuth endpoints return meaningful bodies on non-2xx (e.g. the polling
         // "authorization_pending" 4xx), so the body is surfaced for any status.
-        transport.send(request, cancellationToken: cancellationToken) { result in
+        transport.send(request, cancellationToken: nil) { result in
             switch result {
             case .failure(let error):
                 completion(.failure(error))

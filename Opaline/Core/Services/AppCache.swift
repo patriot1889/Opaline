@@ -113,11 +113,8 @@ final class AppCache {
             // lose the entry.
             try? data.write(
                 to: cacheURL(for: key),
-                options: CacheStorage.writeOptions
+                options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
             )
-            #if os(tvOS)
-            CacheStorage.trim(cacheDir, maximumBytes: 16 * 1_024 * 1_024)
-            #endif
             AppLog.cache("disk-write key=\(key) size=\(data.count)b")
         }
     }

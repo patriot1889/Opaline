@@ -39,13 +39,13 @@ final class PlaybackQueue {
     /// while shuffle was on.
     private var plainOrder: [Video] = []
     var currentVideo: Video? {
-        videos.indices.contains(currentIndex) ? videos[currentIndex] : nil
+        videos[safe: currentIndex]
     }
 
     /// The upcoming video without advancing — navigation syncs the cursor
     /// itself via `seekTo` once the next page loads.
     var nextVideo: Video? {
-        videos.indices.contains(currentIndex + 1) ? videos[currentIndex + 1] : nil
+        videos[safe: currentIndex + 1]
     }
 
     private init() {}

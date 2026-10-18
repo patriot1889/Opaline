@@ -17,6 +17,10 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Verify stock iOS boundary
+        run: python3 scripts/check-ios-stock.py
       - name: Configure local build settings
         run: cp Config/Local.xcconfig.example Config/Local.xcconfig
       - name: Ensure tvOS platform is installed
@@ -24,7 +28,7 @@ jobs:
       - name: Build simulator Debug and Release
         run: |
           for configuration in Debug Release; do
-            xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+            xcodebuild -project OpalineTV.xcodeproj -scheme OpalineTV \
               -destination 'generic/platform=tvOS Simulator' \
               -configuration "$configuration" -derivedDataPath "$RUNNER_TEMP/OpalineTV" \
               CODE_SIGNING_ALLOWED=NO build
@@ -36,14 +40,14 @@ jobs:
           devices = json.load(sys.stdin)["devices"]
           print(next(d["udid"] for runtime, entries in devices.items() if "tvOS" in runtime for d in entries if d["isAvailable"]))
           ')
-          xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+          xcodebuild -project OpalineTV.xcodeproj -scheme OpalineTV \
             -destination "platform=tvOS Simulator,id=$DEVICE_ID" \
             -derivedDataPath "$RUNNER_TEMP/OpalineTV" \
             -resultBundlePath "$RUNNER_TEMP/OpalineTVTests.xcresult" \
             CODE_SIGNING_ALLOWED=NO test
       - name: Archive unsigned TV app
         run: |
-          xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+          xcodebuild -project OpalineTV.xcodeproj -scheme OpalineTV \
             -destination 'generic/platform=tvOS' -configuration Release \
             -archivePath "$RUNNER_TEMP/OpalineTV.xcarchive" CODE_SIGNING_ALLOWED=NO archive
           ditto -c -k --keepParent "$RUNNER_TEMP/OpalineTV.xcarchive" "$RUNNER_TEMP/OpalineTV.xcarchive.zip"

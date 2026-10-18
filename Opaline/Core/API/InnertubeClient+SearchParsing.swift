@@ -21,59 +21,19 @@ extension InnertubeClient {
             ?? []
         var videos: [Video] = []
         var token: String?
-        var channels: [SubscribedChannel] = []
-        var playlists: [Playlist] = []
         for section in sections {
             let items = (section["itemSectionRenderer"]
                 as? [String: Any])?["contents"] as? [[String: Any]]
                 ?? [section]
             let parsed = VideoRendererParserChain.parse(items: items)
             videos += parsed.videos
-            channels += searchChannels(in: items)
-            playlists += searchPlaylists(in: items)
             token = token ?? parsed.continuation
         }
-        return SearchPage(
-            videos: videos, continuation: token, channels: channels, playlists: playlists
-        )
+        return SearchPage(videos: videos, continuation: token)
     }
 }
 
 private extension InnertubeClient {
-    static func searchChannels(in items: [[String: Any]]) -> [SubscribedChannel] {
-        items.compactMap { item in
-            guard let channel = item["channelRenderer"] as? [String: Any],
-                  let id = channel["channelId"] as? String else {
-                return nil
-            }
-            return SubscribedChannel(
-                id: id,
-                title: channel.innertubeText("title") ?? "",
-                avatarURL: channel.thumbnailURL()
-            )
-        }
-    }
-
-    static func searchPlaylists(in items: [[String: Any]]) -> [Playlist] {
-        items.compactMap { item in
-            if let renderer = item["playlistRenderer"] as? [String: Any],
-               let id = renderer["playlistId"] as? String {
-                return Playlist(
-                    id: id,
-                    title: renderer.innertubeText("title") ?? "",
-                    description: "",
-                    thumbnailURL: renderer.thumbnailURL(),
-                    itemCount: nil
-                )
-            }
-            guard let lockup = item["lockupViewModel"] as? [String: Any],
-                  lockup["contentType"] as? String == "LOCKUP_CONTENT_TYPE_PLAYLIST" else {
-                return nil
-            }
-            return parseLockupPlaylist(lockup)
-        }
-    }
-
     static func initialSearchSections(
         _ json: [String: Any]
     ) -> [[String: Any]]? {

@@ -1,18 +1,18 @@
 # Opaline on Apple TV
 
-OpalineTV is a separate UIKit app for tvOS 17 and later, including Apple TV HD and Apple TV 4K. It shares the API clients, OAuth device flow, image loader, source fallback chain, HLS/SABR delivery, and watch-progress services with the iOS app. The iOS target continues to support iOS 12.
+OpalineTV is a separate UIKit app for tvOS 17 and later, including Apple TV HD and Apple TV 4K. It references unchanged upstream API clients, models, networking, image loading, source fallback chain, and HLS/SABR delivery. Authentication and watch-progress storage have TV-specific implementations. The iOS target continues to support iOS 12.
 
 ## Build and install
 
 1. Install Xcode with the tvOS platform component (Xcode → Settings → Components). For command-line setup, use `xcodebuild -downloadPlatform tvOS`.
 2. Copy `Config/Local.xcconfig.example` to `Config/Local.xcconfig` if it does not exist.
-3. Set `DEVELOPMENT_TEAM` and optionally `OPALINE_TV_BUNDLE_IDENTIFIER` in that local configuration. The TV identifier defaults to `com.example.OpalineTV` and is independent of the iOS identifier.
-4. Open `Opaline.xcodeproj`, select **OpalineTV**, and choose an Apple TV simulator or a paired physical Apple TV. For a physical device, let Xcode create its tvOS provisioning profile, then run the scheme.
+3. Set `DEVELOPMENT_TEAM` and optionally add `OPALINE_TV_BUNDLE_IDENTIFIER` in that local configuration. The TV identifier defaults to `com.example.OpalineTV` and is independent of the iOS identifier.
+4. Open `OpalineTV.xcodeproj`, select **OpalineTV**, and choose an Apple TV simulator or a paired physical Apple TV. For a physical device, let Xcode create its tvOS provisioning profile, then run the scheme.
 
 Simulator build:
 
 ```sh
-xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+xcodebuild -project OpalineTV.xcodeproj -scheme OpalineTV \
   -destination 'generic/platform=tvOS Simulator' \
   -configuration Debug CODE_SIGNING_ALLOWED=NO build
 ```
@@ -20,7 +20,7 @@ xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
 Fixture tests (substitute an available simulator name if needed):
 
 ```sh
-xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+xcodebuild -project OpalineTV.xcodeproj -scheme OpalineTV \
   -destination 'platform=tvOS Simulator,name=Apple TV 4K (3rd generation)' \
   CODE_SIGNING_ALLOWED=NO test
 ```
@@ -28,7 +28,7 @@ xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
 Unsigned device archive, suitable for inspecting the build but requiring signing before installation:
 
 ```sh
-xcodebuild -project Opaline.xcodeproj -scheme OpalineTV \
+xcodebuild -project OpalineTV.xcodeproj -scheme OpalineTV \
   -destination 'generic/platform=tvOS' -configuration Release \
   -archivePath build/OpalineTV.xcarchive CODE_SIGNING_ALLOWED=NO archive
 ```
@@ -51,9 +51,31 @@ Settings → Accounts supports adding YouTube accounts with the device-code flow
 
 Saved credentials and the active selection use a tvOS-only Keychain vault. The previous single-account credential migrates on first launch. Settings use UserDefaults; recent searches and bounded watch progress use separate keys for each saved account and guest mode. Switching resets the queue, account caches and sync state, discards late API/OAuth responses, and rebuilds the TV screens. These local histories remain subject to tvOS storage eviction. Signed-in history sync uses the existing YouTube services. Image disk cache is limited to 64 MiB and feed cache to 16 MiB on tvOS. Cache directories can disappear between sessions and are recreated on writes. Streaming buffers and servers are released when playback ends; no offline download store is compiled into the TV target.
 
-Shared Swift files have explicit membership under **TV Shared Sources** in Xcode. New files in `OpalineTV` and `OpalineTVTests` are synchronized with their respective targets. Shared service dependencies are separate from the iOS screen factories.
+The two projects are independent: `Opaline.xcodeproj` contains only the upstream iOS app and extension, while `OpalineTV.xcodeproj` contains only the TV app and tests. The iOS source, extension, project and local-config template match upstream commit `26622322ddaccd1e6b9e27fc9988786b8aa8abb6` exactly. Local signing overrides remain in the ignored `Config/Local.xcconfig`.
 
-`OpalineTV/Accounts` contains the TV account UI, vault, session boundary, and specialized implementations of `OAuthClient`, `AuthorizingTransport`, `SearchHistoryStore`, `WatchProgressStore`, and `WatchProgressSyncService`. The TV target excludes the corresponding shared implementations (including `OAuthClient+Keychain.swift`) from its explicit Sources list. Credential discovery, token polling/refresh extensions, API models, and service protocols remain shared. The iOS synchronized source group and every file under `Opaline/` remain unchanged. When merging upstream auth/storage fixes, review the TV specializations alongside their shared counterparts. When adding shared source files, add TV membership explicitly and build both targets.
+The TV project references 154 unchanged Swift files under **TV Shared Sources**. It does not copy the shared core or generate patched source during builds. New files under `OpalineTV` and `OpalineTVTests` are synchronized with their respective targets. Shared source membership is explicit, so upstream UI files and new iOS features cannot accidentally enter the TV build.
+
+TV-only code is organized as follows:
+
+| Directory | Responsibility |
+| --- | --- |
+| `OpalineTV/Accounts` | Account UI, Keychain vault, OAuth client/polling, session boundary, scoped history/progress and sync, account-aware transport |
+| `OpalineTV/Platform` | Service composition, TV network/AV1 behavior, localization table lookup, safe collection access and optional offline-library adapters |
+| `OpalineTV/Playback` | Online playback facade, stale-response protection and quality preferences extracted from the upstream iOS settings UI |
+| `OpalineTV/Search` | Search result model/parser with channel and playlist results |
+| `OpalineTV/Storage` | Disposable TV disk caches and bounded cache eviction |
+
+Small adapters allow the stock playback queue, subtitle and SponsorBlock services to compile unchanged: TV supplies the collection helper that upstream defines in a player view controller, and returns no local downloads so those services follow their normal online paths. Where an upstream concrete type cannot be extended safely, the TV project excludes that file and compiles its explicit TV implementation instead. Review upstream changes to these replaced files when updating TV; the rest of the shared core is reused directly.
+
+TV strings live in `OpalineTV/en.lproj/TV.strings` and `TVAccounts.strings`; upstream `Localizable.strings` and translations remain unchanged and are referenced as resources.
+
+Run the stock-boundary check before committing:
+
+```sh
+python3 scripts/check-ios-stock.py
+```
+
+The baseline is pinned in `Config/TV-Upstream.json`. The check compares tracked files and rejects unexpected files inside the iOS directories. CI runs the same check before building TV. To compare against another local upstream ref, use `--baseline main`. When intentionally updating upstream, restore the protected paths from the new upstream commit, update the pinned commit, review TV replacements and source membership, then build iOS and TV and run TV fixtures.
 
 The `Build Apple TV` workflow builds Debug/Release simulator configurations, runs fixtures, and uploads an unsigned Release archive. Existing iOS release publishing remains separate.
 

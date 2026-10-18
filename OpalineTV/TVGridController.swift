@@ -166,7 +166,7 @@ final class TVShelfHeader: UICollectionReusableView {
         label.frame = bounds
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(label)
-        refreshButton.setTitle("TV.refresh".localized, for: .normal)
+        refreshButton.setTitle("TV.refresh".tvLocalized, for: .normal)
         refreshButton.addAction(UIAction { [weak self] _ in self?.onRefresh?() }, for: .primaryActionTriggered)
         addSubview(refreshButton)
     }
@@ -331,7 +331,7 @@ class TVGridController: UICollectionViewController {
     private func loadMore() {
         guard let loader, !loading, !failed else { return }
         loading = true
-        if contentSections.isEmpty { status.text = "TV.loading".localized }
+        if contentSections.isEmpty { status.text = "TV.loading".tvLocalized }
         let requestGeneration = generation
         let token = continuation ?? shelfContinuations.first?.token
         loader(token) { [weak self] result in
@@ -346,7 +346,7 @@ class TVGridController: UICollectionViewController {
                     self.continuation = page.continuation == token ? nil : page.continuation
                     if token == nil { self.shelfContinuations = page.shelfContinuations }
                     self.append(page)
-                    self.status.text = self.contentSections.allSatisfy({ $0.items.isEmpty }) ? "TV.empty".localized : nil
+                    self.status.text = self.contentSections.allSatisfy({ $0.items.isEmpty }) ? "TV.empty".tvLocalized : nil
                     self.collectionView.reloadData()
                     // Empty/Shorts-only pages must not strand a still-valid continuation.
                     if page.sections.allSatisfy({ $0.items.isEmpty }),
@@ -354,14 +354,14 @@ class TVGridController: UICollectionViewController {
                        self.continuation != nil || !self.shelfContinuations.isEmpty { self.loadMore() }
                 case .failure:
                     self.failed = true
-                    let retry = TVItem.action("TV.retry".localized) { [weak self] in
+                    let retry = TVItem.action("TV.retry".tvLocalized) { [weak self] in
                         guard let self else { return }
-                        self.contentSections.removeAll { $0.title == "TV.loadFailed".localized }
+                        self.contentSections.removeAll { $0.title == "TV.loadFailed".tvLocalized }
                         self.collectionView.reloadData()
                         self.failed = false
                         self.loadMore()
                     }
-                    self.contentSections.append(TVSection(title: "TV.loadFailed".localized, items: [retry]))
+                    self.contentSections.append(TVSection(title: "TV.loadFailed".tvLocalized, items: [retry]))
                     self.status.text = nil
                     self.collectionView.reloadData()
                 }

@@ -1,7 +1,7 @@
 import Foundation
 
 extension AppCache {
-    func loadDiskValue<T: Codable & SendableMetatype>(
+    func loadDiskValue<T: Codable>(
         _ type: T.Type,
         key: String,
         ttl: TimeInterval,

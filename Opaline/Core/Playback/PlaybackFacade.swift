@@ -13,7 +13,7 @@ enum PlaybackBufferPolicy {
         // The session runs in .moviePlayback, which lets the system spatialize
         // even plain stereo on AirPods. Allow it only where the content really
         // has the channels for it (#119).
-        if #available(iOS 15.0, tvOS 15.0, *) {
+        if #available(iOS 15.0, *) {
             item.allowedAudioSpatializationFormats = .multichannel
         }
     }
@@ -27,7 +27,7 @@ enum PlaybackBufferPolicy {
         // Keeps audio going in the background without detaching the player
         // from its layer — the detach is what breaks PiP (#28). Older iOS
         // has no such policy and falls back to detaching.
-        if #available(iOS 15.0, tvOS 15.0, *) {
+        if #available(iOS 15.0, *) {
             player.audiovisualBackgroundPlaybackPolicy = .continuesIfPossible
         }
     }
@@ -109,7 +109,6 @@ extension PlaybackFacade {
         videoId: String
     ) -> VideoSource {
         let steps = PlaybackChainSettings.activeSteps()
-        #if os(iOS)
         if DownloadStore.isDownloaded(videoId) {
             AppLog.player("chain: this video is downloaded, playing the file")
             // The chain rides along unloaded, purely so the quality menu can
@@ -122,7 +121,6 @@ extension PlaybackFacade {
             activeVideoSource = source
             return source
         }
-        #endif
         if steps.isEmpty {
             AppLog.player("chain: no sources enabled for this session")
         }
@@ -208,9 +206,6 @@ extension PlaybackFacade {
         _ result: Result<PreparedPlayback, Error>,
         cancellation: CancellationToken
     ) {
-        guard !cancellation.isCancelled else {
-            return
-        }
         PlaybackProgress.report = nil
         switch result {
         case .success(let prepared):
@@ -271,8 +266,6 @@ extension PlaybackFacade {
     }
 
     func reset() {
-        activeVideoSource?.releaseResources()
-        activeChain = nil
         activeVideoSource = nil
         watchtimeTracker.stop()
         currentVideoId = nil

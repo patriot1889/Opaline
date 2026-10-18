@@ -7,7 +7,7 @@ import VideoToolbox
 /// ladder stays avc1-only and tops out at 1080p.
 enum AV1Support {
     static let isHardwareSupported: Bool = {
-        guard #available(iOS 17.4, tvOS 17.4, *) else {
+        guard #available(iOS 17.4, *) else {
             return false
         }
         return VTIsHardwareDecodeSupported(kCMVideoCodecType_AV1)

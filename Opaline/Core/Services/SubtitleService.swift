@@ -21,13 +21,9 @@ final class SubtitleService {
         guard let videoId = videoId(in: track.url) else {
             return nil
         }
-        #if os(iOS)
         return DownloadStore.cues(
             language: track.languageCode, for: videoId
         )
-        #else
-        return nil
-        #endif
     }
 
     private static func videoId(in url: URL) -> String? {

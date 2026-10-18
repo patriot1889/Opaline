@@ -13,6 +13,3 @@
 PRODUCT_BUNDLE_IDENTIFIER = com.example.YourApp
 DEVELOPMENT_TEAM =
 APP_MANIFEST_URL = https:/$()/raw.githubusercontent.com/verback2308/ytlite/main/source/apps.json
-
-// Apple TV uses a separate bundle identifier.
-OPALINE_TV_BUNDLE_IDENTIFIER = com.example.OpalineTV

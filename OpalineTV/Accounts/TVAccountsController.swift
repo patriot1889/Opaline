@@ -42,7 +42,7 @@ final class TVAccountsController: TVMenuController {
         alert.addAction(UIAlertAction(title: TVAccountText.string("Remove account"), style: .destructive) { [weak self] _ in
             self?.confirmRemoval(account)
         })
-        alert.addAction(UIAlertAction(title: "TV.cancel".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "TV.cancel".tvLocalized, style: .cancel))
         present(alert, animated: true)
     }
 
@@ -57,12 +57,12 @@ final class TVAccountsController: TVMenuController {
     private func rename(_ account: TVAccountStore.Account) {
         let alert = UIAlertController(title: TVAccountText.string("Rename account"), message: nil, preferredStyle: .alert)
         alert.addTextField { $0.text = account.name }
-        alert.addAction(UIAlertAction(title: "TV.save".localized, style: .default) { [weak self, weak alert] _ in
+        alert.addAction(UIAlertAction(title: "TV.save".tvLocalized, style: .default) { [weak self, weak alert] _ in
             guard let name = alert?.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines), !name.isEmpty else { return }
             do { try TVAccountStore.shared.rename(account.id, to: name); self?.reload() }
             catch { self?.showError(error) }
         })
-        alert.addAction(UIAlertAction(title: "TV.cancel".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "TV.cancel".tvLocalized, style: .cancel))
         present(alert, animated: true)
     }
 
@@ -83,7 +83,7 @@ final class TVAccountsController: TVMenuController {
                 }
             } catch { self?.showError(error) }
         })
-        alert.addAction(UIAlertAction(title: "TV.cancel".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "TV.cancel".tvLocalized, style: .cancel))
         present(alert, animated: true)
     }
 
@@ -96,7 +96,7 @@ final class TVAccountsController: TVMenuController {
 
     private func showError(_ error: Error) {
         let alert = UIAlertController(title: TVAccountText.string("Accounts"), message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "TV.cancel".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "TV.cancel".tvLocalized, style: .cancel))
         present(alert, animated: true)
     }
 

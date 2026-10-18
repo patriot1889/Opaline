@@ -84,7 +84,7 @@ final class TVSearchController: UISearchContainerViewController, UISearchResults
 
     private func showRecentQueries() {
         let items = history.queries.map(suggestionItem)
-        results.replace(items.isEmpty ? [] : [TVSection(title: "TV.suggestions".localized, items: items)])
+        results.replace(items.isEmpty ? [] : [TVSection(title: "TV.suggestions".tvLocalized, items: items)])
     }
 
     private func suggestionItem(_ query: String) -> TVItem {
@@ -122,7 +122,7 @@ final class TVSearchController: UISearchContainerViewController, UISearchResults
                 guard let self, self.requestToken === token, !token.isCancelled else { return }
                 let suggestions = Array(((try? result.get()) ?? []).filter { $0 != query }.prefix(3))
                 let items = suggestions.map(self.suggestionItem)
-                self.results.setLeadingSections([TVSection(title: "TV.suggestions".localized, items: items)])
+                self.results.setLeadingSections([TVSection(title: "TV.suggestions".tvLocalized, items: items)])
             }
         }
     }
@@ -134,7 +134,7 @@ final class TVSearchController: UISearchContainerViewController, UISearchResults
             TVSection(title: "channel.tab.videos".localized, items: $0.items)
         }
         if !page.channels.isEmpty {
-            result.sections.insert(TVSection(title: "TV.channels".localized, items: page.channels.map {
+            result.sections.insert(TVSection(title: "TV.channels".tvLocalized, items: page.channels.map {
                 .channel($0.id, $0.title, $0.avatarURL)
             }), at: 0)
         }

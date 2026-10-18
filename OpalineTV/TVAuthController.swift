@@ -22,10 +22,10 @@ final class TVAuthController: UIViewController {
         status.numberOfLines = 3
         status.textAlignment = .center
         qrView.contentMode = .scaleAspectFit
-        retry.setTitle("TV.retry".localized, for: .normal)
+        retry.setTitle("TV.retry".tvLocalized, for: .normal)
         retry.addAction(UIAction { [weak self] _ in self?.start() }, for: .primaryActionTriggered)
         let anonymous = UIButton(type: .system)
-        anonymous.setTitle(OAuthClient.shared.isSignedIn ? "TV.cancel".localized : "auth.continueAnonymously".localized, for: .normal)
+        anonymous.setTitle(OAuthClient.shared.isSignedIn ? "TV.cancel".tvLocalized : "auth.continueAnonymously".localized, for: .normal)
         anonymous.addAction(UIAction { [weak self] _ in
             self?.cancellation.cancel()
             guard let self else { return }
@@ -68,7 +68,7 @@ final class TVAuthController: UIViewController {
                 case .failure: self.failed()
                 case .success(let code):
                     self.codeLabel.text = code.userCode
-                    self.status.text = String(format: "TV.authInstructions".localized, code.verificationURL)
+                    self.status.text = String(format: "TV.authInstructions".tvLocalized, code.verificationURL)
                     let filter = CIFilter.qrCodeGenerator()
                     filter.message = Data(code.verificationURL.utf8)
                     if let image = filter.outputImage?.transformed(by: CGAffineTransform(scaleX: 8, y: 8)) {
@@ -101,7 +101,7 @@ final class TVAuthController: UIViewController {
         }
     }
     private func failed() {
-        status.text = "TV.authFailed".localized
+        status.text = "TV.authFailed".tvLocalized
         retry.isHidden = false
         setNeedsFocusUpdate()
     }

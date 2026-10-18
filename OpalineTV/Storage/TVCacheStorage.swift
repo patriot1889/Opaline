@@ -9,11 +9,7 @@ enum CacheStorage {
     }
 
     static var writeOptions: Data.WritingOptions {
-        #if os(tvOS)
-        return .atomic
-        #else
-        return [.atomic, .completeFileProtectionUntilFirstUserAuthentication]
-        #endif
+        .atomic
     }
 
     static func trim(_ directory: URL, maximumBytes: Int) {

@@ -205,11 +205,11 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         guard !closed, presentedViewController == nil else { return }
         status.isHidden = true
         switching = false
-        let alert = UIAlertController(title: "TV.playbackFailed".localized, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "TV.retry".localized, style: .default) { [weak self] _ in
+        let alert = UIAlertController(title: "TV.playbackFailed".tvLocalized, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "TV.retry".tvLocalized, style: .default) { [weak self] _ in
             guard let self else { return }; self.start(self.video)
         })
-        alert.addAction(UIAlertAction(title: "TV.close".localized, style: .cancel) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "TV.close".tvLocalized, style: .cancel) { [weak self] _ in
             self?.dismiss(animated: true)
         })
         present(alert, animated: true)
@@ -261,7 +261,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         SubtitleService.shared.load(track: track) { [weak self] cues in
             guard let self, !self.closed, self.subtitleGeneration == generation else { return }
             self.cues = cues
-            if cues.isEmpty { self.updateStatusLabel("TV.captionsUnavailable".localized) }
+            if cues.isEmpty { self.updateStatusLabel("TV.captionsUnavailable".tvLocalized) }
         }
     }
     private func tick(_ seconds: Double) {
@@ -333,9 +333,9 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         }
         guard let next = upcomingVideo else { return }
         if PlaybackQueue.shared.playlistId != nil { advance(next); return }
-        let alert = UIAlertController(title: "TV.upNext".localized, message: next.title, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "TV.playNow".localized, style: .default) { [weak self] _ in self?.advance(next) })
-        alert.addAction(UIAlertAction(title: "TV.cancel".localized, style: .cancel) { [weak self] _ in self?.autoplayTimer?.invalidate() })
+        let alert = UIAlertController(title: "TV.upNext".tvLocalized, message: next.title, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "TV.playNow".tvLocalized, style: .default) { [weak self] _ in self?.advance(next) })
+        alert.addAction(UIAlertAction(title: "TV.cancel".tvLocalized, style: .cancel) { [weak self] _ in self?.autoplayTimer?.invalidate() })
         present(alert, animated: true)
         autoplayTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self, weak alert] _ in
             alert?.dismiss(animated: true) { self?.advance(next) }
@@ -404,18 +404,18 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
             self?.rebuildMenus()
         })
         if let segment = manualSegment {
-            menus.append(UIAction(title: "TV.skipSegment".localized(with: segment.category.displayName), image: UIImage(systemName: "forward")) { [weak self] _ in
+            menus.append(UIAction(title: "TV.skipSegment".tvLocalized(with: segment.category.displayName), image: UIImage(systemName: "forward")) { [weak self] _ in
                 self?.avPlayer.seek(to: CMTime(seconds: segment.endTime, preferredTimescale: 600))
             })
         }
         let queue = PlaybackQueue.shared
         if queue.currentIndex > 0 {
-            menus.append(UIAction(title: "TV.previous".localized, image: UIImage(systemName: "backward.end")) { [weak self] _ in
+            menus.append(UIAction(title: "TV.previous".tvLocalized, image: UIImage(systemName: "backward.end")) { [weak self] _ in
                 self?.advance(queue.videos[queue.currentIndex - 1])
             })
         }
         if let next = upcomingVideo {
-            menus.append(UIAction(title: "TV.next".localized, image: UIImage(systemName: "forward.end")) { [weak self] _ in self?.advance(next) })
+            menus.append(UIAction(title: "TV.next".tvLocalized, image: UIImage(systemName: "forward.end")) { [weak self] _ in self?.advance(next) })
         }
         if let channelId = video.channelId {
             menus.append(UIAction(title: video.channelName, image: UIImage(systemName: "person.crop.rectangle")) { [weak self] _ in

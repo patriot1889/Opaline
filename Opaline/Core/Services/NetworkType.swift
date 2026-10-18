@@ -6,9 +6,6 @@ import SystemConfiguration
 /// the moment a stream is picked, which is the only moment that asks.
 enum NetworkType {
     static var isCellular: Bool {
-        #if os(tvOS)
-        return false
-        #else
         var address = sockaddr_in()
         address.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
         address.sin_family = sa_family_t(AF_INET)
@@ -25,6 +22,5 @@ enum NetworkType {
             return false
         }
         return flags.contains(.isWWAN) && flags.contains(.reachable)
-        #endif
     }
 }

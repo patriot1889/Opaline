@@ -18,7 +18,7 @@
                BlueprintIdentifier = "13177ACCB5A626FAD211C5C5"
                BuildableName = "OpalineTV.app"
                BlueprintName = "OpalineTV"
-               ReferencedContainer = "container:Opaline.xcodeproj">
+               ReferencedContainer = "container:OpalineTV.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -38,7 +38,7 @@
                BlueprintIdentifier = "26F32B159E05567E5A841ED7"
                BuildableName = "OpalineTVTests.xctest"
                BlueprintName = "OpalineTVTests"
-               ReferencedContainer = "container:Opaline.xcodeproj">
+               ReferencedContainer = "container:OpalineTV.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -60,7 +60,7 @@
             BlueprintIdentifier = "13177ACCB5A626FAD211C5C5"
             BuildableName = "OpalineTV.app"
             BlueprintName = "OpalineTV"
-            ReferencedContainer = "container:Opaline.xcodeproj">
+            ReferencedContainer = "container:OpalineTV.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -77,7 +77,7 @@
             BlueprintIdentifier = "13177ACCB5A626FAD211C5C5"
             BuildableName = "OpalineTV.app"
             BlueprintName = "OpalineTV"
-            ReferencedContainer = "container:Opaline.xcodeproj">
+            ReferencedContainer = "container:OpalineTV.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

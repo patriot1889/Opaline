@@ -30,7 +30,7 @@ final class TVRouter {
             screen.leadingSectionsLoader = { completion in
                 services.subscribedChannelsService.fetchSubscribedChannels { result in
                     completion(result.map { channels in
-                        [TVSection(title: "TV.channels".localized, items: channels.map {
+                        [TVSection(title: "TV.channels".tvLocalized, items: channels.map {
                             .channel($0.id, $0.title, $0.avatarURL)
                         }, scrollsHorizontally: true)]
                     })
@@ -123,7 +123,7 @@ final class TVRouter {
     }
 
     func channels() -> TVGridController {
-        let screen = TVGridController(title: "TV.channels".localized)
+        let screen = TVGridController(title: "TV.channels".tvLocalized)
         screen.requiresAccount = true
         screen.selection = { [self] item, sender in open(item, from: sender) }
         screen.loader = { [dependencies] _, done in
