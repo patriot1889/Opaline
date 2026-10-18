@@ -955,7 +955,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C69FCE736600B6A52D2EA66 /* Opaline/Core/Services/SearchHistoryStore.swift in Sources */,
 				BCEF62639CCE49EC09B7913D /* Opaline/Core/Common/VideoFormatters.swift in Sources */,
 				1507576F4862BE2A835C4035 /* Opaline/App/ServiceContainer.swift in Sources */,
 				7443092AB0252A42C4217C5C /* Opaline/Core/API/APIClient.swift in Sources */,
@@ -1027,10 +1026,8 @@
 				2E3DBCA2DFF83C0B0A737DD8 /* Opaline/Core/API/Parsing/FeedbackActionParser.swift in Sources */,
 				EF0E18FA8B25B975659168F8 /* Opaline/Core/API/Parsing/VideoRendererParser.swift in Sources */,
 				2BA5B4DB143F948CCA3F1260 /* Opaline/Core/Auth/OAuthClient+Credentials.swift in Sources */,
-				BCB9F67106DE4ECC1DF17032 /* Opaline/Core/Auth/OAuthClient+Keychain.swift in Sources */,
 				6281D63AD9053DC5DF043F5C /* Opaline/Core/Auth/OAuthClient+Refresh.swift in Sources */,
 				565A3F8444A5ED59EC33F53A /* Opaline/Core/Auth/OAuthClient+TokenPolling.swift in Sources */,
-				D979889A42EC1BFBC36C0A53 /* Opaline/Core/Auth/OAuthClient.swift in Sources */,
 				8731B7D3DC3A5C8A20D9CECE /* Opaline/Core/Auth/OAuthTokens.swift in Sources */,
 				88783150263143CB755270EA /* Opaline/Core/Common/AppLog.swift in Sources */,
 				063538D5EB5352ED6ABD2C02 /* Opaline/Core/Common/CancellationToken.swift in Sources */,
@@ -1119,11 +1116,8 @@
 				E0ADC278BB9F428A153AC14A /* Opaline/Core/Services/VTTParser.swift in Sources */,
 				DA628B371B7B2DA233FAEDC1 /* Opaline/Core/Services/Video+RSSShort.swift in Sources */,
 				E6364EA6C62618EEF4640A68 /* Opaline/Core/Services/VideoService.swift in Sources */,
-				47C84A7D6CBA3B99E3CD7A3D /* Opaline/Core/Services/WatchProgressStore.swift in Sources */,
-				E06CEA3C04AF463CCD8A9502 /* Opaline/Core/Services/WatchProgressSyncService.swift in Sources */,
 				259C18BADF39AF9E1295BF9A /* Opaline/Core/Services/WatchService+Defaults.swift in Sources */,
 				4E8F9B6747CDD68AABD6BAAD /* Opaline/Core/Services/WatchtimeTracker.swift in Sources */,
-				619BB43815954B295B470F9A /* Opaline/Core/Transport/AuthorizingTransport.swift in Sources */,
 				04FA610BC8B78DA35913A1D6 /* Opaline/Core/Transport/HTTPTransport.swift in Sources */,
 				F581410D0B1D4C6F3C7B3934 /* Opaline/Core/Transport/LoggingTransport.swift in Sources */,
 				41E984DC92FCE84A3729487A /* Opaline/Core/Transport/StreamingSession.swift in Sources */,

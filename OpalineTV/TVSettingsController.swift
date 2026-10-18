@@ -7,7 +7,9 @@ final class TVSettingsController: TVMenuController {
 
     private func reload() {
         rows = [
-            TVMenuRow(OAuthClient.shared.isSignedIn ? "TV.signOut".localized : "account.signIn".localized) { [weak self] in self?.account() },
+            TVMenuRow(TVAccountText.string("Accounts"), detail: TVAccountStore.shared.activeAccount?.name ?? TVAccountText.string("Guest")) { [weak self] in
+                self?.navigationController?.pushViewController(TVAccountsController(), animated: true)
+            },
             TVMenuRow("TV.language".localized, detail: AppLanguage.effective.displayName) { [weak self] in self?.languages() },
             TVMenuRow("TV.region".localized, detail: DefaultLocalePreferences().gl) { [weak self] in
                 self?.edit("TV.region".localized, value: DefaultLocalePreferences().gl) { region in
@@ -56,34 +58,6 @@ final class TVSettingsController: TVMenuController {
         TVMenuRow(title, detail: enabled ? "TV.on".localized : "TV.off".localized) { [weak self] in
             set(!enabled)
             self?.reload()
-        }
-    }
-    private func account() {
-        if OAuthClient.shared.isSignedIn {
-            let alert = UIAlertController(title: "TV.signOut".localized, message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "TV.signOut".localized, style: .destructive) { [weak self] _ in
-                OAuthClient.shared.signOut()
-                OAuthClient.shared.isAnonymous = true
-                WatchProgressStore.shared.clearAll()
-                PlaybackQueue.shared.clear()
-                SearchHistoryStore.shared.clear()
-                AppCache.shared.clearAllDiskCache()
-                UserProfileStore.shared.clear()
-                UserDefaults.standard.removeObject(forKey: "WatchProgressSync.lastSync")
-                self?.reload()
-                (UIApplication.shared.delegate as? TVAppDelegate)?.showMain()
-            })
-            alert.addAction(UIAlertAction(title: "TV.cancel".localized, style: .cancel))
-            present(alert, animated: true)
-        } else {
-            let auth = TVAuthController()
-            auth.onComplete = { [weak self, weak auth] in
-                auth?.dismiss(animated: true) {
-                    self?.reload()
-                    (UIApplication.shared.delegate as? TVAppDelegate)?.showMain()
-                }
-            }
-            present(auth, animated: true)
         }
     }
     private func languages() {

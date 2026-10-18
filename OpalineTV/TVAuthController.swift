@@ -3,6 +3,7 @@ import CoreImage.CIFilterBuiltins
 
 final class TVAuthController: UIViewController {
     var onComplete: (() -> Void)?
+    private let client = OAuthClient(loadStoredTokens: false)
     private var cancellation = CancellationToken()
     private let codeLabel = UILabel()
     private let status = UILabel()
@@ -24,11 +25,18 @@ final class TVAuthController: UIViewController {
         retry.setTitle("TV.retry".localized, for: .normal)
         retry.addAction(UIAction { [weak self] _ in self?.start() }, for: .primaryActionTriggered)
         let anonymous = UIButton(type: .system)
-        anonymous.setTitle("auth.continueAnonymously".localized, for: .normal)
+        anonymous.setTitle(OAuthClient.shared.isSignedIn ? "TV.cancel".localized : "auth.continueAnonymously".localized, for: .normal)
         anonymous.addAction(UIAction { [weak self] _ in
             self?.cancellation.cancel()
-            OAuthClient.shared.isAnonymous = true
-            self?.onComplete?()
+            guard let self else { return }
+            if OAuthClient.shared.isSignedIn {
+                self.dismiss(animated: true)
+            } else {
+                do {
+                    try TVAccountSession.change { try TVAccountStore.shared.select(nil) }
+                    self.onComplete?()
+                } catch { self.failed() }
+            }
         }, for: .primaryActionTriggered)
         let stack = UIStackView(arrangedSubviews: [heading, status, codeLabel, qrView, retry, anonymous])
         stack.axis = .vertical
@@ -53,7 +61,7 @@ final class TVAuthController: UIViewController {
         codeLabel.text = nil
         qrView.image = nil
         status.text = "auth.fetchingCode".localized
-        OAuthClient.shared.requestDeviceCode { [weak self] result in
+        client.requestDeviceCode { [weak self] result in
             DispatchQueue.main.async {
                 guard let self, !token.isCancelled else { return }
                 switch result {
@@ -67,7 +75,7 @@ final class TVAuthController: UIViewController {
                         self.qrView.image = UIImage(ciImage: image)
                     }
                     self.qrView.layer.magnificationFilter = .nearest
-                    OAuthClient.shared.pollForToken(config: OAuthClient.PollConfig(
+                    self.client.pollForToken(config: OAuthClient.PollConfig(
                         deviceCode: code.deviceCode, clientId: code.clientId, clientSecret: code.clientSecret,
                         interval: code.interval
                     ), cancellationToken: token) { [weak self] result in
@@ -75,8 +83,15 @@ final class TVAuthController: UIViewController {
                             guard let self, !token.isCancelled else { return }
                             switch result {
                             case .success:
-                                OAuthClient.shared.isAnonymous = false
-                                self.onComplete?()
+                                guard let tokens = self.client.tokens else { self.failed(); return }
+                                do {
+                                    try TVAccountSession.change {
+                                        try TVAccountStore.shared.add(tokens: tokens,
+                                            name: "YouTube \(TVAccountStore.shared.accounts.count + 1)")
+                                    }
+                                    TVAccountsController.loadActiveName()
+                                    self.onComplete?()
+                                } catch { self.failed() }
                             case .failure: self.failed()
                             }
                         }

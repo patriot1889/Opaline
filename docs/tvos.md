@@ -47,9 +47,13 @@ Shorts, comments, offline downloads, the Open In share extension, phone gestures
 
 ## Storage and code sharing
 
-Credentials use the existing Keychain flow. Settings, the last 20 searches, and bounded recent watch progress use UserDefaults. Signed-in history sync uses the existing YouTube services. Image disk cache is limited to 64 MiB and feed cache to 16 MiB on tvOS. Cache directories can disappear between sessions and are recreated on writes. Streaming buffers and servers are released when playback ends; no offline download store is compiled into the TV target.
+Settings → Accounts supports adding YouTube accounts with the device-code flow, switching saved accounts, renaming and removing them, and guest browsing. Adding an account uses an isolated OAuth client; cancelling or failing sign-in keeps the current account. Removing the active account enters guest mode without removing other saved accounts.
 
-Shared Swift files have explicit membership under **TV Shared Sources** in Xcode. New files in `OpalineTV` and `OpalineTVTests` are synchronized with their respective targets. Shared service dependencies are separate from the iOS screen factories. When adding shared source files, add TV membership explicitly and build both targets.
+Saved credentials and the active selection use a tvOS-only Keychain vault. The previous single-account credential migrates on first launch. Settings use UserDefaults; recent searches and bounded watch progress use separate keys for each saved account and guest mode. Switching resets the queue, account caches and sync state, discards late API/OAuth responses, and rebuilds the TV screens. These local histories remain subject to tvOS storage eviction. Signed-in history sync uses the existing YouTube services. Image disk cache is limited to 64 MiB and feed cache to 16 MiB on tvOS. Cache directories can disappear between sessions and are recreated on writes. Streaming buffers and servers are released when playback ends; no offline download store is compiled into the TV target.
+
+Shared Swift files have explicit membership under **TV Shared Sources** in Xcode. New files in `OpalineTV` and `OpalineTVTests` are synchronized with their respective targets. Shared service dependencies are separate from the iOS screen factories.
+
+`OpalineTV/Accounts` contains the TV account UI, vault, session boundary, and specialized implementations of `OAuthClient`, `AuthorizingTransport`, `SearchHistoryStore`, `WatchProgressStore`, and `WatchProgressSyncService`. The TV target excludes the corresponding shared implementations (including `OAuthClient+Keychain.swift`) from its explicit Sources list. Credential discovery, token polling/refresh extensions, API models, and service protocols remain shared. The iOS synchronized source group and every file under `Opaline/` remain unchanged. When merging upstream auth/storage fixes, review the TV specializations alongside their shared counterparts. When adding shared source files, add TV membership explicitly and build both targets.
 
 The `Build Apple TV` workflow builds Debug/Release simulator configurations, runs fixtures, and uploads an unsigned Release archive. Existing iOS release publishing remains separate.
 
@@ -57,7 +61,8 @@ The `Build Apple TV` workflow builds Debug/Release simulator configurations, run
 
 Before distributing, verify on physical Apple TV HD and Apple TV 4K with both touch-surface and clickpad remotes:
 
-- Sign-in success, code expiry/retry, cancellation, anonymous mode, sign-out, and relaunch.
+- Sign-in success, code expiry/retry, cancellation while adding another account, switching two accounts, guest mode, removing active/inactive accounts, and relaunch with the selection preserved.
+- Confirm each account’s subscriptions, playlists, search history, and watch positions stay separate, including switches during pending network responses.
 - Every tab and menu using remote input only; search keyboard/suggestions/filters; channel and playlist navigation; paging, retry, and focus restoration after playback.
 - Live and on-demand playback; seek/resume; paused and playing quality/audio switches; external subtitle timing after seeks; codec fallback and unavailable videos.
 - Playlist boundaries, queue continuation, previous/next, suggested autoplay cancellation, and SponsorBlock auto/manual skip behavior.
