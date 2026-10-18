@@ -1,1582 +1,661 @@
 // !$*UTF8*$!
 {
+	archiveVersion = 1;
 	classes = {
 	};
 	objectVersion = 77;
-	archiveVersion = 1;
 	objects = {
-		B86ED056F75F0A9E56508527 = {
-			path = "Opaline/Core/API/InnertubeClient+Playlists.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		341378EE581629EF167D0B5A = {
-			path = "Opaline/Core/API/InnertubeClient+RendererParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		3D9194306C7AC61B6A1E379D = {
-			path = Opaline/pt.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = pt;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		9D5865D47FA253991A43751A = {
-			isa = PBXBuildFile;
-			fileRef = 5B4F457CCC0FD20F03BEE2AA;
-		};
-		D39517D16C92EC6602DDB64D = {
-			isa = PBXBuildFile;
-			fileRef = A91103794A306786417C2CFC;
-		};
-		A70A1D3790854702D401A2E7 = {
-			path = Opaline/Core/Playback/PlaybackContext.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		EF0E18FA8B25B975659168F8 = {
-			isa = PBXBuildFile;
-			fileRef = FFC3C5C05460C9373790740E;
-		};
-		29ADDB41439781C18DBF3874 = {
-			path = Opaline/Core/Playback/Sources/ProgressiveSource.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		C982A27DCBDA541732CBC266 = {
-			path = Opaline/tr.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = tr;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		FF19B88190072E6269810D93 = {
-			path = Opaline/Core/Playback/SABR/UMPReader.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		E991165F526307EACABAD436 = {
-			isa = PBXBuildFile;
-			fileRef = CE4EE3C09314F4D23F212A3A;
-		};
-		F581410D0B1D4C6F3C7B3934 = {
-			isa = PBXBuildFile;
-			fileRef = 0889E3ADC6E3D27899369B05;
-		};
-		16A97FF3B1F0BCA401934CE8 = {
-			isa = PBXBuildFile;
-			fileRef = D51AE5E2139E0C2787A8A79A;
-		};
-		0B9B36B2EAA54B98567C1D17 = {
-			path = Opaline/Core/Transport/URLSessionTransport.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		2E8FA2303644F8D62638411F = {
-			isa = PBXBuildFile;
-			fileRef = 4E85D5A51F8C159FE8E77827;
-		};
-		5AA605FE2372B2E601A97DE6 = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelSearch.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		BC736F9E49241253F2620A7D = {
-			isa = PBXBuildFile;
-			fileRef = 4B7768449885D0E0E27EFFB1;
-		};
-		B864F36E2BDAB0CC689489AC = {
-			isa = PBXBuildFile;
-			fileRef = 70A9D344A36C8B061E76623C;
-		};
-		D65BECD13A5F97A7E712B37A = {
-			path = Opaline/Core/Playback/SABR/SABRRequest.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		139029AFCD05E7008A080219 = {
-			path = Opaline/Core/Playback/StreamDeliveryFactory.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		061EEF6E219B0786328DB501 = {
-			isa = PBXBuildFile;
-			fileRef = 22E244A332F14AD6D5A30251;
-		};
-		E0B4EAD5F2D7C8A2E976C1ED = {
-			path = "Opaline/Core/API/InnertubeClient+ShelfContinuations.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		E60E69E7C150BA4C8B49E572 = {
-			path = Opaline/Core/Common/ThumbnailLoader.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		A25E9ABED45931CBC0F32DAE = {
-			path = "Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4BAC31F432459A660F9F8D22 = {
-			path = "Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		773C3723B413B0EE06FA46D4 = {
-			isa = PBXBuildFile;
-			fileRef = 87DBDDFFCFA71AB9CDC3BC71;
-		};
-		D07A172E77769C3430C7099B = {
-			path = Opaline/Core/Playback/LiveHLSVariants.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5D3666121A18105068202CEB = {
-			isa = PBXBuildFile;
-			fileRef = FD47C604076F28D4C05896FE;
-		};
-		94E115867C530F3A81202D2A = {
-			isa = PBXBuildFile;
-			fileRef = CE2DCA9B5A8E2AE488B7A391;
-		};
-		2A3829E20FD48A96287526E3 = {
-			isa = PBXBuildFile;
-			fileRef = F3952158AFC0BAC5A6F0915C;
-		};
-		9492E8FB8D078204CE7763DE = {
-			path = Opaline/Core/API/Parsing/ConcreteRendererParsers.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		BBB6E0561C1C371E46516101 = {
-			path = Opaline/Core/Services/ChannelRSSService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		3B2AE185885B6498D639AE31 = {
-			isa = PBXBuildFile;
-			fileRef = 742EFB07CE8FADC1607D25F9;
-		};
-		D73B5EEAE1483152E34FCA47 = {
-			path = Opaline/Core/API/Models/WatchMetadata.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		32C6864328E57CD7B1CFCEB3 = {
-			isa = PBXBuildFile;
-			fileRef = 7DF1D4D207D2CB6012D54712;
-		};
-		AE2B338194533A1FAF3ECCA8 = {
-			isa = PBXBuildFile;
-			fileRef = 37269DB0F6FBA548E9B76DD6;
-		};
-		9272EEBA5CAF0B294DF5332E = {
-			path = "Opaline/Core/API/InnertubeClient+WatchParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0ABE4553D96B9C242DD6F3EE = {
-			isa = PBXBuildFile;
-			fileRef = 0E372F7F77B84F4AAE54D9CD;
-		};
-		9BA2116FA118BC29564DC9D5 = {
-			isa = PBXBuildFile;
-			fileRef = C8816A6956459D145CAEFBDA;
-		};
-		A83A1E36D5543972CA5B6BC0 = {
-			path = Opaline/Core/Playback/AutoplayPreference.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		43A5FE5A814859C7447499D9 = {
-			path = Opaline/Core/API/InnertubeClientDebugLogging.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		81EC9ACC6EC8289434D46B87 = {
-			path = Opaline/es.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = es;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		E97BABC558C4D53BBC1903F3 = {
-			isa = PBXBuildFile;
-			fileRef = 0B9B36B2EAA54B98567C1D17;
-		};
-		5E3FAFB5A5D17C7B65C2D477 = {
-			isa = PBXBuildFile;
-			fileRef = 65D4F794B9E2AFF3C10AF8F7;
-		};
-		676B38CC421CDF2C8F569530 = {
-			path = "Opaline/Core/Playback/SABR/Data+Slice.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		E5A9C06338FD1DC8F6BB2304 = {
-			path = Opaline/Core/API/Models/Video.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		04FA610BC8B78DA35913A1D6 = {
-			isa = PBXBuildFile;
-			fileRef = BBC52C85908D7C146C35DA58;
-		};
-		6E54EC42468367505D36F43C = {
-			isa = PBXBuildFile;
-			fileRef = 90873F97CA26519F1523B996;
-		};
-		05B66AF7F8A3D892F32379AA = {
-			isa = PBXBuildFile;
-			fileRef = F284BA51060B0897415FDCBC;
-		};
-		A99BCA8A749EB633DA9E93B9 = {
-			isa = PBXBuildFile;
-			fileRef = 77E679EDE0B772DEFBA1DD02;
-		};
-		AE6B6455D4F21E26AA39DE98 = {
-			isa = PBXBuildFile;
-			fileRef = 58109F0A94F7AB9A9217BE73;
-		};
-		76A271ADF93E331345FE555D = {
-			path = Opaline/Core/Common/CancellationToken.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		9F3F490C8166AD10827C71AC = {
-			path = "Opaline/Core/API/InnertubeClient+PivotParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		69667B17045D59EEE2C74253 = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				TARGETED_DEVICE_FAMILY = 3;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpalineTV.app/OpalineTV";
-				GENERATE_INFOPLIST_FILE = YES;
-				TVOS_DEPLOYMENT_TARGET = 17.0;
-				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
-				CODE_SIGN_STYLE = Automatic;
-				SDKROOT = appletvos;
-				SWIFT_VERSION = 5.0;
-				PRODUCT_NAME = OpalineTVTests;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.OpalineTVTests;
-			};
-			name = Release;
-		};
-		742EFB07CE8FADC1607D25F9 = {
-			path = Opaline/Core/API/InnertubeClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4C41BC8E390746C991CA96CE = {
-			path = Opaline/Core/Playback/PlaybackProgress.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5F7626CE624C89AF4D93A4FA = {
-			path = OpalineTVTests.xctest;
-			isa = PBXFileReference;
-			explicitFileType = wrapper.cfbundle;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7B7C0ACC7BF0EEB45FBB18A = {
-			path = Opaline/Core/Playback/PlaybackQueue.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DD35775590C0E527F4EB57D9 = {
-			isa = PBXBuildFile;
-			fileRef = 4BAC31F432459A660F9F8D22;
-		};
-		259C18BADF39AF9E1295BF9A = {
-			isa = PBXBuildFile;
-			fileRef = 289F1DB29096F2E076E9B550;
-		};
-		528E756B08305AA671945148 = {
-			isa = XCConfigurationList;
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-			buildConfigurations = (
-				693E1923E43491E4AE80B810,
-				69667B17045D59EEE2C74253,
-			);
-		};
-		51D09228F8404577324C5EA4 = {
-			isa = PBXBuildFile;
-			fileRef = 34889179B9D6E9F51F8AFE53;
-		};
-		D1CD02EF0D7D31E1B072E3FA = {
-			isa = PBXBuildFile;
-			fileRef = 4C41BC8E390746C991CA96CE;
-		};
-		52752A46D6312B9273A56E1B = {
-			path = Opaline/Core/API/InnertubeClientParsing.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0F668D8200A18FE689000525 = {
-			isa = PBXBuildFile;
-			fileRef = A83A1E36D5543972CA5B6BC0;
-		};
-		A1CFF54D0A96D70D4DDE3486 = {
-			isa = PBXBuildFile;
-			fileRef = 934544165D4AF2D9C57BF426;
-		};
-		811FD0ACFBB37034A7921AF0 = {
-			isa = PBXBuildFile;
-			fileRef = 0AC250F9889A8935FBBE9413;
-		};
-		73458CCFC9AF8012AF1A2A73 = {
-			path = Opaline/Core/Playback/SABR/Protobuf.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		3D6BA066200E655402CA4A0B = {
-			isa = PBXBuildFile;
-			fileRef = BDF8D294FD4D2604D62CDAF7;
-		};
-		7443092AB0252A42C4217C5C = {
-			isa = PBXBuildFile;
-			fileRef = 097CF2030DA33A6E5C14B025;
-		};
-		D51AE5E2139E0C2787A8A79A = {
-			path = "Opaline/Core/API/InnertubeClient+Feedback.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		87DBDDFFCFA71AB9CDC3BC71 = {
-			path = Opaline/Core/Playback/LiveHLSPlayback.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		890BE04AF88B2B8428595562 = {
-			path = "Opaline/zh-Hant.lproj/Localizable.strings";
-			isa = PBXFileReference;
-			name = "zh-Hant";
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		2C778678120062778C87631B = {
-			isa = PBXBuildFile;
-			fileRef = BD7A77654D5CD0E53D1719CF;
-		};
-		CA73F42BA20BE50992521D40 = {
-			isa = PBXBuildFile;
-			fileRef = D78E644A3B47042D8A9730BF;
-		};
-		1223FD229ACC336F7258A977 = {
-			isa = PBXBuildFile;
-			fileRef = 86B6EDEAC44B49C4DC62821C;
-		};
-		F033AA7DF2A4F7B5F68BA178 = {
-			path = Opaline/Core/API/Models/SubscribedChannel.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		69F36C7D4B34BB4927FD50ED = {
-			path = Opaline/Core/API/Models/Playlist.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		2E0B8E4FBEF4E5FDDE4C1AB3 = {
-			path = "Opaline/Core/Common/ThumbnailLoader+Decode.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7DF1D4D207D2CB6012D54712 = {
-			path = "Opaline/Core/Playback/PlaybackFacade+Identity.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		A91103794A306786417C2CFC = {
-			path = "Opaline/Core/API/InnertubeClient+SubscribedChannels.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		52350220D5094F163C19AF14 = {
-			path = Opaline/Core/Playback/VideoSource.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		D18CFBD9C0C17CCE700D3A5F = {
-			isa = PBXBuildFile;
-			fileRef = 139029AFCD05E7008A080219;
-		};
-		82E2B0DB6042D52C1639334F = {
-			path = Opaline/it.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = it;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		87527D42597EA528821EF980 = {
-			isa = PBXBuildFile;
-			fileRef = 9864CC9AB7CF8200ADD18539;
-		};
-		F2E7E5E9D962C335657CEC04 = {
-			path = Opaline/uk.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = uk;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		B87BBDB46E46E32C255DC67A = {
-			isa = PBXBuildFile;
-			fileRef = 9A45FF6F69BFDD48092C915B;
-		};
-		49A03540653202A6A69BA900 = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = OpalineTVTests;
-			sourceTree = "<group>";
-		};
-		5E12809FC9FC7EA30853E4A4 = {
-			isa = PBXBuildFile;
-			fileRef = 5AA605FE2372B2E601A97DE6;
-		};
-		D78E644A3B47042D8A9730BF = {
-			path = Opaline/Core/Localization/LocalizationManager.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7C1B3BA7EEDB47151148723A = {
-			path = "Opaline/zh-Hant.lproj/Localizable.stringsdict";
-			isa = PBXFileReference;
-			name = "zh-Hant";
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		633224611D77333D7A243563 = {
-			isa = PBXBuildFile;
-			fileRef = D435B080B55638E8ABF45996;
-		};
-		CE4EE3C09314F4D23F212A3A = {
-			path = Opaline/Core/API/InnertubeSession.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		199B81F7F59C0263969CCD68 = {
-			path = Opaline/ja.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = ja;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		9D86CFAC15BD4216307A3C6F = {
-			baseConfigurationReference = 6AAB6E6D7BB20400638FDFD7;
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.12.0;
-				INFOPLIST_FILE = OpalineTV/Info.plist;
-				TARGETED_DEVICE_FAMILY = 3;
-				GENERATE_INFOPLIST_FILE = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				TVOS_DEPLOYMENT_TARGET = 17.0;
-				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
-				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				SDKROOT = appletvos;
-				PRODUCT_NAME = OpalineTV;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(OPALINE_TV_BUNDLE_IDENTIFIER)";
-				CURRENT_PROJECT_VERSION = 1;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		531D2C7E3AF1919F3FFB9F2D = {
-			path = Opaline/Core/Common/UserProfileStore.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		AFC0BBAE18EDA86088D49DFF = {
-			isa = PBXBuildFile;
-			fileRef = 6F213B8C13217244BF217905;
-		};
-		B63D0BB966FC2EB4A30E5E55 = {
-			path = Opaline/de.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = de;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		2CC59A8F21E433AA913C9329 = {
-			isa = PBXBuildFile;
-			fileRef = 9C8621DD8E5FF0C2657FA0C0;
-		};
-		77E679EDE0B772DEFBA1DD02 = {
-			path = "Opaline/Core/API/InnertubeClient+BrowseParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		9A45FF6F69BFDD48092C915B = {
-			path = "Opaline/Core/API/InnertubeClient+TileHelpers.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7CC952B758D8A36EB0283F72 = {
-			isa = PBXBuildFile;
-			fileRef = D73B5EEAE1483152E34FCA47;
-		};
-		BFF6C09824C420AFAF5D1F72 = {
-			isa = PBXBuildFile;
-			fileRef = D07A172E77769C3430C7099B;
-		};
-		65D4F794B9E2AFF3C10AF8F7 = {
-			path = "Opaline/Core/API/InnertubeClient+CommentBuilding.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5B4F457CCC0FD20F03BEE2AA = {
-			path = Opaline/Core/API/Models/FeedbackAction.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		07A9ABF078E8F384EB62CB7E = {
-			isa = PBXBuildFile;
-			fileRef = C7B7C0ACC7BF0EEB45FBB18A;
-		};
-		19B49EE0388698FD5BE3C209 = {
-			isa = PBXBuildFile;
-			fileRef = F033AA7DF2A4F7B5F68BA178;
-		};
-		666A50D7AC64B36244A40C8A = {
-			path = "Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		1999100B6D17816B7583CD5A = {
-			path = "Opaline/Core/API/InnertubeClient+HistoryShorts.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		F284BA51060B0897415FDCBC = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelLegacy.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		57B5F8D5F476F172BE68E074 = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9C96EAA26474369FD8459C1C = {
-			isa = PBXBuildFile;
-			fileRef = 37767D7D91BDC5CCAD4EB3D5;
-		};
-		5A9EB50380AC4924BEC6EDF7 = {
-			path = Opaline/Core/Common/VideoFormatters.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		9864CC9AB7CF8200ADD18539 = {
-			path = Opaline/Core/API/InnertubeClientPageParsing.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		FEFF1E2BA7917C5B5E3F5FF7 = {
-			path = Opaline/Core/Services/WatchProgressSyncService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		D4DA51ADB15564D38C7C7049 = {
-			isa = PBXBuildFile;
-			fileRef = 37EF2F53B3BA480F4A2D7C5F;
-		};
-		28C7DE3EEFDA3DC54C0A28BA = {
-			path = Opaline/ru.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = ru;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		3FD67376630875B4F6B6B40E = {
-			isa = PBXBuildFile;
-			fileRef = 6D95BBCE1C99F42F64CEEF90;
-		};
-		357356C91142C941237429E8 = {
-			isa = PBXBuildFile;
-			fileRef = 341378EE581629EF167D0B5A;
-		};
-		6C65EC936786CF6C0A0F8FDC = {
-			isa = PBXBuildFile;
-			fileRef = 69F36C7D4B34BB4927FD50ED;
-		};
-		097CF2030DA33A6E5C14B025 = {
-			path = Opaline/Core/API/APIClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DA1D504FDA5FE6D06DB89636 = {
-			path = Opaline/Core/Playback/HLSStreamResolver.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		583A7F20621CEB983548C95E = {
-			isa = PBXBuildFile;
-			fileRef = 7A418DE23A4660ED56F98C63;
-		};
-		183DB4F63C9B81CF9A19ACA2 = {
-			path = "Opaline/Core/Services/AppCache+Feeds.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0863A2B8664BC4D99CDB6BE4 = {
-			isa = PBXBuildFile;
-			fileRef = 1999100B6D17816B7583CD5A;
-		};
-		880E6A121E66A6BB941335C1 = {
-			path = Opaline/Core/Playback/HLSPlaybackBuilder.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		6F213B8C13217244BF217905 = {
-			path = Opaline/Core/Services/ChannelTabService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5E3E846C6C4E3CF8EEAA3731 = {
-			path = Opaline/Core/Services/SubtitleService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		D47B11D5655CE26724132B0D = {
-			path = "Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0B443C9805119357E75B7C86 = {
-			path = Opaline/Core/Common/AppLog.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		B6A270BB78EAC84F4314AA35 = {
-			isa = PBXBuildFile;
-			fileRef = E0B4EAD5F2D7C8A2E976C1ED;
-		};
-		4940A71A2F6AD27900E6C599 = {
-			isa = XCConfigurationList;
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-			buildConfigurations = (
-				4940A7352F6AD27A00E6C599,
-				4940A7362F6AD27A00E6C599,
-			);
-		};
-		0E372F7F77B84F4AAE54D9CD = {
-			path = Opaline/Core/Services/ChannelRSSParser.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		74A4F791E6E2C6EFF26F126F = {
-			isa = PBXBuildFile;
-			fileRef = CA04B68383FFFF2AC6770F50;
-		};
-		D49425B35F41CEE138866CF7 = {
-			isa = PBXBuildFile;
-			fileRef = 05A42DA88D66923C977F8611;
-		};
-		76F3C43127031F32FE90C96E = {
-			path = Opaline/Core/API/InnertubeClientPlayerParsing.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		937515B77B4EC12108BE5248 = {
-			path = "Opaline/Core/API/InnertubeClient+BrowseHelpers.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		BD65E7F3C40FB5315D687DE6 = {
-			path = Opaline/Core/Playback/SABR/SABRSegmentCollector.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		9F4CEDF5810F600A33ABA348 = {
+
+/* Begin PBXBuildFile section */
+		0058B615B16196C3EF95E0EF /* Opaline/Core/Services/ChannelRSSService+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B665C3238AE95B2BD45A95 /* Opaline/Core/Services/ChannelRSSService+Fetching.swift */; };
+		01D6DB7E9460D7382A8B1886 /* Opaline/Core/API/InnertubeContexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3E1857172DDFC0F363EDCA /* Opaline/Core/API/InnertubeContexts.swift */; };
+		0279F685B7FAA35738CBF301 /* Opaline/Core/Common/ThumbnailLoader+Decode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0B8E4FBEF4E5FDDE4C1AB3 /* Opaline/Core/Common/ThumbnailLoader+Decode.swift */; };
+		04DB726E0D91DF3568DB3238 /* Opaline/Core/Common/ThumbnailLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60E69E7C150BA4C8B49E572 /* Opaline/Core/Common/ThumbnailLoader.swift */; };
+		04FA610BC8B78DA35913A1D6 /* Opaline/Core/Transport/HTTPTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC52C85908D7C146C35DA58 /* Opaline/Core/Transport/HTTPTransport.swift */; };
+		05B66AF7F8A3D892F32379AA /* Opaline/Core/API/InnertubeClient+ChannelLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BA51060B0897415FDCBC /* Opaline/Core/API/InnertubeClient+ChannelLegacy.swift */; };
+		061EEF6E219B0786328DB501 /* Opaline/Core/Playback/HLSPlaylistLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E244A332F14AD6D5A30251 /* Opaline/Core/Playback/HLSPlaylistLoader.swift */; };
+		063538D5EB5352ED6ABD2C02 /* Opaline/Core/Common/CancellationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A271ADF93E331345FE555D /* Opaline/Core/Common/CancellationToken.swift */; };
+		0743F5FD0E8C1F82FE57AD35 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B7F687EAE75C852FB670BAF6 /* Localizable.strings */; };
+		07A9ABF078E8F384EB62CB7E /* Opaline/Core/Playback/PlaybackQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B7C0ACC7BF0EEB45FBB18A /* Opaline/Core/Playback/PlaybackQueue.swift */; };
+		0863A2B8664BC4D99CDB6BE4 /* Opaline/Core/API/InnertubeClient+HistoryShorts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1999100B6D17816B7583CD5A /* Opaline/Core/API/InnertubeClient+HistoryShorts.swift */; };
+		095058B015AFCE9C0B9D6543 /* Opaline/Core/API/InnertubeClient+PivotParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3F490C8166AD10827C71AC /* Opaline/Core/API/InnertubeClient+PivotParsing.swift */; };
+		0AB71F713EC41C0126A34739 /* Opaline/Core/Localization/LocalePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA6D95B29DF97422008DB6 /* Opaline/Core/Localization/LocalePreferences.swift */; };
+		0ABE4553D96B9C242DD6F3EE /* Opaline/Core/Services/ChannelRSSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E372F7F77B84F4AAE54D9CD /* Opaline/Core/Services/ChannelRSSParser.swift */; };
+		0AE6DAF6B68761E1BE891015 /* Opaline/Core/Playback/AutoDubPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF648320B7094CCB05F054B1 /* Opaline/Core/Playback/AutoDubPreference.swift */; };
+		0CA495ED0FF765EC71E6DC70 /* Opaline/Core/Services/SponsorBlockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B92944C71A698CB17D37A6 /* Opaline/Core/Services/SponsorBlockService.swift */; };
+		0F668D8200A18FE689000525 /* Opaline/Core/Playback/AutoplayPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83A1E36D5543972CA5B6BC0 /* Opaline/Core/Playback/AutoplayPreference.swift */; };
+		1223FD229ACC336F7258A977 /* Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B6EDEAC44B49C4DC62821C /* Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift */; };
+		127A409BD46362414D97DD4F /* Opaline/Core/Playback/Sources/AutoDubSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1F787F8B7004FB7C891E5E /* Opaline/Core/Playback/Sources/AutoDubSource.swift */; };
+		14A9FA2AD34E42BCEBDA5076 /* Opaline/Core/Localization/AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2EE2E7D93FBC0E462A40AE /* Opaline/Core/Localization/AppLanguage.swift */; };
+		15651FC64ACDCAD3BC581DFA /* Opaline/Core/Services/SBCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10116547F630E5B5D98547F /* Opaline/Core/Services/SBCategory.swift */; };
+		16A97FF3B1F0BCA401934CE8 /* Opaline/Core/API/InnertubeClient+Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51AE5E2139E0C2787A8A79A /* Opaline/Core/API/InnertubeClient+Feedback.swift */; };
+		17F11AC1D8493AF276FBAEB6 /* Opaline/Core/API/InnertubeClient+WatchOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5057C202C4320EF60913E4 /* Opaline/Core/API/InnertubeClient+WatchOwner.swift */; };
+		19B49EE0388698FD5BE3C209 /* Opaline/Core/API/Models/SubscribedChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F033AA7DF2A4F7B5F68BA178 /* Opaline/Core/API/Models/SubscribedChannel.swift */; };
+		1B90E4CD6E85BC0F174571E7 /* Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833E9DBAA779406B6534FF41 /* Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift */; };
+		1C05418D3DA878F65EEBE367 /* Opaline/Core/API/InnertubeClient+PlaybackParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6555BACDB819CDD565025ED /* Opaline/Core/API/InnertubeClient+PlaybackParsing.swift */; };
+		1CAD7B5ED3F9FF014413EB32 /* Opaline/Core/API/InnertubeClient+WatchParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9272EEBA5CAF0B294DF5332E /* Opaline/Core/API/InnertubeClient+WatchParsing.swift */; };
+		1ECA7238C0004DF0A1000197 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 2450B6BF09CE375FDE0296BB /* Localizable.stringsdict */; };
+		259C18BADF39AF9E1295BF9A /* Opaline/Core/Services/WatchService+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289F1DB29096F2E076E9B550 /* Opaline/Core/Services/WatchService+Defaults.swift */; };
+		2A3829E20FD48A96287526E3 /* Opaline/Core/Playback/PlaybackStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3952158AFC0BAC5A6F0915C /* Opaline/Core/Playback/PlaybackStep.swift */; };
+		2AE28349BFDD6535A0779739 /* Opaline/Core/Playback/Sources/ProgressiveSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29ADDB41439781C18DBF3874 /* Opaline/Core/Playback/Sources/ProgressiveSource.swift */; };
+		2BA5B4DB143F948CCA3F1260 /* Opaline/Core/Auth/OAuthClient+Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8214A5027A10D652C7BBD52E /* Opaline/Core/Auth/OAuthClient+Credentials.swift */; };
+		2C778678120062778C87631B /* Opaline/Core/Config/HTTPConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A77654D5CD0E53D1719CF /* Opaline/Core/Config/HTTPConstants.swift */; };
+		2CC59A8F21E433AA913C9329 /* Opaline/Core/Playback/HLSGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8621DD8E5FF0C2657FA0C0 /* Opaline/Core/Playback/HLSGenerator.swift */; };
+		2DA7994412BC32769D3B9E8A /* Opaline/Core/API/InnertubeClient+VisitorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E4ED6786FF3CE4F81A8A8C /* Opaline/Core/API/InnertubeClient+VisitorData.swift */; };
+		2E3DBCA2DFF83C0B0A737DD8 /* Opaline/Core/API/Parsing/FeedbackActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88057FA0DE74A972B57C9EE8 /* Opaline/Core/API/Parsing/FeedbackActionParser.swift */; };
+		2E8FA2303644F8D62638411F /* Opaline/Core/API/InnertubeClient+ChannelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E85D5A51F8C159FE8E77827 /* Opaline/Core/API/InnertubeClient+ChannelHelpers.swift */; };
+		2E9CD7C14B117D4AE5653F21 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1AF05193CA485F71D98C /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift */; };
+		307C7CDEF1E4DB78AB9D8545 /* Opaline/Core/Playback/SABR/SABRSegmentCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD65E7F3C40FB5315D687DE6 /* Opaline/Core/Playback/SABR/SABRSegmentCollector.swift */; };
+		32C6864328E57CD7B1CFCEB3 /* Opaline/Core/Playback/PlaybackFacade+Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF1D4D207D2CB6012D54712 /* Opaline/Core/Playback/PlaybackFacade+Identity.swift */; };
+		3316DB6E01C39895D46495BC /* Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442D81F490C2F90F1C90A09F /* Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift */; };
+		353D4C17AC895A7514538B70 /* Opaline/Core/API/InnertubeClient+ChannelTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBBC2F76CDE3922C27177FE /* Opaline/Core/API/InnertubeClient+ChannelTabs.swift */; };
+		357356C91142C941237429E8 /* Opaline/Core/API/InnertubeClient+RendererParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341378EE581629EF167D0B5A /* Opaline/Core/API/InnertubeClient+RendererParsing.swift */; };
+		35D63620131CC89341F4657D /* Opaline/Core/Localization/ContentKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD1D70D7B5BCC1C94004B17 /* Opaline/Core/Localization/ContentKeywords.swift */; };
+		360027A336F6DCA6BEAE42A9 /* Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED4008D16A8422744EACE49 /* Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift */; };
+		36CC67E0EE20922567CC2DCC /* Opaline/Core/Playback/AudioOnlyMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2391FA8661EBE6FC021235D3 /* Opaline/Core/Playback/AudioOnlyMode.swift */; };
+		3AF4615ED388723B65F38341 /* Opaline/Core/Playback/WebViewHLSSolverJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC7924248D890AE01CE9985 /* Opaline/Core/Playback/WebViewHLSSolverJS.swift */; };
+		3B2AE185885B6498D639AE31 /* Opaline/Core/API/InnertubeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742EFB07CE8FADC1607D25F9 /* Opaline/Core/API/InnertubeClient.swift */; };
+		3D6BA066200E655402CA4A0B /* Opaline/Core/Playback/Sources/InnertubeVideoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8D294FD4D2604D62CDAF7 /* Opaline/Core/Playback/Sources/InnertubeVideoSource.swift */; };
+		3DBB42149B4057DEBC23FAA2 /* Opaline/Core/API/InnertubeClient+Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C75C79E832B8D8AC80FCA9 /* Opaline/Core/API/InnertubeClient+Browse.swift */; };
+		3FD67376630875B4F6B6B40E /* Opaline/Core/API/InnertubeClient+Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D95BBCE1C99F42F64CEEF90 /* Opaline/Core/API/InnertubeClient+Playback.swift */; };
+		402123E4EF4A0683550889F4 /* Opaline/Core/API/InnertubeClient+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86ED056F75F0A9E56508527 /* Opaline/Core/API/InnertubeClient+Playlists.swift */; };
+		4158311ABEFC8546B294CD41 /* Opaline/Core/Playback/VideoSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52350220D5094F163C19AF14 /* Opaline/Core/Playback/VideoSource.swift */; };
+		41E984DC92FCE84A3729487A /* Opaline/Core/Transport/StreamingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD40EC5E4EBBC19F46D088A /* Opaline/Core/Transport/StreamingSession.swift */; };
+		4B49362601A92055C55F08A0 /* Opaline/Core/Playback/SABR/MediaHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB569EEAC06969932F317 /* Opaline/Core/Playback/SABR/MediaHeader.swift */; };
+		4E8F9B6747CDD68AABD6BAAD /* Opaline/Core/Services/WatchtimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFBFC1B9C6EE17E4AFEE43 /* Opaline/Core/Services/WatchtimeTracker.swift */; };
+		51D09228F8404577324C5EA4 /* Opaline/Core/Config/AppURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34889179B9D6E9F51F8AFE53 /* Opaline/Core/Config/AppURLs.swift */; };
+		53DAD9CF889E0D71C4776208 /* Opaline/Core/API/InnertubeClient+SignatureCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669FC347362C273C012D61F6 /* Opaline/Core/API/InnertubeClient+SignatureCipher.swift */; };
+		559CA9404514D06441AC15AE /* Opaline/Core/API/Models/WatchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFD6D11A8BE8387E3273650 /* Opaline/Core/API/Models/WatchPage.swift */; };
+		566849C7ABF43838875F94A6 /* Opaline/Core/Config/UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905CF1D34E6D344F2BBD8434 /* Opaline/Core/Config/UserDefaultsKeys.swift */; };
+		583A7F20621CEB983548C95E /* Opaline/Core/API/Clients/SABRClientInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A418DE23A4660ED56F98C63 /* Opaline/Core/API/Clients/SABRClientInfo.swift */; };
+		5A4E580D1E50771BCC90D5CE /* Opaline/Core/API/Parsing/ConcreteRendererParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9492E8FB8D078204CE7763DE /* Opaline/Core/API/Parsing/ConcreteRendererParsers.swift */; };
+		5D3666121A18105068202CEB /* Opaline/Core/Common/ThumbnailLoader+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD47C604076F28D4C05896FE /* Opaline/Core/Common/ThumbnailLoader+Network.swift */; };
+		5E12809FC9FC7EA30853E4A4 /* Opaline/Core/API/InnertubeClient+ChannelSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA605FE2372B2E601A97DE6 /* Opaline/Core/API/InnertubeClient+ChannelSearch.swift */; };
+		5E3FAFB5A5D17C7B65C2D477 /* Opaline/Core/API/InnertubeClient+CommentBuilding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D4F794B9E2AFF3C10AF8F7 /* Opaline/Core/API/InnertubeClient+CommentBuilding.swift */; };
+		5F353FC33510F9985052560F /* Opaline/Core/Playback/PlaybackContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70A1D3790854702D401A2E7 /* Opaline/Core/Playback/PlaybackContext.swift */; };
+		5F876AD8F8876C881DD11ABC /* Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A238EC237FA5F4537A2F8 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift */; };
+		61DF98B975FC9111BEF81548 /* Opaline/Core/Playback/HLSStreamResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1D504FDA5FE6D06DB89636 /* Opaline/Core/Playback/HLSStreamResolver.swift */; };
+		6281D63AD9053DC5DF043F5C /* Opaline/Core/Auth/OAuthClient+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295870E820F67E81AD69D23 /* Opaline/Core/Auth/OAuthClient+Refresh.swift */; };
+		62D9FD0F95F216336E35D911 /* Opaline/Core/Playback/HLSPlaybackBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E6A121E66A6BB941335C1 /* Opaline/Core/Playback/HLSPlaybackBuilder.swift */; };
+		633224611D77333D7A243563 /* Opaline/Core/Playback/Sources/FallbackChainSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D435B080B55638E8ABF45996 /* Opaline/Core/Playback/Sources/FallbackChainSource.swift */; };
+		6C65EC936786CF6C0A0F8FDC /* Opaline/Core/API/Models/Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F36C7D4B34BB4927FD50ED /* Opaline/Core/API/Models/Playlist.swift */; };
+		6E54EC42468367505D36F43C /* Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90873F97CA26519F1523B996 /* Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift */; };
+		7443092AB0252A42C4217C5C /* Opaline/Core/API/APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097CF2030DA33A6E5C14B025 /* Opaline/Core/API/APIClient.swift */; };
+		74A4F791E6E2C6EFF26F126F /* Opaline/Core/Playback/TVSolverWarmup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04B68383FFFF2AC6770F50 /* Opaline/Core/Playback/TVSolverWarmup.swift */; };
+		773C3723B413B0EE06FA46D4 /* Opaline/Core/Playback/LiveHLSPlayback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DBDDFFCFA71AB9CDC3BC71 /* Opaline/Core/Playback/LiveHLSPlayback.swift */; };
+		7879651A423B4DD56E62C2FB /* Opaline/Core/API/InnertubeKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EACCEFDD4F8F0BB7E35F94 /* Opaline/Core/API/InnertubeKeys.swift */; };
+		7CC952B758D8A36EB0283F72 /* Opaline/Core/API/Models/WatchMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73B5EEAE1483152E34FCA47 /* Opaline/Core/API/Models/WatchMetadata.swift */; };
+		7CF012395994B5E463385792 /* Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47B11D5655CE26724132B0D /* Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift */; };
+		80C28BCFBDE2A8D38190199B /* Opaline/Core/Common/ThumbnailURLPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52A3CF0461C652128A24235 /* Opaline/Core/Common/ThumbnailURLPolicy.swift */; };
+		811FD0ACFBB37034A7921AF0 /* Opaline/Core/API/InnertubeClient+Captions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC250F9889A8935FBBE9413 /* Opaline/Core/API/InnertubeClient+Captions.swift */; };
+		825A212D2856C879D16D4EE6 /* Opaline/Core/API/InnertubeClientDebugLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A5FE5A814859C7447499D9 /* Opaline/Core/API/InnertubeClientDebugLogging.swift */; };
+		84A808FB1291A4AD84845A08 /* Opaline/Core/API/InnertubeClient+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEF11895032E4FBFEB80737 /* Opaline/Core/API/InnertubeClient+Account.swift */; };
+		8731B7D3DC3A5C8A20D9CECE /* Opaline/Core/Auth/OAuthTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4539645B65F34253CFEB8C16 /* Opaline/Core/Auth/OAuthTokens.swift */; };
+		87527D42597EA528821EF980 /* Opaline/Core/API/InnertubeClientPageParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864CC9AB7CF8200ADD18539 /* Opaline/Core/API/InnertubeClientPageParsing.swift */; };
+		88783150263143CB755270EA /* Opaline/Core/Common/AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B443C9805119357E75B7C86 /* Opaline/Core/Common/AppLog.swift */; };
+		8D4AFABCB50733DB15653669 /* Opaline/Core/Services/PoToken/RemotePoTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4599B5E04EB6B3E91C1144B4 /* Opaline/Core/Services/PoToken/RemotePoTokenService.swift */; };
+		8E511AA7C4A5D158358BF4F7 /* Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25E9ABED45931CBC0F32DAE /* Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift */; };
+		920EB34ADA3784A5C50A15B8 /* Opaline/Core/Services/ChannelRSSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB6E0561C1C371E46516101 /* Opaline/Core/Services/ChannelRSSService.swift */; };
+		9247201789AA7184F4D0531B /* Opaline/Core/API/InnertubeClient+CommentParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D052F58998074AEDF7F5D77A /* Opaline/Core/API/InnertubeClient+CommentParsing.swift */; };
+		94B464626F4C9E5AC16F55D5 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760D56268C1970B1019EEBDE /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift */; };
+		94E115867C530F3A81202D2A /* Opaline/Core/API/InnertubeClient+PlaylistEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2DCA9B5A8E2AE488B7A391 /* Opaline/Core/API/InnertubeClient+PlaylistEdit.swift */; };
+		9BA2116FA118BC29564DC9D5 /* Opaline/Core/Playback/Sources/TVDeviceIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8816A6956459D145CAEFBDA /* Opaline/Core/Playback/Sources/TVDeviceIdentity.swift */; };
+		9C96EAA26474369FD8459C1C /* Opaline/Core/API/InnertubeClient+ChannelParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37767D7D91BDC5CCAD4EB3D5 /* Opaline/Core/API/InnertubeClient+ChannelParsing.swift */; };
+		9D5865D47FA253991A43751A /* Opaline/Core/API/Models/FeedbackAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4F457CCC0FD20F03BEE2AA /* Opaline/Core/API/Models/FeedbackAction.swift */; };
+		9D88DB78F90B8936B93FE9F9 /* Opaline/Core/API/InnertubeClient+PlaylistParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ACC6D0233B752C9CA21111 /* Opaline/Core/API/InnertubeClient+PlaylistParams.swift */; };
+		9EC6AA0B3217107FDF374F64 /* Opaline/Core/Playback/SABR/LocalMediaServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC13F10BA38E4D47808F644 /* Opaline/Core/Playback/SABR/LocalMediaServer.swift */; };
+		9EE20C048C354BA75701BF7D /* Opaline/Core/Config/PlaybackChainSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5437906D3A36CA3097CB26CE /* Opaline/Core/Config/PlaybackChainSettings.swift */; };
+		A1CFF54D0A96D70D4DDE3486 /* Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934544165D4AF2D9C57BF426 /* Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift */; };
+		A4AF6F7853998653D1FA12FB /* Opaline/Core/Playback/HLSGenerator+Sidx.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3B8133E99D180EBD1AB3FF /* Opaline/Core/Playback/HLSGenerator+Sidx.swift */; };
+		A67AE49B43EB7984D9F10F1A /* Opaline/Core/Playback/HLSStreamResolver+Solve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F72E0703EF0EB7E0C9B3E9 /* Opaline/Core/Playback/HLSStreamResolver+Solve.swift */; };
+		A80CAF483DC994FBCB27888C /* Opaline/Core/API/Models/SubtitleTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3268A33F20D5A610E78B8324 /* Opaline/Core/API/Models/SubtitleTrack.swift */; };
+		A99BCA8A749EB633DA9E93B9 /* Opaline/Core/API/InnertubeClient+BrowseParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E679EDE0B772DEFBA1DD02 /* Opaline/Core/API/InnertubeClient+BrowseParsing.swift */; };
+		A9FC68E5BB26A8FBD83578F1 /* Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666A50D7AC64B36244A40C8A /* Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift */; };
+		AAA815A79062AB389DA74982 /* Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46145318460DB56D2184BB71 /* Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift */; };
+		AD227D20484D46AEED3F1692 /* Opaline/Core/API/InnertubeClient+Shorts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BC7CD290AA1481991510D2 /* Opaline/Core/API/InnertubeClient+Shorts.swift */; };
+		AE2B338194533A1FAF3ECCA8 /* Opaline/Core/API/Models/DirectPlaybackInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37269DB0F6FBA548E9B76DD6 /* Opaline/Core/API/Models/DirectPlaybackInfo.swift */; };
+		AE6B6455D4F21E26AA39DE98 /* Opaline/Core/API/Models/SearchFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58109F0A94F7AB9A9217BE73 /* Opaline/Core/API/Models/SearchFilters.swift */; };
+		AFC0BBAE18EDA86088D49DFF /* Opaline/Core/Services/ChannelTabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F213B8C13217244BF217905 /* Opaline/Core/Services/ChannelTabService.swift */; };
+		B0C418A1E587B20975E3A0B0 /* Opaline/Core/API/InnertubeClient+BrowseHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937515B77B4EC12108BE5248 /* Opaline/Core/API/InnertubeClient+BrowseHelpers.swift */; };
+		B3267D8417AAF882854B8B32 /* Opaline/Core/API/InnertubeClient+ParsingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999736A2D0B279EDEC45D08F /* Opaline/Core/API/InnertubeClient+ParsingHelpers.swift */; };
+		B6A270BB78EAC84F4314AA35 /* Opaline/Core/API/InnertubeClient+ShelfContinuations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B4EAD5F2D7C8A2E976C1ED /* Opaline/Core/API/InnertubeClient+ShelfContinuations.swift */; };
+		B7C14F3ADCD5CD0879BA251B /* Opaline/Core/Playback/SABR/SABRDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEBD6A4F0BC2767C07F9AFA /* Opaline/Core/Playback/SABR/SABRDelivery.swift */; };
+		B864F36E2BDAB0CC689489AC /* Opaline/Core/API/InnertubeClient+LockupParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A9D344A36C8B061E76623C /* Opaline/Core/API/InnertubeClient+LockupParsing.swift */; };
+		B87BBDB46E46E32C255DC67A /* Opaline/Core/API/InnertubeClient+TileHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A45FF6F69BFDD48092C915B /* Opaline/Core/API/InnertubeClient+TileHelpers.swift */; };
+		BC3B9C689BF97CE66CA0DA1F /* Opaline/Core/Playback/SABR/SABRRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65BECD13A5F97A7E712B37A /* Opaline/Core/Playback/SABR/SABRRequest.swift */; };
+		BC736F9E49241253F2620A7D /* Opaline/Core/Playback/SABR/StreamURLParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7768449885D0E0E27EFFB1 /* Opaline/Core/Playback/SABR/StreamURLParams.swift */; };
+		BCEF62639CCE49EC09B7913D /* Opaline/Core/Common/VideoFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9EB50380AC4924BEC6EDF7 /* Opaline/Core/Common/VideoFormatters.swift */; };
+		BF35207146335D6443E695F9 /* Opaline/Core/Playback/SABR/SABRFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A827ACC9B4A92A66EA3B64 /* Opaline/Core/Playback/SABR/SABRFetcher.swift */; };
+		BFF6C09824C420AFAF5D1F72 /* Opaline/Core/Playback/LiveHLSVariants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07A172E77769C3430C7099B /* Opaline/Core/Playback/LiveHLSVariants.swift */; };
+		C0FD7E4E7BFDF94676A6B563 /* Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FFEB1DEB9F705C6C2024E4 /* Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift */; };
+		C163AB71659086C86BE1E6D6 /* Opaline/Core/Playback/HLSStreamResolver+Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD8FE264801F526B30C289A /* Opaline/Core/Playback/HLSStreamResolver+Remote.swift */; };
+		C19208A045697667597B63B5 /* Opaline/Core/Playback/StreamDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CF22A57113686C23375A19C /* Opaline/Core/Playback/StreamDelivery.swift */; };
+		C34D635383D4D0AFDAA9DBDE /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE613ED147A8D441E07B4D /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift */; };
+		C44BFC6F42C87CF735682DAD /* Opaline/Core/Playback/SABR/Protobuf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73458CCFC9AF8012AF1A2A73 /* Opaline/Core/Playback/SABR/Protobuf.swift */; };
+		C61DC9D18B729C866508BDED /* Opaline/Core/Services/SubtitleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3E846C6C4E3CF8EEAA3731 /* Opaline/Core/Services/SubtitleService.swift */; };
+		C719D139399A064446844063 /* Opaline/Core/Common/Extensions/Dictionary+Dig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C8AB805BAC5BD7D5EC8DF /* Opaline/Core/Common/Extensions/Dictionary+Dig.swift */; };
+		CA73F42BA20BE50992521D40 /* Opaline/Core/Localization/LocalizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E644A3B47042D8A9730BF /* Opaline/Core/Localization/LocalizationManager.swift */; };
+		D023F54A3F11D758D1228897 /* Opaline/Core/API/InnertubeClient+AudioTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5EFC7A1C2A4C07FEEEB3BF /* Opaline/Core/API/InnertubeClient+AudioTracks.swift */; };
+		D18CFBD9C0C17CCE700D3A5F /* Opaline/Core/Playback/StreamDeliveryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139029AFCD05E7008A080219 /* Opaline/Core/Playback/StreamDeliveryFactory.swift */; };
+		D1CD02EF0D7D31E1B072E3FA /* Opaline/Core/Playback/PlaybackProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C41BC8E390746C991CA96CE /* Opaline/Core/Playback/PlaybackProgress.swift */; };
+		D39517D16C92EC6602DDB64D /* Opaline/Core/API/InnertubeClient+SubscribedChannels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91103794A306786417C2CFC /* Opaline/Core/API/InnertubeClient+SubscribedChannels.swift */; };
+		D44D7EC6F1EDB70700017ABF /* Opaline/Core/Services/AppCache+Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DB4F63C9B81CF9A19ACA2 /* Opaline/Core/Services/AppCache+Feeds.swift */; };
+		D478643E230197609C3447B6 /* Opaline/Core/API/InnertubeClient+SearchSuggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B9111B9D59558A9F7CC8B9 /* Opaline/Core/API/InnertubeClient+SearchSuggest.swift */; };
+		D49425B35F41CEE138866CF7 /* Opaline/Core/Services/SignatureTimestampService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A42DA88D66923C977F8611 /* Opaline/Core/Services/SignatureTimestampService.swift */; };
+		D4DA51ADB15564D38C7C7049 /* Opaline/Core/Playback/PlaybackNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EF2F53B3BA480F4A2D7C5F /* Opaline/Core/Playback/PlaybackNonce.swift */; };
+		D7AE987FF19C805CF5DB3D5F /* Opaline/Core/API/InnertubeClientPlayerParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F3C43127031F32FE90C96E /* Opaline/Core/API/InnertubeClientPlayerParsing.swift */; };
+		DA628B371B7B2DA233FAEDC1 /* Opaline/Core/Services/Video+RSSShort.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BCA9044939F3C21C62FAE9 /* Opaline/Core/Services/Video+RSSShort.swift */; };
+		DB9416946EB9D86D1950346F /* Opaline/Core/API/Clients/VisionOSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E850A3DB4DD7B6D974571 /* Opaline/Core/API/Clients/VisionOSClient.swift */; };
+		DD35775590C0E527F4EB57D9 /* Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC31F432459A660F9F8D22 /* Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift */; };
+		DE50CE3E79FEC5DC58B59CA3 /* Opaline/Core/API/InnertubeClientParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52752A46D6312B9273A56E1B /* Opaline/Core/API/InnertubeClientParsing.swift */; };
+		DF92BF6A9F398A38E3C8C5CA /* Opaline/Core/API/Models/Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A9C06338FD1DC8F6BB2304 /* Opaline/Core/API/Models/Video.swift */; };
+		E0ADC278BB9F428A153AC14A /* Opaline/Core/Services/VTTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFED59759A4A7B846B0CEE5B /* Opaline/Core/Services/VTTParser.swift */; };
+		E315D22320AEF3D77C8032BD /* Opaline/Core/Common/UserProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531D2C7E3AF1919F3FFB9F2D /* Opaline/Core/Common/UserProfileStore.swift */; };
+		E586CC48F922E3C429916C0C /* Opaline/Core/Playback/SABR/Data+Slice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676B38CC421CDF2C8F569530 /* Opaline/Core/Playback/SABR/Data+Slice.swift */; };
+		E6364EA6C62618EEF4640A68 /* Opaline/Core/Services/VideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B043947D370D1D4E6A5C78F1 /* Opaline/Core/Services/VideoService.swift */; };
+		E97BABC558C4D53BBC1903F3 /* Opaline/Core/Transport/URLSessionTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9B36B2EAA54B98567C1D17 /* Opaline/Core/Transport/URLSessionTransport.swift */; };
+		E991165F526307EACABAD436 /* Opaline/Core/API/InnertubeSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4EE3C09314F4D23F212A3A /* Opaline/Core/API/InnertubeSession.swift */; };
+		EBC0A74BBE4CCCC000D98DF3 /* Opaline/Core/API/Clients/TVClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DB5D6DC1D3E72E62E76E62 /* Opaline/Core/API/Clients/TVClient.swift */; };
+		EF0E18FA8B25B975659168F8 /* Opaline/Core/API/Parsing/VideoRendererParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC3C5C05460C9373790740E /* Opaline/Core/API/Parsing/VideoRendererParser.swift */; };
+		EF69C205B723D28E5155DFB7 /* Opaline/Core/API/Clients/PlaybackClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9095F2F9DE6612C509A0A00 /* Opaline/Core/API/Clients/PlaybackClient.swift */; };
+		F1E20C5A16BF165E2B4CA474 /* Opaline/Core/API/Clients/AndroidClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7292B66E09646227F490D8F1 /* Opaline/Core/API/Clients/AndroidClient.swift */; };
+		F3D7BBC2A916E5E86E03354C /* Opaline/Core/API/InnertubeRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2D25E590EBB8D140F06418 /* Opaline/Core/API/InnertubeRequestExecutor.swift */; };
+		F581410D0B1D4C6F3C7B3934 /* Opaline/Core/Transport/LoggingTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889E3ADC6E3D27899369B05 /* Opaline/Core/Transport/LoggingTransport.swift */; };
+		F61B486A72A16E607827B8D9 /* Opaline/Core/Playback/SABR/UMPReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF19B88190072E6269810D93 /* Opaline/Core/Playback/SABR/UMPReader.swift */; };
+		FF5DD477FA6F9169CFE3DB48 /* Opaline/Core/API/InnertubeClient+Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15310FE3CB0C1BFFB52418CF /* Opaline/Core/API/InnertubeClient+Channel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1F2E1B6E6ECCF40BFFF633A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4940A7172F6AD27900E6C599 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13177ACCB5A626FAD211C5C5;
+			remoteInfo = OpalineTV;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02E4ED6786FF3CE4F81A8A8C /* Opaline/Core/API/InnertubeClient+VisitorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+VisitorData.swift"; sourceTree = SOURCE_ROOT; };
+		05A42DA88D66923C977F8611 /* Opaline/Core/Services/SignatureTimestampService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/SignatureTimestampService.swift; sourceTree = SOURCE_ROOT; };
+		0889E3ADC6E3D27899369B05 /* Opaline/Core/Transport/LoggingTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Transport/LoggingTransport.swift; sourceTree = SOURCE_ROOT; };
+		08FFBFC1B9C6EE17E4AFEE43 /* Opaline/Core/Services/WatchtimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/WatchtimeTracker.swift; sourceTree = SOURCE_ROOT; };
+		097CF2030DA33A6E5C14B025 /* Opaline/Core/API/APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
+		0A27F4EED303E9EC99B0CA85 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Opaline/vi.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		0AC250F9889A8935FBBE9413 /* Opaline/Core/API/InnertubeClient+Captions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Captions.swift"; sourceTree = SOURCE_ROOT; };
+		0B443C9805119357E75B7C86 /* Opaline/Core/Common/AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Common/AppLog.swift; sourceTree = SOURCE_ROOT; };
+		0B9B36B2EAA54B98567C1D17 /* Opaline/Core/Transport/URLSessionTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Transport/URLSessionTransport.swift; sourceTree = SOURCE_ROOT; };
+		0BD1D70D7B5BCC1C94004B17 /* Opaline/Core/Localization/ContentKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Localization/ContentKeywords.swift; sourceTree = SOURCE_ROOT; };
+		0E09F5507FC30EA4F7546D3D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Opaline/zh-Hans.lproj/Localizable.stringsdict"; sourceTree = SOURCE_ROOT; };
+		0E372F7F77B84F4AAE54D9CD /* Opaline/Core/Services/ChannelRSSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/ChannelRSSParser.swift; sourceTree = SOURCE_ROOT; };
+		0E3895C82198C4EC33D83F3A /* Opaline/Core/Services/SearchHistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/SearchHistoryStore.swift; sourceTree = SOURCE_ROOT; };
+		0ED4008D16A8422744EACE49 /* Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift"; sourceTree = SOURCE_ROOT; };
+		1295870E820F67E81AD69D23 /* Opaline/Core/Auth/OAuthClient+Refresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Auth/OAuthClient+Refresh.swift"; sourceTree = SOURCE_ROOT; };
+		139029AFCD05E7008A080219 /* Opaline/Core/Playback/StreamDeliveryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/StreamDeliveryFactory.swift; sourceTree = SOURCE_ROOT; };
+		13DB5D6DC1D3E72E62E76E62 /* Opaline/Core/API/Clients/TVClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Clients/TVClient.swift; sourceTree = SOURCE_ROOT; };
+		15310FE3CB0C1BFFB52418CF /* Opaline/Core/API/InnertubeClient+Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Channel.swift"; sourceTree = SOURCE_ROOT; };
+		17C8D517F2D5457C77F4BDF1 /* Opaline/Core/Auth/OAuthClient+Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Auth/OAuthClient+Keychain.swift"; sourceTree = SOURCE_ROOT; };
+		181C10B36140EE4BB4E48E20 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Opaline/ru.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		183DB4F63C9B81CF9A19ACA2 /* Opaline/Core/Services/AppCache+Feeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Services/AppCache+Feeds.swift"; sourceTree = SOURCE_ROOT; };
+		18B9111B9D59558A9F7CC8B9 /* Opaline/Core/API/InnertubeClient+SearchSuggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+SearchSuggest.swift"; sourceTree = SOURCE_ROOT; };
+		1999100B6D17816B7583CD5A /* Opaline/Core/API/InnertubeClient+HistoryShorts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+HistoryShorts.swift"; sourceTree = SOURCE_ROOT; };
+		199B81F7F59C0263969CCD68 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Opaline/ja.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		1AC13F10BA38E4D47808F644 /* Opaline/Core/Playback/SABR/LocalMediaServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/LocalMediaServer.swift; sourceTree = SOURCE_ROOT; };
+		1BEF11895032E4FBFEB80737 /* Opaline/Core/API/InnertubeClient+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Account.swift"; sourceTree = SOURCE_ROOT; };
+		1F06E3C968BB5A8C9B307596 /* Opaline/Core/Services/WatchProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/WatchProgressStore.swift; sourceTree = SOURCE_ROOT; };
+		22AE552887BA9EFEFFBD5AE5 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Opaline/it.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		22E244A332F14AD6D5A30251 /* Opaline/Core/Playback/HLSPlaylistLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/HLSPlaylistLoader.swift; sourceTree = SOURCE_ROOT; };
+		2391FA8661EBE6FC021235D3 /* Opaline/Core/Playback/AudioOnlyMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/AudioOnlyMode.swift; sourceTree = SOURCE_ROOT; };
+		289F1DB29096F2E076E9B550 /* Opaline/Core/Services/WatchService+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Services/WatchService+Defaults.swift"; sourceTree = SOURCE_ROOT; };
+		28C7DE3EEFDA3DC54C0A28BA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Opaline/ru.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		29ADDB41439781C18DBF3874 /* Opaline/Core/Playback/Sources/ProgressiveSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/Sources/ProgressiveSource.swift; sourceTree = SOURCE_ROOT; };
+		2B2C8AB805BAC5BD7D5EC8DF /* Opaline/Core/Common/Extensions/Dictionary+Dig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Common/Extensions/Dictionary+Dig.swift"; sourceTree = SOURCE_ROOT; };
+		2CBBC2F76CDE3922C27177FE /* Opaline/Core/API/InnertubeClient+ChannelTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelTabs.swift"; sourceTree = SOURCE_ROOT; };
+		2E0B8E4FBEF4E5FDDE4C1AB3 /* Opaline/Core/Common/ThumbnailLoader+Decode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Common/ThumbnailLoader+Decode.swift"; sourceTree = SOURCE_ROOT; };
+		30A827ACC9B4A92A66EA3B64 /* Opaline/Core/Playback/SABR/SABRFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/SABRFetcher.swift; sourceTree = SOURCE_ROOT; };
+		3184DE11239C4555F2A6D887 /* Opaline/Core/Transport/AuthorizingTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Transport/AuthorizingTransport.swift; sourceTree = SOURCE_ROOT; };
+		3268A33F20D5A610E78B8324 /* Opaline/Core/API/Models/SubtitleTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/SubtitleTrack.swift; sourceTree = SOURCE_ROOT; };
+		341378EE581629EF167D0B5A /* Opaline/Core/API/InnertubeClient+RendererParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+RendererParsing.swift"; sourceTree = SOURCE_ROOT; };
+		34889179B9D6E9F51F8AFE53 /* Opaline/Core/Config/AppURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Config/AppURLs.swift; sourceTree = SOURCE_ROOT; };
+		37269DB0F6FBA548E9B76DD6 /* Opaline/Core/API/Models/DirectPlaybackInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/DirectPlaybackInfo.swift; sourceTree = SOURCE_ROOT; };
+		37767D7D91BDC5CCAD4EB3D5 /* Opaline/Core/API/InnertubeClient+ChannelParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelParsing.swift"; sourceTree = SOURCE_ROOT; };
+		37EF2F53B3BA480F4A2D7C5F /* Opaline/Core/Playback/PlaybackNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/PlaybackNonce.swift; sourceTree = SOURCE_ROOT; };
+		3B5057C202C4320EF60913E4 /* Opaline/Core/API/InnertubeClient+WatchOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+WatchOwner.swift"; sourceTree = SOURCE_ROOT; };
+		3D9194306C7AC61B6A1E379D /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = Opaline/pt.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		439A238EC237FA5F4537A2F8 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift"; sourceTree = SOURCE_ROOT; };
+		43A5FE5A814859C7447499D9 /* Opaline/Core/API/InnertubeClientDebugLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeClientDebugLogging.swift; sourceTree = SOURCE_ROOT; };
+		442D81F490C2F90F1C90A09F /* Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift"; sourceTree = SOURCE_ROOT; };
+		4539645B65F34253CFEB8C16 /* Opaline/Core/Auth/OAuthTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Auth/OAuthTokens.swift; sourceTree = SOURCE_ROOT; };
+		4599B5E04EB6B3E91C1144B4 /* Opaline/Core/Services/PoToken/RemotePoTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/PoToken/RemotePoTokenService.swift; sourceTree = SOURCE_ROOT; };
+		46145318460DB56D2184BB71 /* Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift"; sourceTree = SOURCE_ROOT; };
+		4A2D25E590EBB8D140F06418 /* Opaline/Core/API/InnertubeRequestExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeRequestExecutor.swift; sourceTree = SOURCE_ROOT; };
+		4A9E4F3A831B6D645B469601 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Opaline/en.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		4B7768449885D0E0E27EFFB1 /* Opaline/Core/Playback/SABR/StreamURLParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/StreamURLParams.swift; sourceTree = SOURCE_ROOT; };
+		4BAC31F432459A660F9F8D22 /* Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift"; sourceTree = SOURCE_ROOT; };
+		4C41BC8E390746C991CA96CE /* Opaline/Core/Playback/PlaybackProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/PlaybackProgress.swift; sourceTree = SOURCE_ROOT; };
+		4CFD6D11A8BE8387E3273650 /* Opaline/Core/API/Models/WatchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/WatchPage.swift; sourceTree = SOURCE_ROOT; };
+		4DEBD6A4F0BC2767C07F9AFA /* Opaline/Core/Playback/SABR/SABRDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/SABRDelivery.swift; sourceTree = SOURCE_ROOT; };
+		4DEC7996FAF581FB082B2120 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Opaline/fr.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		4E85D5A51F8C159FE8E77827 /* Opaline/Core/API/InnertubeClient+ChannelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelHelpers.swift"; sourceTree = SOURCE_ROOT; };
+		4F1F787F8B7004FB7C891E5E /* Opaline/Core/Playback/Sources/AutoDubSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/Sources/AutoDubSource.swift; sourceTree = SOURCE_ROOT; };
+		51C75C79E832B8D8AC80FCA9 /* Opaline/Core/API/InnertubeClient+Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Browse.swift"; sourceTree = SOURCE_ROOT; };
+		52350220D5094F163C19AF14 /* Opaline/Core/Playback/VideoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/VideoSource.swift; sourceTree = SOURCE_ROOT; };
+		52752A46D6312B9273A56E1B /* Opaline/Core/API/InnertubeClientParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeClientParsing.swift; sourceTree = SOURCE_ROOT; };
+		531D2C7E3AF1919F3FFB9F2D /* Opaline/Core/Common/UserProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Common/UserProfileStore.swift; sourceTree = SOURCE_ROOT; };
+		53C35D422174A001DBC0F258 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Opaline/tr.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		5437906D3A36CA3097CB26CE /* Opaline/Core/Config/PlaybackChainSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Config/PlaybackChainSettings.swift; sourceTree = SOURCE_ROOT; };
+		57AA6D95B29DF97422008DB6 /* Opaline/Core/Localization/LocalePreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Localization/LocalePreferences.swift; sourceTree = SOURCE_ROOT; };
+		58109F0A94F7AB9A9217BE73 /* Opaline/Core/API/Models/SearchFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/SearchFilters.swift; sourceTree = SOURCE_ROOT; };
+		59FFEB1DEB9F705C6C2024E4 /* Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift"; sourceTree = SOURCE_ROOT; };
+		5A9EB50380AC4924BEC6EDF7 /* Opaline/Core/Common/VideoFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Common/VideoFormatters.swift; sourceTree = SOURCE_ROOT; };
+		5AA605FE2372B2E601A97DE6 /* Opaline/Core/API/InnertubeClient+ChannelSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelSearch.swift"; sourceTree = SOURCE_ROOT; };
+		5B4F457CCC0FD20F03BEE2AA /* Opaline/Core/API/Models/FeedbackAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/FeedbackAction.swift; sourceTree = SOURCE_ROOT; };
+		5E3E846C6C4E3CF8EEAA3731 /* Opaline/Core/Services/SubtitleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/SubtitleService.swift; sourceTree = SOURCE_ROOT; };
+		5F7626CE624C89AF4D93A4FA /* OpalineTVTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = OpalineTVTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65D4F794B9E2AFF3C10AF8F7 /* Opaline/Core/API/InnertubeClient+CommentBuilding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+CommentBuilding.swift"; sourceTree = SOURCE_ROOT; };
+		65F72E0703EF0EB7E0C9B3E9 /* Opaline/Core/Playback/HLSStreamResolver+Solve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/HLSStreamResolver+Solve.swift"; sourceTree = SOURCE_ROOT; };
+		666A50D7AC64B36244A40C8A /* Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift"; sourceTree = SOURCE_ROOT; };
+		669FC347362C273C012D61F6 /* Opaline/Core/API/InnertubeClient+SignatureCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+SignatureCipher.swift"; sourceTree = SOURCE_ROOT; };
+		676B38CC421CDF2C8F569530 /* Opaline/Core/Playback/SABR/Data+Slice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/SABR/Data+Slice.swift"; sourceTree = SOURCE_ROOT; };
+		69F36C7D4B34BB4927FD50ED /* Opaline/Core/API/Models/Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/Playlist.swift; sourceTree = SOURCE_ROOT; };
+		6AAB6E6D7BB20400638FDFD7 /* Config/TV.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/TV.xcconfig; sourceTree = SOURCE_ROOT; };
+		6B9961498E7FDCB06F242FB7 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Opaline/vi.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		6D95BBCE1C99F42F64CEEF90 /* Opaline/Core/API/InnertubeClient+Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Playback.swift"; sourceTree = SOURCE_ROOT; };
+		6ED4C0CBAEF7C5D2A8929AB6 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Opaline/es.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		6F213B8C13217244BF217905 /* Opaline/Core/Services/ChannelTabService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/ChannelTabService.swift; sourceTree = SOURCE_ROOT; };
+		70A9D344A36C8B061E76623C /* Opaline/Core/API/InnertubeClient+LockupParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+LockupParsing.swift"; sourceTree = SOURCE_ROOT; };
+		7270A75829536DF5524A6262 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Opaline/ja.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		7292B66E09646227F490D8F1 /* Opaline/Core/API/Clients/AndroidClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Clients/AndroidClient.swift; sourceTree = SOURCE_ROOT; };
+		73458CCFC9AF8012AF1A2A73 /* Opaline/Core/Playback/SABR/Protobuf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/Protobuf.swift; sourceTree = SOURCE_ROOT; };
+		742EFB07CE8FADC1607D25F9 /* Opaline/Core/API/InnertubeClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeClient.swift; sourceTree = SOURCE_ROOT; };
+		760D56268C1970B1019EEBDE /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift"; sourceTree = SOURCE_ROOT; };
+		76A271ADF93E331345FE555D /* Opaline/Core/Common/CancellationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Common/CancellationToken.swift; sourceTree = SOURCE_ROOT; };
+		76F3C43127031F32FE90C96E /* Opaline/Core/API/InnertubeClientPlayerParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeClientPlayerParsing.swift; sourceTree = SOURCE_ROOT; };
+		77E679EDE0B772DEFBA1DD02 /* Opaline/Core/API/InnertubeClient+BrowseParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+BrowseParsing.swift"; sourceTree = SOURCE_ROOT; };
+		7A418DE23A4660ED56F98C63 /* Opaline/Core/API/Clients/SABRClientInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Clients/SABRClientInfo.swift; sourceTree = SOURCE_ROOT; };
+		7C1B3BA7EEDB47151148723A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "Opaline/zh-Hant.lproj/Localizable.stringsdict"; sourceTree = SOURCE_ROOT; };
+		7DF1D4D207D2CB6012D54712 /* Opaline/Core/Playback/PlaybackFacade+Identity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/PlaybackFacade+Identity.swift"; sourceTree = SOURCE_ROOT; };
+		7E4282CC1EF8EAF804AD61AF /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Opaline/fr.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		81EC9ACC6EC8289434D46B87 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Opaline/es.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		8214A5027A10D652C7BBD52E /* Opaline/Core/Auth/OAuthClient+Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Auth/OAuthClient+Credentials.swift"; sourceTree = SOURCE_ROOT; };
+		82E2B0DB6042D52C1639334F /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Opaline/it.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		833E9DBAA779406B6534FF41 /* Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift"; sourceTree = SOURCE_ROOT; };
+		86B6EDEAC44B49C4DC62821C /* Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift"; sourceTree = SOURCE_ROOT; };
+		87DBDDFFCFA71AB9CDC3BC71 /* Opaline/Core/Playback/LiveHLSPlayback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/LiveHLSPlayback.swift; sourceTree = SOURCE_ROOT; };
+		88057FA0DE74A972B57C9EE8 /* Opaline/Core/API/Parsing/FeedbackActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Parsing/FeedbackActionParser.swift; sourceTree = SOURCE_ROOT; };
+		880E6A121E66A6BB941335C1 /* Opaline/Core/Playback/HLSPlaybackBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/HLSPlaybackBuilder.swift; sourceTree = SOURCE_ROOT; };
+		890BE04AF88B2B8428595562 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "Opaline/zh-Hant.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
+		8B5EFC7A1C2A4C07FEEEB3BF /* Opaline/Core/API/InnertubeClient+AudioTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+AudioTracks.swift"; sourceTree = SOURCE_ROOT; };
+		8BD40EC5E4EBBC19F46D088A /* Opaline/Core/Transport/StreamingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Transport/StreamingSession.swift; sourceTree = SOURCE_ROOT; };
+		905CF1D34E6D344F2BBD8434 /* Opaline/Core/Config/UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Config/UserDefaultsKeys.swift; sourceTree = SOURCE_ROOT; };
+		90873F97CA26519F1523B996 /* Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift"; sourceTree = SOURCE_ROOT; };
+		9187C876B61C37B39E31BE59 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Opaline/en.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		9272EEBA5CAF0B294DF5332E /* Opaline/Core/API/InnertubeClient+WatchParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+WatchParsing.swift"; sourceTree = SOURCE_ROOT; };
+		934544165D4AF2D9C57BF426 /* Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift"; sourceTree = SOURCE_ROOT; };
+		937515B77B4EC12108BE5248 /* Opaline/Core/API/InnertubeClient+BrowseHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+BrowseHelpers.swift"; sourceTree = SOURCE_ROOT; };
+		9492E8FB8D078204CE7763DE /* Opaline/Core/API/Parsing/ConcreteRendererParsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Parsing/ConcreteRendererParsers.swift; sourceTree = SOURCE_ROOT; };
+		95505184961664F3974770FB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Opaline/zh-Hans.lproj/Localizable.strings"; sourceTree = SOURCE_ROOT; };
+		9864CC9AB7CF8200ADD18539 /* Opaline/Core/API/InnertubeClientPageParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeClientPageParsing.swift; sourceTree = SOURCE_ROOT; };
+		999736A2D0B279EDEC45D08F /* Opaline/Core/API/InnertubeClient+ParsingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ParsingHelpers.swift"; sourceTree = SOURCE_ROOT; };
+		99A23724E9F782C97F51938D /* Opaline/Core/Auth/OAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Auth/OAuthClient.swift; sourceTree = SOURCE_ROOT; };
+		99B92944C71A698CB17D37A6 /* Opaline/Core/Services/SponsorBlockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/SponsorBlockService.swift; sourceTree = SOURCE_ROOT; };
+		9A45FF6F69BFDD48092C915B /* Opaline/Core/API/InnertubeClient+TileHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+TileHelpers.swift"; sourceTree = SOURCE_ROOT; };
+		9C8621DD8E5FF0C2657FA0C0 /* Opaline/Core/Playback/HLSGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/HLSGenerator.swift; sourceTree = SOURCE_ROOT; };
+		9CF22A57113686C23375A19C /* Opaline/Core/Playback/StreamDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/StreamDelivery.swift; sourceTree = SOURCE_ROOT; };
+		9F3F490C8166AD10827C71AC /* Opaline/Core/API/InnertubeClient+PivotParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+PivotParsing.swift"; sourceTree = SOURCE_ROOT; };
+		A25E9ABED45931CBC0F32DAE /* Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift"; sourceTree = SOURCE_ROOT; };
+		A3B73290D97FB41DCBAD291C /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = Opaline/uk.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		A4BCA9044939F3C21C62FAE9 /* Opaline/Core/Services/Video+RSSShort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Services/Video+RSSShort.swift"; sourceTree = SOURCE_ROOT; };
+		A70A1D3790854702D401A2E7 /* Opaline/Core/Playback/PlaybackContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/PlaybackContext.swift; sourceTree = SOURCE_ROOT; };
+		A83A1E36D5543972CA5B6BC0 /* Opaline/Core/Playback/AutoplayPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/AutoplayPreference.swift; sourceTree = SOURCE_ROOT; };
+		A91103794A306786417C2CFC /* Opaline/Core/API/InnertubeClient+SubscribedChannels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+SubscribedChannels.swift"; sourceTree = SOURCE_ROOT; };
+		AB3B8133E99D180EBD1AB3FF /* Opaline/Core/Playback/HLSGenerator+Sidx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/HLSGenerator+Sidx.swift"; sourceTree = SOURCE_ROOT; };
+		B043947D370D1D4E6A5C78F1 /* Opaline/Core/Services/VideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/VideoService.swift; sourceTree = SOURCE_ROOT; };
+		B10116547F630E5B5D98547F /* Opaline/Core/Services/SBCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/SBCategory.swift; sourceTree = SOURCE_ROOT; };
+		B2EACCEFDD4F8F0BB7E35F94 /* Opaline/Core/API/InnertubeKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeKeys.swift; sourceTree = SOURCE_ROOT; };
+		B4ACC6D0233B752C9CA21111 /* Opaline/Core/API/InnertubeClient+PlaylistParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+PlaylistParams.swift"; sourceTree = SOURCE_ROOT; };
+		B4F56E2227AD102E89B6DF72 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Opaline/de.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		B63D0BB966FC2EB4A30E5E55 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Opaline/de.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		B86ED056F75F0A9E56508527 /* Opaline/Core/API/InnertubeClient+Playlists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Playlists.swift"; sourceTree = SOURCE_ROOT; };
+		BBB6E0561C1C371E46516101 /* Opaline/Core/Services/ChannelRSSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/ChannelRSSService.swift; sourceTree = SOURCE_ROOT; };
+		BBC52C85908D7C146C35DA58 /* Opaline/Core/Transport/HTTPTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Transport/HTTPTransport.swift; sourceTree = SOURCE_ROOT; };
+		BD65E7F3C40FB5315D687DE6 /* Opaline/Core/Playback/SABR/SABRSegmentCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/SABRSegmentCollector.swift; sourceTree = SOURCE_ROOT; };
+		BD7A77654D5CD0E53D1719CF /* Opaline/Core/Config/HTTPConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Config/HTTPConstants.swift; sourceTree = SOURCE_ROOT; };
+		BDF8D294FD4D2604D62CDAF7 /* Opaline/Core/Playback/Sources/InnertubeVideoSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/Sources/InnertubeVideoSource.swift; sourceTree = SOURCE_ROOT; };
+		BE3E1857172DDFC0F363EDCA /* Opaline/Core/API/InnertubeContexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeContexts.swift; sourceTree = SOURCE_ROOT; };
+		C203A76A5461594C1BA9F2C2 /* OpalineTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = OpalineTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C52A3CF0461C652128A24235 /* Opaline/Core/Common/ThumbnailURLPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Common/ThumbnailURLPolicy.swift; sourceTree = SOURCE_ROOT; };
+		C7B7C0ACC7BF0EEB45FBB18A /* Opaline/Core/Playback/PlaybackQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/PlaybackQueue.swift; sourceTree = SOURCE_ROOT; };
+		C8816A6956459D145CAEFBDA /* Opaline/Core/Playback/Sources/TVDeviceIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/Sources/TVDeviceIdentity.swift; sourceTree = SOURCE_ROOT; };
+		C982A27DCBDA541732CBC266 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Opaline/tr.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		CA04B68383FFFF2AC6770F50 /* Opaline/Core/Playback/TVSolverWarmup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/TVSolverWarmup.swift; sourceTree = SOURCE_ROOT; };
+		CBD8FE264801F526B30C289A /* Opaline/Core/Playback/HLSStreamResolver+Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/HLSStreamResolver+Remote.swift"; sourceTree = SOURCE_ROOT; };
+		CC2EE2E7D93FBC0E462A40AE /* Opaline/Core/Localization/AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Localization/AppLanguage.swift; sourceTree = SOURCE_ROOT; };
+		CCC7924248D890AE01CE9985 /* Opaline/Core/Playback/WebViewHLSSolverJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/WebViewHLSSolverJS.swift; sourceTree = SOURCE_ROOT; };
+		CCCF486EB100C71C9F9FBAEB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = Opaline/pt.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		CE2DCA9B5A8E2AE488B7A391 /* Opaline/Core/API/InnertubeClient+PlaylistEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+PlaylistEdit.swift"; sourceTree = SOURCE_ROOT; };
+		CE4EE3C09314F4D23F212A3A /* Opaline/Core/API/InnertubeSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/InnertubeSession.swift; sourceTree = SOURCE_ROOT; };
+		CF648320B7094CCB05F054B1 /* Opaline/Core/Playback/AutoDubPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/AutoDubPreference.swift; sourceTree = SOURCE_ROOT; };
+		CFED59759A4A7B846B0CEE5B /* Opaline/Core/Services/VTTParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/VTTParser.swift; sourceTree = SOURCE_ROOT; };
+		D052F58998074AEDF7F5D77A /* Opaline/Core/API/InnertubeClient+CommentParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+CommentParsing.swift"; sourceTree = SOURCE_ROOT; };
+		D07A172E77769C3430C7099B /* Opaline/Core/Playback/LiveHLSVariants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/LiveHLSVariants.swift; sourceTree = SOURCE_ROOT; };
+		D435B080B55638E8ABF45996 /* Opaline/Core/Playback/Sources/FallbackChainSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/Sources/FallbackChainSource.swift; sourceTree = SOURCE_ROOT; };
+		D47B11D5655CE26724132B0D /* Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift"; sourceTree = SOURCE_ROOT; };
+		D51AE5E2139E0C2787A8A79A /* Opaline/Core/API/InnertubeClient+Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Feedback.swift"; sourceTree = SOURCE_ROOT; };
+		D6555BACDB819CDD565025ED /* Opaline/Core/API/InnertubeClient+PlaybackParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+PlaybackParsing.swift"; sourceTree = SOURCE_ROOT; };
+		D65BECD13A5F97A7E712B37A /* Opaline/Core/Playback/SABR/SABRRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/SABRRequest.swift; sourceTree = SOURCE_ROOT; };
+		D73B5EEAE1483152E34FCA47 /* Opaline/Core/API/Models/WatchMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/WatchMetadata.swift; sourceTree = SOURCE_ROOT; };
+		D78E644A3B47042D8A9730BF /* Opaline/Core/Localization/LocalizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Localization/LocalizationManager.swift; sourceTree = SOURCE_ROOT; };
+		D9BC7CD290AA1481991510D2 /* Opaline/Core/API/InnertubeClient+Shorts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+Shorts.swift"; sourceTree = SOURCE_ROOT; };
+		DA1D504FDA5FE6D06DB89636 /* Opaline/Core/Playback/HLSStreamResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/HLSStreamResolver.swift; sourceTree = SOURCE_ROOT; };
+		DABE613ED147A8D441E07B4D /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift"; sourceTree = SOURCE_ROOT; };
+		E0B4EAD5F2D7C8A2E976C1ED /* Opaline/Core/API/InnertubeClient+ShelfContinuations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ShelfContinuations.swift"; sourceTree = SOURCE_ROOT; };
+		E24E850A3DB4DD7B6D974571 /* Opaline/Core/API/Clients/VisionOSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Clients/VisionOSClient.swift; sourceTree = SOURCE_ROOT; };
+		E4B665C3238AE95B2BD45A95 /* Opaline/Core/Services/ChannelRSSService+Fetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Services/ChannelRSSService+Fetching.swift"; sourceTree = SOURCE_ROOT; };
+		E5A9C06338FD1DC8F6BB2304 /* Opaline/Core/API/Models/Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/Video.swift; sourceTree = SOURCE_ROOT; };
+		E60E69E7C150BA4C8B49E572 /* Opaline/Core/Common/ThumbnailLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Common/ThumbnailLoader.swift; sourceTree = SOURCE_ROOT; };
+		E93F1AF05193CA485F71D98C /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift"; sourceTree = SOURCE_ROOT; };
+		EAACB569EEAC06969932F317 /* Opaline/Core/Playback/SABR/MediaHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/MediaHeader.swift; sourceTree = SOURCE_ROOT; };
+		F033AA7DF2A4F7B5F68BA178 /* Opaline/Core/API/Models/SubscribedChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Models/SubscribedChannel.swift; sourceTree = SOURCE_ROOT; };
+		F284BA51060B0897415FDCBC /* Opaline/Core/API/InnertubeClient+ChannelLegacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/API/InnertubeClient+ChannelLegacy.swift"; sourceTree = SOURCE_ROOT; };
+		F2E7E5E9D962C335657CEC04 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = Opaline/uk.lproj/Localizable.stringsdict; sourceTree = SOURCE_ROOT; };
+		F3952158AFC0BAC5A6F0915C /* Opaline/Core/Playback/PlaybackStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/PlaybackStep.swift; sourceTree = SOURCE_ROOT; };
+		F9095F2F9DE6612C509A0A00 /* Opaline/Core/API/Clients/PlaybackClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Clients/PlaybackClient.swift; sourceTree = SOURCE_ROOT; };
+		FD47C604076F28D4C05896FE /* Opaline/Core/Common/ThumbnailLoader+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Opaline/Core/Common/ThumbnailLoader+Network.swift"; sourceTree = SOURCE_ROOT; };
+		FEFF1E2BA7917C5B5E3F5FF7 /* Opaline/Core/Services/WatchProgressSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Services/WatchProgressSyncService.swift; sourceTree = SOURCE_ROOT; };
+		FF19B88190072E6269810D93 /* Opaline/Core/Playback/SABR/UMPReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/Playback/SABR/UMPReader.swift; sourceTree = SOURCE_ROOT; };
+		FFC3C5C05460C9373790740E /* Opaline/Core/API/Parsing/VideoRendererParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opaline/Core/API/Parsing/VideoRendererParser.swift; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9F4CEDF5810F600A33ABA348 /* Exceptions for "OpalineTV" folder in "OpalineTV" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 13177ACCB5A626FAD211C5C5;
-		};
-		BC3B9C689BF97CE66CA0DA1F = {
-			isa = PBXBuildFile;
-			fileRef = D65BECD13A5F97A7E712B37A;
-		};
-		D44D7EC6F1EDB70700017ABF = {
-			isa = PBXBuildFile;
-			fileRef = 183DB4F63C9B81CF9A19ACA2;
-		};
-		88783150263143CB755270EA = {
-			isa = PBXBuildFile;
-			fileRef = 0B443C9805119357E75B7C86;
-		};
-		3316DB6E01C39895D46495BC = {
-			isa = PBXBuildFile;
-			fileRef = 442D81F490C2F90F1C90A09F;
-		};
-		8E511AA7C4A5D158358BF4F7 = {
-			isa = PBXBuildFile;
-			fileRef = A25E9ABED45931CBC0F32DAE;
-		};
-		4940A7362F6AD27A00E6C599 = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				SDKROOT = appletvos;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				CLANG_WARN_COMMA = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				COPY_PHASE_STRIP = NO;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				MTL_FAST_MATH = YES;
-				VALIDATE_PRODUCT = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-			};
-			name = Release;
-		};
-		4A9E4F3A831B6D645B469601 = {
-			path = Opaline/en.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = en;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		02E4ED6786FF3CE4F81A8A8C = {
-			path = "Opaline/Core/API/InnertubeClient+VisitorData.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		8D4AFABCB50733DB15653669 = {
-			isa = PBXBuildFile;
-			fileRef = 4599B5E04EB6B3E91C1144B4;
-		};
-		0743F5FD0E8C1F82FE57AD35 = {
-			isa = PBXBuildFile;
-			fileRef = B7F687EAE75C852FB670BAF6;
-		};
-		D9BC7CD290AA1481991510D2 = {
-			path = "Opaline/Core/API/InnertubeClient+Shorts.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		1BEF11895032E4FBFEB80737 = {
-			path = "Opaline/Core/API/InnertubeClient+Account.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		35D63620131CC89341F4657D = {
-			isa = PBXBuildFile;
-			fileRef = 0BD1D70D7B5BCC1C94004B17;
-		};
-		3184DE11239C4555F2A6D887 = {
-			path = Opaline/Core/Transport/AuthorizingTransport.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		1C05418D3DA878F65EEBE367 = {
-			isa = PBXBuildFile;
-			fileRef = D6555BACDB819CDD565025ED;
-		};
-		DF92BF6A9F398A38E3C8C5CA = {
-			isa = PBXBuildFile;
-			fileRef = E5A9C06338FD1DC8F6BB2304;
-		};
-		0ED4008D16A8422744EACE49 = {
-			path = "Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		22AE552887BA9EFEFFBD5AE5 = {
-			path = Opaline/it.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = it;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		15651FC64ACDCAD3BC581DFA = {
-			isa = PBXBuildFile;
-			fileRef = B10116547F630E5B5D98547F;
-		};
-		CFED59759A4A7B846B0CEE5B = {
-			path = Opaline/Core/Services/VTTParser.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		2AE28349BFDD6535A0779739 = {
-			isa = PBXBuildFile;
-			fileRef = 29ADDB41439781C18DBF3874;
-		};
-		E4B665C3238AE95B2BD45A95 = {
-			path = "Opaline/Core/Services/ChannelRSSService+Fetching.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4A2D25E590EBB8D140F06418 = {
-			path = Opaline/Core/API/InnertubeRequestExecutor.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		C34D635383D4D0AFDAA9DBDE = {
-			isa = PBXBuildFile;
-			fileRef = DABE613ED147A8D441E07B4D;
-		};
-		CCC7924248D890AE01CE9985 = {
-			path = Opaline/Core/Playback/WebViewHLSSolverJS.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5437906D3A36CA3097CB26CE = {
-			path = Opaline/Core/Config/PlaybackChainSettings.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		760D56268C1970B1019EEBDE = {
-			path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		AB3B8133E99D180EBD1AB3FF = {
-			path = "Opaline/Core/Playback/HLSGenerator+Sidx.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		36CC67E0EE20922567CC2DCC = {
-			isa = PBXBuildFile;
-			fileRef = 2391FA8661EBE6FC021235D3;
-		};
-		C56967C74A121F31E44B8BA4 = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EBC0A74BBE4CCCC000D98DF3 = {
-			isa = PBXBuildFile;
-			fileRef = 13DB5D6DC1D3E72E62E76E62;
-		};
-		B2EACCEFDD4F8F0BB7E35F94 = {
-			path = Opaline/Core/API/InnertubeKeys.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		CC2EE2E7D93FBC0E462A40AE = {
-			path = Opaline/Core/Localization/AppLanguage.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7E4282CC1EF8EAF804AD61AF = {
-			path = Opaline/fr.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = fr;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		EAACB569EEAC06969932F317 = {
-			path = Opaline/Core/Playback/SABR/MediaHeader.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		61DF98B975FC9111BEF81548 = {
-			isa = PBXBuildFile;
-			fileRef = DA1D504FDA5FE6D06DB89636;
-		};
-		C44BFC6F42C87CF735682DAD = {
-			isa = PBXBuildFile;
-			fileRef = 73458CCFC9AF8012AF1A2A73;
-		};
-		3268A33F20D5A610E78B8324 = {
-			path = Opaline/Core/API/Models/SubtitleTrack.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		37269DB0F6FBA548E9B76DD6 = {
-			path = Opaline/Core/API/Models/DirectPlaybackInfo.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		693E1923E43491E4AE80B810 = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				TARGETED_DEVICE_FAMILY = 3;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpalineTV.app/OpalineTV";
-				GENERATE_INFOPLIST_FILE = YES;
-				TVOS_DEPLOYMENT_TARGET = 17.0;
-				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
-				CODE_SIGN_STYLE = Automatic;
-				SDKROOT = appletvos;
-				SWIFT_VERSION = 5.0;
-				PRODUCT_NAME = OpalineTVTests;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.OpalineTVTests;
-			};
-			name = Debug;
-		};
-		51C75C79E832B8D8AC80FCA9 = {
-			path = "Opaline/Core/API/InnertubeClient+Browse.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		B7C14F3ADCD5CD0879BA251B = {
-			isa = PBXBuildFile;
-			fileRef = 4DEBD6A4F0BC2767C07F9AFA;
-		};
-		D052F58998074AEDF7F5D77A = {
-			path = "Opaline/Core/API/InnertubeClient+CommentParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		BDF8D294FD4D2604D62CDAF7 = {
-			path = Opaline/Core/Playback/Sources/InnertubeVideoSource.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		E93F1AF05193CA485F71D98C = {
-			path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		C719D139399A064446844063 = {
-			isa = PBXBuildFile;
-			fileRef = 2B2C8AB805BAC5BD7D5EC8DF;
-		};
-		7879651A423B4DD56E62C2FB = {
-			isa = PBXBuildFile;
-			fileRef = B2EACCEFDD4F8F0BB7E35F94;
-		};
-		BD7A77654D5CD0E53D1719CF = {
-			path = Opaline/Core/Config/HTTPConstants.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		934544165D4AF2D9C57BF426 = {
-			path = "Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		825A212D2856C879D16D4EE6 = {
-			isa = PBXBuildFile;
-			fileRef = 43A5FE5A814859C7447499D9;
-		};
-		D023F54A3F11D758D1228897 = {
-			isa = PBXBuildFile;
-			fileRef = 8B5EFC7A1C2A4C07FEEEB3BF;
-		};
-		14A9FA2AD34E42BCEBDA5076 = {
-			isa = PBXBuildFile;
-			fileRef = CC2EE2E7D93FBC0E462A40AE;
-		};
-		A4BCA9044939F3C21C62FAE9 = {
-			path = "Opaline/Core/Services/Video+RSSShort.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4940A7352F6AD27A00E6C599 = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				COPY_PHASE_STRIP = NO;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_COMMA = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				CLANG_WARN_INT_CONVERSION = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				SDKROOT = appletvos;
-				CLANG_WARN_EMPTY_BODY = YES;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				CLANG_ENABLE_MODULES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ENABLE_TESTABILITY = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-			};
-			name = Debug;
-		};
-		62D9FD0F95F216336E35D911 = {
-			isa = PBXBuildFile;
-			fileRef = 880E6A121E66A6BB941335C1;
-		};
-		8BD40EC5E4EBBC19F46D088A = {
-			path = Opaline/Core/Transport/StreamingSession.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		439A238EC237FA5F4537A2F8 = {
-			path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		FF5DD477FA6F9169CFE3DB48 = {
-			isa = PBXBuildFile;
-			fileRef = 15310FE3CB0C1BFFB52418CF;
-		};
-		4599B5E04EB6B3E91C1144B4 = {
-			path = Opaline/Core/Services/PoToken/RemotePoTokenService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4158311ABEFC8546B294CD41 = {
-			isa = PBXBuildFile;
-			fileRef = 52350220D5094F163C19AF14;
-		};
-		5A4E580D1E50771BCC90D5CE = {
-			isa = PBXBuildFile;
-			fileRef = 9492E8FB8D078204CE7763DE;
-		};
-		37767D7D91BDC5CCAD4EB3D5 = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		46145318460DB56D2184BB71 = {
-			path = "Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7270A75829536DF5524A6262 = {
-			path = Opaline/ja.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = ja;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		9187C876B61C37B39E31BE59 = {
-			path = Opaline/en.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = en;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		4DEBD6A4F0BC2767C07F9AFA = {
-			path = Opaline/Core/Playback/SABR/SABRDelivery.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		80C28BCFBDE2A8D38190199B = {
-			isa = PBXBuildFile;
-			fileRef = C52A3CF0461C652128A24235;
-		};
-		22E244A332F14AD6D5A30251 = {
-			path = Opaline/Core/Playback/HLSPlaylistLoader.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		1295870E820F67E81AD69D23 = {
-			path = "Opaline/Core/Auth/OAuthClient+Refresh.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		15310FE3CB0C1BFFB52418CF = {
-			path = "Opaline/Core/API/InnertubeClient+Channel.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7CF012395994B5E463385792 = {
-			isa = PBXBuildFile;
-			fileRef = D47B11D5655CE26724132B0D;
-		};
-		99A23724E9F782C97F51938D = {
-			path = Opaline/Core/Auth/OAuthClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		516599837532A8B047E2B31E = {
-			baseConfigurationReference = 6AAB6E6D7BB20400638FDFD7;
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				MARKETING_VERSION = 1.12.0;
-				INFOPLIST_FILE = OpalineTV/Info.plist;
-				TARGETED_DEVICE_FAMILY = 3;
-				GENERATE_INFOPLIST_FILE = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TVOS_DEPLOYMENT_TARGET = 17.0;
-				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
-				CODE_SIGN_STYLE = Automatic;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				SDKROOT = appletvos;
-				PRODUCT_NAME = OpalineTV;
-				PRODUCT_BUNDLE_IDENTIFIER = "$(OPALINE_TV_BUNDLE_IDENTIFIER)";
-				CURRENT_PROJECT_VERSION = 1;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		13177ACCB5A626FAD211C5C5 = {
-			buildRules = (
-			);
-			buildConfigurationList = A9A78F5901D9CF68BB1A4741;
-			productReference = C203A76A5461594C1BA9F2C2;
-			productType = "com.apple.product-type.application";
-			productName = OpalineTV;
-			isa = PBXNativeTarget;
-			fileSystemSynchronizedGroups = (
-				DB5AC81EE80B5EE3C8EE2A88,
-			);
-			dependencies = (
-			);
-			buildPhases = (
-				523713D69BBF469242122227,
-				F5C7A8FF09A3CEB8311839BB,
-				D75F1004243281531EFD0F41,
-			);
-			name = OpalineTV;
-		};
-		34889179B9D6E9F51F8AFE53 = {
-			path = Opaline/Core/Config/AppURLs.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		70A9D344A36C8B061E76623C = {
-			path = "Opaline/Core/API/InnertubeClient+LockupParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DB9416946EB9D86D1950346F = {
-			isa = PBXBuildFile;
-			fileRef = E24E850A3DB4DD7B6D974571;
-		};
-		0BD1D70D7B5BCC1C94004B17 = {
-			path = Opaline/Core/Localization/ContentKeywords.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		095058B015AFCE9C0B9D6543 = {
-			isa = PBXBuildFile;
-			fileRef = 9F3F490C8166AD10827C71AC;
-		};
-		A4AF6F7853998653D1FA12FB = {
-			isa = PBXBuildFile;
-			fileRef = AB3B8133E99D180EBD1AB3FF;
-		};
-		CCCF486EB100C71C9F9FBAEB = {
-			path = Opaline/pt.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = pt;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		E6364EA6C62618EEF4640A68 = {
-			isa = PBXBuildFile;
-			fileRef = B043947D370D1D4E6A5C78F1;
-		};
-		95505184961664F3974770FB = {
-			path = "Opaline/zh-Hans.lproj/Localizable.strings";
-			isa = PBXFileReference;
-			name = "zh-Hans";
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		B043947D370D1D4E6A5C78F1 = {
-			path = Opaline/Core/Services/VideoService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0AE6DAF6B68761E1BE891015 = {
-			isa = PBXBuildFile;
-			fileRef = CF648320B7094CCB05F054B1;
-		};
-		6281D63AD9053DC5DF043F5C = {
-			isa = PBXBuildFile;
-			fileRef = 1295870E820F67E81AD69D23;
-		};
-		57AA6D95B29DF97422008DB6 = {
-			path = Opaline/Core/Localization/LocalePreferences.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		18B9111B9D59558A9F7CC8B9 = {
-			path = "Opaline/Core/API/InnertubeClient+SearchSuggest.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0E3895C82198C4EC33D83F3A = {
-			path = Opaline/Core/Services/SearchHistoryStore.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		08FFBFC1B9C6EE17E4AFEE43 = {
-			path = Opaline/Core/Services/WatchtimeTracker.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4539645B65F34253CFEB8C16 = {
-			path = Opaline/Core/Auth/OAuthTokens.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		2B2C8AB805BAC5BD7D5EC8DF = {
-			path = "Opaline/Core/Common/Extensions/Dictionary+Dig.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DA628B371B7B2DA233FAEDC1 = {
-			isa = PBXBuildFile;
-			fileRef = A4BCA9044939F3C21C62FAE9;
-		};
-		B4F56E2227AD102E89B6DF72 = {
-			path = Opaline/de.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = de;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		90873F97CA26519F1523B996 = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4E85D5A51F8C159FE8E77827 = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelHelpers.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DE50CE3E79FEC5DC58B59CA3 = {
-			isa = PBXBuildFile;
-			fileRef = 52752A46D6312B9273A56E1B;
-		};
-		C61DC9D18B729C866508BDED = {
-			isa = PBXBuildFile;
-			fileRef = 5E3E846C6C4E3CF8EEAA3731;
-		};
-		7292B66E09646227F490D8F1 = {
-			path = Opaline/Core/API/Clients/AndroidClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0AC250F9889A8935FBBE9413 = {
-			path = "Opaline/Core/API/InnertubeClient+Captions.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		BE3E1857172DDFC0F363EDCA = {
-			path = Opaline/Core/API/InnertubeContexts.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		F3952158AFC0BAC5A6F0915C = {
-			path = Opaline/Core/Playback/PlaybackStep.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		7A418DE23A4660ED56F98C63 = {
-			path = Opaline/Core/API/Clients/SABRClientInfo.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4940A7162F6AD27900E6C599 = {
-			isa = PBXGroup;
+			target = 13177ACCB5A626FAD211C5C5 /* OpalineTV */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		49A03540653202A6A69BA900 /* OpalineTVTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OpalineTVTests;
 			sourceTree = "<group>";
-			children = (
-				DB5AC81EE80B5EE3C8EE2A88,
-				C1BB8B1FADA25DF8B6BDDE6D,
-				49A03540653202A6A69BA900,
-				4940A7202F6AD27900E6C599,
-				6AAB6E6D7BB20400638FDFD7,
+		};
+		DB5AC81EE80B5EE3C8EE2A88 /* OpalineTV */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9F4CEDF5810F600A33ABA348 /* Exceptions for "OpalineTV" folder in "OpalineTV" target */,
 			);
+			path = OpalineTV;
+			sourceTree = "<group>";
 		};
-		06FFFB6BBE465152818DF4F4 = {
-			isa = PBXTargetDependency;
-			target = 13177ACCB5A626FAD211C5C5;
-			targetProxy = 1F2E1B6E6ECCF40BFFF633A7;
-		};
-		0AB71F713EC41C0126A34739 = {
-			isa = PBXBuildFile;
-			fileRef = 57AA6D95B29DF97422008DB6;
-		};
-		AAA815A79062AB389DA74982 = {
-			isa = PBXBuildFile;
-			fileRef = 46145318460DB56D2184BB71;
-		};
-		A67AE49B43EB7984D9F10F1A = {
-			isa = PBXBuildFile;
-			fileRef = 65F72E0703EF0EB7E0C9B3E9;
-		};
-		669FC347362C273C012D61F6 = {
-			path = "Opaline/Core/API/InnertubeClient+SignatureCipher.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		9247201789AA7184F4D0531B = {
-			isa = PBXBuildFile;
-			fileRef = D052F58998074AEDF7F5D77A;
-		};
-		86B6EDEAC44B49C4DC62821C = {
-			path = "Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		F5C7A8FF09A3CEB8311839BB = {
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		57B5F8D5F476F172BE68E074 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		063538D5EB5352ED6ABD2C02 = {
-			isa = PBXBuildFile;
-			fileRef = 76A271ADF93E331345FE555D;
+		F5C7A8FF09A3CEB8311839BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4E8F9B6747CDD68AABD6BAAD = {
-			isa = PBXBuildFile;
-			fileRef = 08FFBFC1B9C6EE17E4AFEE43;
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4940A7162F6AD27900E6C599 = {
+			isa = PBXGroup;
+			children = (
+				DB5AC81EE80B5EE3C8EE2A88 /* OpalineTV */,
+				C1BB8B1FADA25DF8B6BDDE6D /* TV Shared Sources */,
+				49A03540653202A6A69BA900 /* OpalineTVTests */,
+				4940A7202F6AD27900E6C599 /* Products */,
+				6AAB6E6D7BB20400638FDFD7 /* Config/TV.xcconfig */,
+			);
+			sourceTree = "<group>";
 		};
-		26F32B159E05567E5A841ED7 = {
+		4940A7202F6AD27900E6C599 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C203A76A5461594C1BA9F2C2 /* OpalineTV.app */,
+				5F7626CE624C89AF4D93A4FA /* OpalineTVTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C1BB8B1FADA25DF8B6BDDE6D /* TV Shared Sources */ = {
+			isa = PBXGroup;
+			children = (
+				0E3895C82198C4EC33D83F3A /* Opaline/Core/Services/SearchHistoryStore.swift */,
+				5A9EB50380AC4924BEC6EDF7 /* Opaline/Core/Common/VideoFormatters.swift */,
+				097CF2030DA33A6E5C14B025 /* Opaline/Core/API/APIClient.swift */,
+				7292B66E09646227F490D8F1 /* Opaline/Core/API/Clients/AndroidClient.swift */,
+				F9095F2F9DE6612C509A0A00 /* Opaline/Core/API/Clients/PlaybackClient.swift */,
+				7A418DE23A4660ED56F98C63 /* Opaline/Core/API/Clients/SABRClientInfo.swift */,
+				13DB5D6DC1D3E72E62E76E62 /* Opaline/Core/API/Clients/TVClient.swift */,
+				E24E850A3DB4DD7B6D974571 /* Opaline/Core/API/Clients/VisionOSClient.swift */,
+				1BEF11895032E4FBFEB80737 /* Opaline/Core/API/InnertubeClient+Account.swift */,
+				8B5EFC7A1C2A4C07FEEEB3BF /* Opaline/Core/API/InnertubeClient+AudioTracks.swift */,
+				51C75C79E832B8D8AC80FCA9 /* Opaline/Core/API/InnertubeClient+Browse.swift */,
+				937515B77B4EC12108BE5248 /* Opaline/Core/API/InnertubeClient+BrowseHelpers.swift */,
+				77E679EDE0B772DEFBA1DD02 /* Opaline/Core/API/InnertubeClient+BrowseParsing.swift */,
+				0AC250F9889A8935FBBE9413 /* Opaline/Core/API/InnertubeClient+Captions.swift */,
+				15310FE3CB0C1BFFB52418CF /* Opaline/Core/API/InnertubeClient+Channel.swift */,
+				442D81F490C2F90F1C90A09F /* Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift */,
+				4E85D5A51F8C159FE8E77827 /* Opaline/Core/API/InnertubeClient+ChannelHelpers.swift */,
+				F284BA51060B0897415FDCBC /* Opaline/Core/API/InnertubeClient+ChannelLegacy.swift */,
+				37767D7D91BDC5CCAD4EB3D5 /* Opaline/Core/API/InnertubeClient+ChannelParsing.swift */,
+				5AA605FE2372B2E601A97DE6 /* Opaline/Core/API/InnertubeClient+ChannelSearch.swift */,
+				90873F97CA26519F1523B996 /* Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift */,
+				2CBBC2F76CDE3922C27177FE /* Opaline/Core/API/InnertubeClient+ChannelTabs.swift */,
+				59FFEB1DEB9F705C6C2024E4 /* Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift */,
+				65D4F794B9E2AFF3C10AF8F7 /* Opaline/Core/API/InnertubeClient+CommentBuilding.swift */,
+				D052F58998074AEDF7F5D77A /* Opaline/Core/API/InnertubeClient+CommentParsing.swift */,
+				D51AE5E2139E0C2787A8A79A /* Opaline/Core/API/InnertubeClient+Feedback.swift */,
+				1999100B6D17816B7583CD5A /* Opaline/Core/API/InnertubeClient+HistoryShorts.swift */,
+				70A9D344A36C8B061E76623C /* Opaline/Core/API/InnertubeClient+LockupParsing.swift */,
+				999736A2D0B279EDEC45D08F /* Opaline/Core/API/InnertubeClient+ParsingHelpers.swift */,
+				9F3F490C8166AD10827C71AC /* Opaline/Core/API/InnertubeClient+PivotParsing.swift */,
+				6D95BBCE1C99F42F64CEEF90 /* Opaline/Core/API/InnertubeClient+Playback.swift */,
+				D6555BACDB819CDD565025ED /* Opaline/Core/API/InnertubeClient+PlaybackParsing.swift */,
+				CE2DCA9B5A8E2AE488B7A391 /* Opaline/Core/API/InnertubeClient+PlaylistEdit.swift */,
+				B4ACC6D0233B752C9CA21111 /* Opaline/Core/API/InnertubeClient+PlaylistParams.swift */,
+				B86ED056F75F0A9E56508527 /* Opaline/Core/API/InnertubeClient+Playlists.swift */,
+				341378EE581629EF167D0B5A /* Opaline/Core/API/InnertubeClient+RendererParsing.swift */,
+				18B9111B9D59558A9F7CC8B9 /* Opaline/Core/API/InnertubeClient+SearchSuggest.swift */,
+				E0B4EAD5F2D7C8A2E976C1ED /* Opaline/Core/API/InnertubeClient+ShelfContinuations.swift */,
+				D9BC7CD290AA1481991510D2 /* Opaline/Core/API/InnertubeClient+Shorts.swift */,
+				669FC347362C273C012D61F6 /* Opaline/Core/API/InnertubeClient+SignatureCipher.swift */,
+				A91103794A306786417C2CFC /* Opaline/Core/API/InnertubeClient+SubscribedChannels.swift */,
+				A25E9ABED45931CBC0F32DAE /* Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift */,
+				9A45FF6F69BFDD48092C915B /* Opaline/Core/API/InnertubeClient+TileHelpers.swift */,
+				02E4ED6786FF3CE4F81A8A8C /* Opaline/Core/API/InnertubeClient+VisitorData.swift */,
+				86B6EDEAC44B49C4DC62821C /* Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift */,
+				3B5057C202C4320EF60913E4 /* Opaline/Core/API/InnertubeClient+WatchOwner.swift */,
+				9272EEBA5CAF0B294DF5332E /* Opaline/Core/API/InnertubeClient+WatchParsing.swift */,
+				742EFB07CE8FADC1607D25F9 /* Opaline/Core/API/InnertubeClient.swift */,
+				43A5FE5A814859C7447499D9 /* Opaline/Core/API/InnertubeClientDebugLogging.swift */,
+				9864CC9AB7CF8200ADD18539 /* Opaline/Core/API/InnertubeClientPageParsing.swift */,
+				52752A46D6312B9273A56E1B /* Opaline/Core/API/InnertubeClientParsing.swift */,
+				76F3C43127031F32FE90C96E /* Opaline/Core/API/InnertubeClientPlayerParsing.swift */,
+				BE3E1857172DDFC0F363EDCA /* Opaline/Core/API/InnertubeContexts.swift */,
+				B2EACCEFDD4F8F0BB7E35F94 /* Opaline/Core/API/InnertubeKeys.swift */,
+				4A2D25E590EBB8D140F06418 /* Opaline/Core/API/InnertubeRequestExecutor.swift */,
+				CE4EE3C09314F4D23F212A3A /* Opaline/Core/API/InnertubeSession.swift */,
+				37269DB0F6FBA548E9B76DD6 /* Opaline/Core/API/Models/DirectPlaybackInfo.swift */,
+				5B4F457CCC0FD20F03BEE2AA /* Opaline/Core/API/Models/FeedbackAction.swift */,
+				69F36C7D4B34BB4927FD50ED /* Opaline/Core/API/Models/Playlist.swift */,
+				58109F0A94F7AB9A9217BE73 /* Opaline/Core/API/Models/SearchFilters.swift */,
+				F033AA7DF2A4F7B5F68BA178 /* Opaline/Core/API/Models/SubscribedChannel.swift */,
+				3268A33F20D5A610E78B8324 /* Opaline/Core/API/Models/SubtitleTrack.swift */,
+				E5A9C06338FD1DC8F6BB2304 /* Opaline/Core/API/Models/Video.swift */,
+				D73B5EEAE1483152E34FCA47 /* Opaline/Core/API/Models/WatchMetadata.swift */,
+				4CFD6D11A8BE8387E3273650 /* Opaline/Core/API/Models/WatchPage.swift */,
+				9492E8FB8D078204CE7763DE /* Opaline/Core/API/Parsing/ConcreteRendererParsers.swift */,
+				88057FA0DE74A972B57C9EE8 /* Opaline/Core/API/Parsing/FeedbackActionParser.swift */,
+				FFC3C5C05460C9373790740E /* Opaline/Core/API/Parsing/VideoRendererParser.swift */,
+				8214A5027A10D652C7BBD52E /* Opaline/Core/Auth/OAuthClient+Credentials.swift */,
+				17C8D517F2D5457C77F4BDF1 /* Opaline/Core/Auth/OAuthClient+Keychain.swift */,
+				1295870E820F67E81AD69D23 /* Opaline/Core/Auth/OAuthClient+Refresh.swift */,
+				99A23724E9F782C97F51938D /* Opaline/Core/Auth/OAuthClient.swift */,
+				4539645B65F34253CFEB8C16 /* Opaline/Core/Auth/OAuthTokens.swift */,
+				0B443C9805119357E75B7C86 /* Opaline/Core/Common/AppLog.swift */,
+				76A271ADF93E331345FE555D /* Opaline/Core/Common/CancellationToken.swift */,
+				2B2C8AB805BAC5BD7D5EC8DF /* Opaline/Core/Common/Extensions/Dictionary+Dig.swift */,
+				2E0B8E4FBEF4E5FDDE4C1AB3 /* Opaline/Core/Common/ThumbnailLoader+Decode.swift */,
+				FD47C604076F28D4C05896FE /* Opaline/Core/Common/ThumbnailLoader+Network.swift */,
+				E60E69E7C150BA4C8B49E572 /* Opaline/Core/Common/ThumbnailLoader.swift */,
+				C52A3CF0461C652128A24235 /* Opaline/Core/Common/ThumbnailURLPolicy.swift */,
+				531D2C7E3AF1919F3FFB9F2D /* Opaline/Core/Common/UserProfileStore.swift */,
+				34889179B9D6E9F51F8AFE53 /* Opaline/Core/Config/AppURLs.swift */,
+				BD7A77654D5CD0E53D1719CF /* Opaline/Core/Config/HTTPConstants.swift */,
+				5437906D3A36CA3097CB26CE /* Opaline/Core/Config/PlaybackChainSettings.swift */,
+				905CF1D34E6D344F2BBD8434 /* Opaline/Core/Config/UserDefaultsKeys.swift */,
+				CC2EE2E7D93FBC0E462A40AE /* Opaline/Core/Localization/AppLanguage.swift */,
+				0BD1D70D7B5BCC1C94004B17 /* Opaline/Core/Localization/ContentKeywords.swift */,
+				57AA6D95B29DF97422008DB6 /* Opaline/Core/Localization/LocalePreferences.swift */,
+				D78E644A3B47042D8A9730BF /* Opaline/Core/Localization/LocalizationManager.swift */,
+				2391FA8661EBE6FC021235D3 /* Opaline/Core/Playback/AudioOnlyMode.swift */,
+				CF648320B7094CCB05F054B1 /* Opaline/Core/Playback/AutoDubPreference.swift */,
+				A83A1E36D5543972CA5B6BC0 /* Opaline/Core/Playback/AutoplayPreference.swift */,
+				AB3B8133E99D180EBD1AB3FF /* Opaline/Core/Playback/HLSGenerator+Sidx.swift */,
+				9C8621DD8E5FF0C2657FA0C0 /* Opaline/Core/Playback/HLSGenerator.swift */,
+				46145318460DB56D2184BB71 /* Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift */,
+				4BAC31F432459A660F9F8D22 /* Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift */,
+				880E6A121E66A6BB941335C1 /* Opaline/Core/Playback/HLSPlaybackBuilder.swift */,
+				22E244A332F14AD6D5A30251 /* Opaline/Core/Playback/HLSPlaylistLoader.swift */,
+				CBD8FE264801F526B30C289A /* Opaline/Core/Playback/HLSStreamResolver+Remote.swift */,
+				65F72E0703EF0EB7E0C9B3E9 /* Opaline/Core/Playback/HLSStreamResolver+Solve.swift */,
+				DA1D504FDA5FE6D06DB89636 /* Opaline/Core/Playback/HLSStreamResolver.swift */,
+				87DBDDFFCFA71AB9CDC3BC71 /* Opaline/Core/Playback/LiveHLSPlayback.swift */,
+				D07A172E77769C3430C7099B /* Opaline/Core/Playback/LiveHLSVariants.swift */,
+				A70A1D3790854702D401A2E7 /* Opaline/Core/Playback/PlaybackContext.swift */,
+				7DF1D4D207D2CB6012D54712 /* Opaline/Core/Playback/PlaybackFacade+Identity.swift */,
+				37EF2F53B3BA480F4A2D7C5F /* Opaline/Core/Playback/PlaybackNonce.swift */,
+				4C41BC8E390746C991CA96CE /* Opaline/Core/Playback/PlaybackProgress.swift */,
+				C7B7C0ACC7BF0EEB45FBB18A /* Opaline/Core/Playback/PlaybackQueue.swift */,
+				F3952158AFC0BAC5A6F0915C /* Opaline/Core/Playback/PlaybackStep.swift */,
+				676B38CC421CDF2C8F569530 /* Opaline/Core/Playback/SABR/Data+Slice.swift */,
+				833E9DBAA779406B6534FF41 /* Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift */,
+				1AC13F10BA38E4D47808F644 /* Opaline/Core/Playback/SABR/LocalMediaServer.swift */,
+				EAACB569EEAC06969932F317 /* Opaline/Core/Playback/SABR/MediaHeader.swift */,
+				73458CCFC9AF8012AF1A2A73 /* Opaline/Core/Playback/SABR/Protobuf.swift */,
+				934544165D4AF2D9C57BF426 /* Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift */,
+				D47B11D5655CE26724132B0D /* Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift */,
+				4DEBD6A4F0BC2767C07F9AFA /* Opaline/Core/Playback/SABR/SABRDelivery.swift */,
+				30A827ACC9B4A92A66EA3B64 /* Opaline/Core/Playback/SABR/SABRFetcher.swift */,
+				D65BECD13A5F97A7E712B37A /* Opaline/Core/Playback/SABR/SABRRequest.swift */,
+				BD65E7F3C40FB5315D687DE6 /* Opaline/Core/Playback/SABR/SABRSegmentCollector.swift */,
+				4B7768449885D0E0E27EFFB1 /* Opaline/Core/Playback/SABR/StreamURLParams.swift */,
+				FF19B88190072E6269810D93 /* Opaline/Core/Playback/SABR/UMPReader.swift */,
+				4F1F787F8B7004FB7C891E5E /* Opaline/Core/Playback/Sources/AutoDubSource.swift */,
+				D435B080B55638E8ABF45996 /* Opaline/Core/Playback/Sources/FallbackChainSource.swift */,
+				E93F1AF05193CA485F71D98C /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift */,
+				439A238EC237FA5F4537A2F8 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift */,
+				DABE613ED147A8D441E07B4D /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift */,
+				760D56268C1970B1019EEBDE /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift */,
+				BDF8D294FD4D2604D62CDAF7 /* Opaline/Core/Playback/Sources/InnertubeVideoSource.swift */,
+				29ADDB41439781C18DBF3874 /* Opaline/Core/Playback/Sources/ProgressiveSource.swift */,
+				C8816A6956459D145CAEFBDA /* Opaline/Core/Playback/Sources/TVDeviceIdentity.swift */,
+				9CF22A57113686C23375A19C /* Opaline/Core/Playback/StreamDelivery.swift */,
+				139029AFCD05E7008A080219 /* Opaline/Core/Playback/StreamDeliveryFactory.swift */,
+				CA04B68383FFFF2AC6770F50 /* Opaline/Core/Playback/TVSolverWarmup.swift */,
+				52350220D5094F163C19AF14 /* Opaline/Core/Playback/VideoSource.swift */,
+				CCC7924248D890AE01CE9985 /* Opaline/Core/Playback/WebViewHLSSolverJS.swift */,
+				183DB4F63C9B81CF9A19ACA2 /* Opaline/Core/Services/AppCache+Feeds.swift */,
+				0E372F7F77B84F4AAE54D9CD /* Opaline/Core/Services/ChannelRSSParser.swift */,
+				E4B665C3238AE95B2BD45A95 /* Opaline/Core/Services/ChannelRSSService+Fetching.swift */,
+				BBB6E0561C1C371E46516101 /* Opaline/Core/Services/ChannelRSSService.swift */,
+				6F213B8C13217244BF217905 /* Opaline/Core/Services/ChannelTabService.swift */,
+				4599B5E04EB6B3E91C1144B4 /* Opaline/Core/Services/PoToken/RemotePoTokenService.swift */,
+				B10116547F630E5B5D98547F /* Opaline/Core/Services/SBCategory.swift */,
+				666A50D7AC64B36244A40C8A /* Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift */,
+				0ED4008D16A8422744EACE49 /* Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift */,
+				05A42DA88D66923C977F8611 /* Opaline/Core/Services/SignatureTimestampService.swift */,
+				99B92944C71A698CB17D37A6 /* Opaline/Core/Services/SponsorBlockService.swift */,
+				5E3E846C6C4E3CF8EEAA3731 /* Opaline/Core/Services/SubtitleService.swift */,
+				CFED59759A4A7B846B0CEE5B /* Opaline/Core/Services/VTTParser.swift */,
+				A4BCA9044939F3C21C62FAE9 /* Opaline/Core/Services/Video+RSSShort.swift */,
+				B043947D370D1D4E6A5C78F1 /* Opaline/Core/Services/VideoService.swift */,
+				1F06E3C968BB5A8C9B307596 /* Opaline/Core/Services/WatchProgressStore.swift */,
+				FEFF1E2BA7917C5B5E3F5FF7 /* Opaline/Core/Services/WatchProgressSyncService.swift */,
+				289F1DB29096F2E076E9B550 /* Opaline/Core/Services/WatchService+Defaults.swift */,
+				08FFBFC1B9C6EE17E4AFEE43 /* Opaline/Core/Services/WatchtimeTracker.swift */,
+				3184DE11239C4555F2A6D887 /* Opaline/Core/Transport/AuthorizingTransport.swift */,
+				BBC52C85908D7C146C35DA58 /* Opaline/Core/Transport/HTTPTransport.swift */,
+				0889E3ADC6E3D27899369B05 /* Opaline/Core/Transport/LoggingTransport.swift */,
+				8BD40EC5E4EBBC19F46D088A /* Opaline/Core/Transport/StreamingSession.swift */,
+				0B9B36B2EAA54B98567C1D17 /* Opaline/Core/Transport/URLSessionTransport.swift */,
+				B7F687EAE75C852FB670BAF6 /* Localizable.strings */,
+				2450B6BF09CE375FDE0296BB /* Localizable.stringsdict */,
+			);
+			name = "TV Shared Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		13177ACCB5A626FAD211C5C5 /* OpalineTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9A78F5901D9CF68BB1A4741 /* Build configuration list for PBXNativeTarget "OpalineTV" */;
+			buildPhases = (
+				523713D69BBF469242122227 /* Sources */,
+				F5C7A8FF09A3CEB8311839BB /* Frameworks */,
+				D75F1004243281531EFD0F41 /* Resources */,
+			);
 			buildRules = (
 			);
-			buildConfigurationList = 528E756B08305AA671945148;
-			productReference = 5F7626CE624C89AF4D93A4FA;
-			productType = "com.apple.product-type.bundle.unit-test";
-			productName = OpalineTVTests;
-			isa = PBXNativeTarget;
+			dependencies = (
+			);
 			fileSystemSynchronizedGroups = (
-				49A03540653202A6A69BA900,
+				DB5AC81EE80B5EE3C8EE2A88 /* OpalineTV */,
+			);
+			name = OpalineTV;
+			productName = OpalineTV;
+			productReference = C203A76A5461594C1BA9F2C2 /* OpalineTV.app */;
+			productType = "com.apple.product-type.application";
+		};
+		26F32B159E05567E5A841ED7 /* OpalineTVTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 528E756B08305AA671945148 /* Build configuration list for PBXNativeTarget "OpalineTVTests" */;
+			buildPhases = (
+				C56967C74A121F31E44B8BA4 /* Sources */,
+				57B5F8D5F476F172BE68E074 /* Frameworks */,
+			);
+			buildRules = (
 			);
 			dependencies = (
-				06FFFB6BBE465152818DF4F4,
+				06FFFB6BBE465152818DF4F4 /* PBXTargetDependency */,
 			);
-			buildPhases = (
-				C56967C74A121F31E44B8BA4,
-				57B5F8D5F476F172BE68E074,
+			fileSystemSynchronizedGroups = (
+				49A03540653202A6A69BA900 /* OpalineTVTests */,
 			);
 			name = OpalineTVTests;
+			productName = OpalineTVTests;
+			productReference = 5F7626CE624C89AF4D93A4FA /* OpalineTVTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F1E20C5A16BF165E2B4CA474 = {
-			isa = PBXBuildFile;
-			fileRef = 7292B66E09646227F490D8F1;
-		};
-		84A808FB1291A4AD84845A08 = {
-			isa = PBXBuildFile;
-			fileRef = 1BEF11895032E4FBFEB80737;
-		};
-		4940A7172F6AD27900E6C599 = {
-			buildConfigurationList = 4940A71A2F6AD27900E6C599;
-			packageReferences = (
-			);
-			targets = (
-				13177ACCB5A626FAD211C5C5,
-				26F32B159E05567E5A841ED7,
-			);
-			minimizedProjectReferenceProxies = 1;
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4940A7172F6AD27900E6C599 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+			};
+			buildConfigurationList = 4940A71A2F6AD27900E6C599 /* Build configuration list for PBXProject "OpalineTV" */;
 			developmentRegion = en;
+			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
@@ -1593,976 +672,508 @@
 				"zh-Hant",
 				vi,
 			);
-			isa = PBXProject;
-			productRefGroup = 4940A7202F6AD27900E6C599;
-			projectDirPath = "";
-			attributes = {
-				LastSwiftUpdateCheck = 1620;
-				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1620;
-				TargetAttributes = {
-				};
-			};
-			hasScannedForEncodings = 0;
 			mainGroup = 4940A7162F6AD27900E6C599;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
+			productRefGroup = 4940A7202F6AD27900E6C599 /* Products */;
+			projectDirPath = "";
 			projectRoot = "";
-		};
-		2DA7994412BC32769D3B9E8A = {
-			isa = PBXBuildFile;
-			fileRef = 02E4ED6786FF3CE4F81A8A8C;
-		};
-		CBD8FE264801F526B30C289A = {
-			path = "Opaline/Core/Playback/HLSStreamResolver+Remote.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		17C8D517F2D5457C77F4BDF1 = {
-			path = "Opaline/Core/Auth/OAuthClient+Keychain.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		307C7CDEF1E4DB78AB9D8545 = {
-			isa = PBXBuildFile;
-			fileRef = BD65E7F3C40FB5315D687DE6;
-		};
-		2E3DBCA2DFF83C0B0A737DD8 = {
-			isa = PBXBuildFile;
-			fileRef = 88057FA0DE74A972B57C9EE8;
-		};
-		6D95BBCE1C99F42F64CEEF90 = {
-			path = "Opaline/Core/API/InnertubeClient+Playback.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		FFC3C5C05460C9373790740E = {
-			path = Opaline/Core/API/Parsing/VideoRendererParser.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0CA495ED0FF765EC71E6DC70 = {
-			isa = PBXBuildFile;
-			fileRef = 99B92944C71A698CB17D37A6;
-		};
-		E24E850A3DB4DD7B6D974571 = {
-			path = Opaline/Core/API/Clients/VisionOSClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		6B9961498E7FDCB06F242FB7 = {
-			path = Opaline/vi.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = vi;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		01D6DB7E9460D7382A8B1886 = {
-			isa = PBXBuildFile;
-			fileRef = BE3E1857172DDFC0F363EDCA;
-		};
-		BCEF62639CCE49EC09B7913D = {
-			isa = PBXBuildFile;
-			fileRef = 5A9EB50380AC4924BEC6EDF7;
-		};
-		59FFEB1DEB9F705C6C2024E4 = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		C163AB71659086C86BE1E6D6 = {
-			isa = PBXBuildFile;
-			fileRef = CBD8FE264801F526B30C289A;
-		};
-		C0FD7E4E7BFDF94676A6B563 = {
-			isa = PBXBuildFile;
-			fileRef = 59FFEB1DEB9F705C6C2024E4;
-		};
-		353D4C17AC895A7514538B70 = {
-			isa = PBXBuildFile;
-			fileRef = 2CBBC2F76CDE3922C27177FE;
-		};
-		AD227D20484D46AEED3F1692 = {
-			isa = PBXBuildFile;
-			fileRef = D9BC7CD290AA1481991510D2;
-		};
-		BF35207146335D6443E695F9 = {
-			isa = PBXBuildFile;
-			fileRef = 30A827ACC9B4A92A66EA3B64;
-		};
-		A3B73290D97FB41DCBAD291C = {
-			path = Opaline/uk.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = uk;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		0279F685B7FAA35738CBF301 = {
-			isa = PBXBuildFile;
-			fileRef = 2E0B8E4FBEF4E5FDDE4C1AB3;
-		};
-		E315D22320AEF3D77C8032BD = {
-			isa = PBXBuildFile;
-			fileRef = 531D2C7E3AF1919F3FFB9F2D;
-		};
-		05A42DA88D66923C977F8611 = {
-			path = Opaline/Core/Services/SignatureTimestampService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		1CAD7B5ED3F9FF014413EB32 = {
-			isa = PBXBuildFile;
-			fileRef = 9272EEBA5CAF0B294DF5332E;
-		};
-		E586CC48F922E3C429916C0C = {
-			isa = PBXBuildFile;
-			fileRef = 676B38CC421CDF2C8F569530;
-		};
-		A9A78F5901D9CF68BB1A4741 = {
-			isa = XCConfigurationList;
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-			buildConfigurations = (
-				516599837532A8B047E2B31E,
-				9D86CFAC15BD4216307A3C6F,
+			targets = (
+				13177ACCB5A626FAD211C5C5 /* OpalineTV */,
+				26F32B159E05567E5A841ED7 /* OpalineTVTests */,
 			);
 		};
-		9D88DB78F90B8936B93FE9F9 = {
-			isa = PBXBuildFile;
-			fileRef = B4ACC6D0233B752C9CA21111;
-		};
-		17F11AC1D8493AF276FBAEB6 = {
-			isa = PBXBuildFile;
-			fileRef = 3B5057C202C4320EF60913E4;
-		};
-		8B5EFC7A1C2A4C07FEEEB3BF = {
-			path = "Opaline/Core/API/InnertubeClient+AudioTracks.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		C8816A6956459D145CAEFBDA = {
-			path = Opaline/Core/Playback/Sources/TVDeviceIdentity.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		58109F0A94F7AB9A9217BE73 = {
-			path = Opaline/Core/API/Models/SearchFilters.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		402123E4EF4A0683550889F4 = {
-			isa = PBXBuildFile;
-			fileRef = B86ED056F75F0A9E56508527;
-		};
-		1F2E1B6E6ECCF40BFFF633A7 = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4940A7172F6AD27900E6C599;
-			remoteGlobalIDString = 13177ACCB5A626FAD211C5C5;
-			remoteInfo = OpalineTV;
-			proxyType = 1;
-		};
-		1F06E3C968BB5A8C9B307596 = {
-			path = Opaline/Core/Services/WatchProgressStore.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		3AF4615ED388723B65F38341 = {
-			isa = PBXBuildFile;
-			fileRef = CCC7924248D890AE01CE9985;
-		};
-		B10116547F630E5B5D98547F = {
-			path = Opaline/Core/Services/SBCategory.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		8214A5027A10D652C7BBD52E = {
-			path = "Opaline/Core/Auth/OAuthClient+Credentials.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		99B92944C71A698CB17D37A6 = {
-			path = Opaline/Core/Services/SponsorBlockService.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		53C35D422174A001DBC0F258 = {
-			path = Opaline/tr.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = tr;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		E0ADC278BB9F428A153AC14A = {
-			isa = PBXBuildFile;
-			fileRef = CFED59759A4A7B846B0CEE5B;
-		};
-		4DEC7996FAF581FB082B2120 = {
-			path = Opaline/fr.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = fr;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		2CBBC2F76CDE3922C27177FE = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelTabs.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		B7F687EAE75C852FB670BAF6 = {
-			isa = PBXVariantGroup;
-			name = Localizable.strings;
-			children = (
-				B63D0BB966FC2EB4A30E5E55,
-				9187C876B61C37B39E31BE59,
-				81EC9ACC6EC8289434D46B87,
-				7E4282CC1EF8EAF804AD61AF,
-				82E2B0DB6042D52C1639334F,
-				7270A75829536DF5524A6262,
-				CCCF486EB100C71C9F9FBAEB,
-				181C10B36140EE4BB4E48E20,
-				53C35D422174A001DBC0F258,
-				A3B73290D97FB41DCBAD291C,
-				6B9961498E7FDCB06F242FB7,
-				95505184961664F3974770FB,
-				890BE04AF88B2B8428595562,
-			);
-			sourceTree = "<group>";
-		};
-		B0C418A1E587B20975E3A0B0 = {
-			isa = PBXBuildFile;
-			fileRef = 937515B77B4EC12108BE5248;
-		};
-		37EF2F53B3BA480F4A2D7C5F = {
-			path = Opaline/Core/Playback/PlaybackNonce.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DABE613ED147A8D441E07B4D = {
-			path = "Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		BBC52C85908D7C146C35DA58 = {
-			path = Opaline/Core/Transport/HTTPTransport.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		442D81F490C2F90F1C90A09F = {
-			path = "Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		F3D7BBC2A916E5E86E03354C = {
-			isa = PBXBuildFile;
-			fileRef = 4A2D25E590EBB8D140F06418;
-		};
-		65F72E0703EF0EB7E0C9B3E9 = {
-			path = "Opaline/Core/Playback/HLSStreamResolver+Solve.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		1AC13F10BA38E4D47808F644 = {
-			path = Opaline/Core/Playback/SABR/LocalMediaServer.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		6AAB6E6D7BB20400638FDFD7 = {
-			path = Config/TV.xcconfig;
-			isa = PBXFileReference;
-			lastKnownFileType = text.xcconfig;
-			sourceTree = SOURCE_ROOT;
-		};
-		3B5057C202C4320EF60913E4 = {
-			path = "Opaline/Core/API/InnertubeClient+WatchOwner.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		CF648320B7094CCB05F054B1 = {
-			path = Opaline/Core/Playback/AutoDubPreference.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		DB5AC81EE80B5EE3C8EE2A88 = {
-			path = OpalineTV;
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				9F4CEDF5810F600A33ABA348,
-			);
-			sourceTree = "<group>";
-		};
-		FD47C604076F28D4C05896FE = {
-			path = "Opaline/Core/Common/ThumbnailLoader+Network.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		920EB34ADA3784A5C50A15B8 = {
-			isa = PBXBuildFile;
-			fileRef = BBB6E0561C1C371E46516101;
-		};
-		94B464626F4C9E5AC16F55D5 = {
-			isa = PBXBuildFile;
-			fileRef = 760D56268C1970B1019EEBDE;
-		};
-		9EE20C048C354BA75701BF7D = {
-			isa = PBXBuildFile;
-			fileRef = 5437906D3A36CA3097CB26CE;
-		};
-		B3267D8417AAF882854B8B32 = {
-			isa = PBXBuildFile;
-			fileRef = 999736A2D0B279EDEC45D08F;
-		};
-		A80CAF483DC994FBCB27888C = {
-			isa = PBXBuildFile;
-			fileRef = 3268A33F20D5A610E78B8324;
-		};
-		13DB5D6DC1D3E72E62E76E62 = {
-			path = Opaline/Core/API/Clients/TVClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		9CF22A57113686C23375A19C = {
-			path = Opaline/Core/Playback/StreamDelivery.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		41E984DC92FCE84A3729487A = {
-			isa = PBXBuildFile;
-			fileRef = 8BD40EC5E4EBBC19F46D088A;
-		};
-		2450B6BF09CE375FDE0296BB = {
-			isa = PBXVariantGroup;
-			name = Localizable.stringsdict;
-			children = (
-				B4F56E2227AD102E89B6DF72,
-				4A9E4F3A831B6D645B469601,
-				6ED4C0CBAEF7C5D2A8929AB6,
-				4DEC7996FAF581FB082B2120,
-				22AE552887BA9EFEFFBD5AE5,
-				199B81F7F59C0263969CCD68,
-				3D9194306C7AC61B6A1E379D,
-				28C7DE3EEFDA3DC54C0A28BA,
-				C982A27DCBDA541732CBC266,
-				F2E7E5E9D962C335657CEC04,
-				0A27F4EED303E9EC99B0CA85,
-				0E09F5507FC30EA4F7546D3D,
-				7C1B3BA7EEDB47151148723A,
-			);
-			sourceTree = "<group>";
-		};
-		C52A3CF0461C652128A24235 = {
-			path = Opaline/Core/Common/ThumbnailURLPolicy.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		523713D69BBF469242122227 = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BCEF62639CCE49EC09B7913D,
-				7443092AB0252A42C4217C5C,
-				F1E20C5A16BF165E2B4CA474,
-				EF69C205B723D28E5155DFB7,
-				583A7F20621CEB983548C95E,
-				EBC0A74BBE4CCCC000D98DF3,
-				DB9416946EB9D86D1950346F,
-				84A808FB1291A4AD84845A08,
-				D023F54A3F11D758D1228897,
-				3DBB42149B4057DEBC23FAA2,
-				B0C418A1E587B20975E3A0B0,
-				A99BCA8A749EB633DA9E93B9,
-				811FD0ACFBB37034A7921AF0,
-				FF5DD477FA6F9169CFE3DB48,
-				3316DB6E01C39895D46495BC,
-				2E8FA2303644F8D62638411F,
-				05B66AF7F8A3D892F32379AA,
-				9C96EAA26474369FD8459C1C,
-				5E12809FC9FC7EA30853E4A4,
-				6E54EC42468367505D36F43C,
-				353D4C17AC895A7514538B70,
-				C0FD7E4E7BFDF94676A6B563,
-				5E3FAFB5A5D17C7B65C2D477,
-				9247201789AA7184F4D0531B,
-				16A97FF3B1F0BCA401934CE8,
-				0863A2B8664BC4D99CDB6BE4,
-				B864F36E2BDAB0CC689489AC,
-				B3267D8417AAF882854B8B32,
-				095058B015AFCE9C0B9D6543,
-				3FD67376630875B4F6B6B40E,
-				1C05418D3DA878F65EEBE367,
-				94E115867C530F3A81202D2A,
-				9D88DB78F90B8936B93FE9F9,
-				402123E4EF4A0683550889F4,
-				357356C91142C941237429E8,
-				D478643E230197609C3447B6,
-				B6A270BB78EAC84F4314AA35,
-				AD227D20484D46AEED3F1692,
-				53DAD9CF889E0D71C4776208,
-				D39517D16C92EC6602DDB64D,
-				8E511AA7C4A5D158358BF4F7,
-				B87BBDB46E46E32C255DC67A,
-				2DA7994412BC32769D3B9E8A,
-				1223FD229ACC336F7258A977,
-				17F11AC1D8493AF276FBAEB6,
-				1CAD7B5ED3F9FF014413EB32,
-				3B2AE185885B6498D639AE31,
-				825A212D2856C879D16D4EE6,
-				87527D42597EA528821EF980,
-				DE50CE3E79FEC5DC58B59CA3,
-				D7AE987FF19C805CF5DB3D5F,
-				01D6DB7E9460D7382A8B1886,
-				7879651A423B4DD56E62C2FB,
-				F3D7BBC2A916E5E86E03354C,
-				E991165F526307EACABAD436,
-				AE2B338194533A1FAF3ECCA8,
-				9D5865D47FA253991A43751A,
-				6C65EC936786CF6C0A0F8FDC,
-				AE6B6455D4F21E26AA39DE98,
-				19B49EE0388698FD5BE3C209,
-				A80CAF483DC994FBCB27888C,
-				DF92BF6A9F398A38E3C8C5CA,
-				7CC952B758D8A36EB0283F72,
-				559CA9404514D06441AC15AE,
-				5A4E580D1E50771BCC90D5CE,
-				2E3DBCA2DFF83C0B0A737DD8,
-				EF0E18FA8B25B975659168F8,
-				2BA5B4DB143F948CCA3F1260,
-				6281D63AD9053DC5DF043F5C,
-				8731B7D3DC3A5C8A20D9CECE,
-				88783150263143CB755270EA,
-				063538D5EB5352ED6ABD2C02,
-				C719D139399A064446844063,
-				0279F685B7FAA35738CBF301,
-				5D3666121A18105068202CEB,
-				04DB726E0D91DF3568DB3238,
-				80C28BCFBDE2A8D38190199B,
-				E315D22320AEF3D77C8032BD,
-				51D09228F8404577324C5EA4,
-				2C778678120062778C87631B,
-				9EE20C048C354BA75701BF7D,
-				566849C7ABF43838875F94A6,
-				14A9FA2AD34E42BCEBDA5076,
-				35D63620131CC89341F4657D,
-				0AB71F713EC41C0126A34739,
-				CA73F42BA20BE50992521D40,
-				36CC67E0EE20922567CC2DCC,
-				0AE6DAF6B68761E1BE891015,
-				0F668D8200A18FE689000525,
-				A4AF6F7853998653D1FA12FB,
-				2CC59A8F21E433AA913C9329,
-				AAA815A79062AB389DA74982,
-				DD35775590C0E527F4EB57D9,
-				62D9FD0F95F216336E35D911,
-				061EEF6E219B0786328DB501,
-				C163AB71659086C86BE1E6D6,
-				A67AE49B43EB7984D9F10F1A,
-				61DF98B975FC9111BEF81548,
-				773C3723B413B0EE06FA46D4,
-				BFF6C09824C420AFAF5D1F72,
-				5F353FC33510F9985052560F,
-				32C6864328E57CD7B1CFCEB3,
-				D4DA51ADB15564D38C7C7049,
-				D1CD02EF0D7D31E1B072E3FA,
-				07A9ABF078E8F384EB62CB7E,
-				2A3829E20FD48A96287526E3,
-				E586CC48F922E3C429916C0C,
-				1B90E4CD6E85BC0F174571E7,
-				9EC6AA0B3217107FDF374F64,
-				4B49362601A92055C55F08A0,
-				C44BFC6F42C87CF735682DAD,
-				A1CFF54D0A96D70D4DDE3486,
-				7CF012395994B5E463385792,
-				B7C14F3ADCD5CD0879BA251B,
-				BF35207146335D6443E695F9,
-				BC3B9C689BF97CE66CA0DA1F,
-				307C7CDEF1E4DB78AB9D8545,
-				BC736F9E49241253F2620A7D,
-				F61B486A72A16E607827B8D9,
-				127A409BD46362414D97DD4F,
-				633224611D77333D7A243563,
-				2E9CD7C14B117D4AE5653F21,
-				5F876AD8F8876C881DD11ABC,
-				C34D635383D4D0AFDAA9DBDE,
-				94B464626F4C9E5AC16F55D5,
-				3D6BA066200E655402CA4A0B,
-				2AE28349BFDD6535A0779739,
-				9BA2116FA118BC29564DC9D5,
-				C19208A045697667597B63B5,
-				D18CFBD9C0C17CCE700D3A5F,
-				74A4F791E6E2C6EFF26F126F,
-				4158311ABEFC8546B294CD41,
-				3AF4615ED388723B65F38341,
-				D44D7EC6F1EDB70700017ABF,
-				0ABE4553D96B9C242DD6F3EE,
-				0058B615B16196C3EF95E0EF,
-				920EB34ADA3784A5C50A15B8,
-				AFC0BBAE18EDA86088D49DFF,
-				8D4AFABCB50733DB15653669,
-				15651FC64ACDCAD3BC581DFA,
-				A9FC68E5BB26A8FBD83578F1,
-				360027A336F6DCA6BEAE42A9,
-				D49425B35F41CEE138866CF7,
-				0CA495ED0FF765EC71E6DC70,
-				C61DC9D18B729C866508BDED,
-				E0ADC278BB9F428A153AC14A,
-				DA628B371B7B2DA233FAEDC1,
-				E6364EA6C62618EEF4640A68,
-				259C18BADF39AF9E1295BF9A,
-				4E8F9B6747CDD68AABD6BAAD,
-				04FA610BC8B78DA35913A1D6,
-				F581410D0B1D4C6F3C7B3934,
-				41E984DC92FCE84A3729487A,
-				E97BABC558C4D53BBC1903F3,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		833E9DBAA779406B6534FF41 = {
-			path = "Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		04DB726E0D91DF3568DB3238 = {
-			isa = PBXBuildFile;
-			fileRef = E60E69E7C150BA4C8B49E572;
-		};
-		1ECA7238C0004DF0A1000197 = {
-			isa = PBXBuildFile;
-			fileRef = 2450B6BF09CE375FDE0296BB;
-		};
-		F61B486A72A16E607827B8D9 = {
-			isa = PBXBuildFile;
-			fileRef = FF19B88190072E6269810D93;
-		};
-		2E9CD7C14B117D4AE5653F21 = {
-			isa = PBXBuildFile;
-			fileRef = E93F1AF05193CA485F71D98C;
-		};
-		566849C7ABF43838875F94A6 = {
-			isa = PBXBuildFile;
-			fileRef = 905CF1D34E6D344F2BBD8434;
-		};
-		181C10B36140EE4BB4E48E20 = {
-			path = Opaline/ru.lproj/Localizable.strings;
-			isa = PBXFileReference;
-			name = ru;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		C203A76A5461594C1BA9F2C2 = {
-			path = OpalineTV.app;
-			isa = PBXFileReference;
-			explicitFileType = wrapper.application;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CE2DCA9B5A8E2AE488B7A391 = {
-			path = "Opaline/Core/API/InnertubeClient+PlaylistEdit.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		289F1DB29096F2E076E9B550 = {
-			path = "Opaline/Core/Services/WatchService+Defaults.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0E09F5507FC30EA4F7546D3D = {
-			path = "Opaline/zh-Hans.lproj/Localizable.stringsdict";
-			isa = PBXFileReference;
-			name = "zh-Hans";
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		D435B080B55638E8ABF45996 = {
-			path = Opaline/Core/Playback/Sources/FallbackChainSource.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		4CFD6D11A8BE8387E3273650 = {
-			path = Opaline/Core/API/Models/WatchPage.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		F9095F2F9DE6612C509A0A00 = {
-			path = Opaline/Core/API/Clients/PlaybackClient.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		30A827ACC9B4A92A66EA3B64 = {
-			path = Opaline/Core/Playback/SABR/SABRFetcher.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		559CA9404514D06441AC15AE = {
-			isa = PBXBuildFile;
-			fileRef = 4CFD6D11A8BE8387E3273650;
-		};
-		4B49362601A92055C55F08A0 = {
-			isa = PBXBuildFile;
-			fileRef = EAACB569EEAC06969932F317;
-		};
-		8731B7D3DC3A5C8A20D9CECE = {
-			isa = PBXBuildFile;
-			fileRef = 4539645B65F34253CFEB8C16;
-		};
-		EF69C205B723D28E5155DFB7 = {
-			isa = PBXBuildFile;
-			fileRef = F9095F2F9DE6612C509A0A00;
-		};
-		D7AE987FF19C805CF5DB3D5F = {
-			isa = PBXBuildFile;
-			fileRef = 76F3C43127031F32FE90C96E;
-		};
-		C19208A045697667597B63B5 = {
-			isa = PBXBuildFile;
-			fileRef = 9CF22A57113686C23375A19C;
-		};
-		6ED4C0CBAEF7C5D2A8929AB6 = {
-			path = Opaline/es.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = es;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		4940A7202F6AD27900E6C599 = {
-			isa = PBXGroup;
-			name = Products;
-			children = (
-				C203A76A5461594C1BA9F2C2,
-				5F7626CE624C89AF4D93A4FA,
-			);
-			sourceTree = "<group>";
-		};
-		9C8621DD8E5FF0C2657FA0C0 = {
-			path = Opaline/Core/Playback/HLSGenerator.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0A27F4EED303E9EC99B0CA85 = {
-			path = Opaline/vi.lproj/Localizable.stringsdict;
-			isa = PBXFileReference;
-			name = vi;
-			lastKnownFileType = text.plist.strings;
-			sourceTree = SOURCE_ROOT;
-		};
-		127A409BD46362414D97DD4F = {
-			isa = PBXBuildFile;
-			fileRef = 4F1F787F8B7004FB7C891E5E;
-		};
-		1B90E4CD6E85BC0F174571E7 = {
-			isa = PBXBuildFile;
-			fileRef = 833E9DBAA779406B6534FF41;
-		};
-		D75F1004243281531EFD0F41 = {
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D75F1004243281531EFD0F41 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0743F5FD0E8C1F82FE57AD35,
-				1ECA7238C0004DF0A1000197,
+				0743F5FD0E8C1F82FE57AD35 /* Localizable.strings in Resources */,
+				1ECA7238C0004DF0A1000197 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		88057FA0DE74A972B57C9EE8 = {
-			path = Opaline/Core/API/Parsing/FeedbackActionParser.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		D478643E230197609C3447B6 = {
-			isa = PBXBuildFile;
-			fileRef = 18B9111B9D59558A9F7CC8B9;
-		};
-		0889E3ADC6E3D27899369B05 = {
-			path = Opaline/Core/Transport/LoggingTransport.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5F353FC33510F9985052560F = {
-			isa = PBXBuildFile;
-			fileRef = A70A1D3790854702D401A2E7;
-		};
-		2BA5B4DB143F948CCA3F1260 = {
-			isa = PBXBuildFile;
-			fileRef = 8214A5027A10D652C7BBD52E;
-		};
-		4B7768449885D0E0E27EFFB1 = {
-			path = Opaline/Core/Playback/SABR/StreamURLParams.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		CA04B68383FFFF2AC6770F50 = {
-			path = Opaline/Core/Playback/TVSolverWarmup.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		0058B615B16196C3EF95E0EF = {
-			isa = PBXBuildFile;
-			fileRef = E4B665C3238AE95B2BD45A95;
-		};
-		D6555BACDB819CDD565025ED = {
-			path = "Opaline/Core/API/InnertubeClient+PlaybackParsing.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		5F876AD8F8876C881DD11ABC = {
-			isa = PBXBuildFile;
-			fileRef = 439A238EC237FA5F4537A2F8;
-		};
-		A9FC68E5BB26A8FBD83578F1 = {
-			isa = PBXBuildFile;
-			fileRef = 666A50D7AC64B36244A40C8A;
-		};
-		2391FA8661EBE6FC021235D3 = {
-			path = Opaline/Core/Playback/AudioOnlyMode.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
-		};
-		C1BB8B1FADA25DF8B6BDDE6D = {
-			isa = PBXGroup;
-			name = "TV Shared Sources";
-			children = (
-				6AAB6E6D7BB20400638FDFD7,
-				0E3895C82198C4EC33D83F3A,
-				5A9EB50380AC4924BEC6EDF7,
-				097CF2030DA33A6E5C14B025,
-				7292B66E09646227F490D8F1,
-				F9095F2F9DE6612C509A0A00,
-				7A418DE23A4660ED56F98C63,
-				13DB5D6DC1D3E72E62E76E62,
-				E24E850A3DB4DD7B6D974571,
-				1BEF11895032E4FBFEB80737,
-				8B5EFC7A1C2A4C07FEEEB3BF,
-				51C75C79E832B8D8AC80FCA9,
-				937515B77B4EC12108BE5248,
-				77E679EDE0B772DEFBA1DD02,
-				0AC250F9889A8935FBBE9413,
-				15310FE3CB0C1BFFB52418CF,
-				442D81F490C2F90F1C90A09F,
-				4E85D5A51F8C159FE8E77827,
-				F284BA51060B0897415FDCBC,
-				37767D7D91BDC5CCAD4EB3D5,
-				5AA605FE2372B2E601A97DE6,
-				90873F97CA26519F1523B996,
-				2CBBC2F76CDE3922C27177FE,
-				59FFEB1DEB9F705C6C2024E4,
-				65D4F794B9E2AFF3C10AF8F7,
-				D052F58998074AEDF7F5D77A,
-				D51AE5E2139E0C2787A8A79A,
-				1999100B6D17816B7583CD5A,
-				70A9D344A36C8B061E76623C,
-				999736A2D0B279EDEC45D08F,
-				9F3F490C8166AD10827C71AC,
-				6D95BBCE1C99F42F64CEEF90,
-				D6555BACDB819CDD565025ED,
-				CE2DCA9B5A8E2AE488B7A391,
-				B4ACC6D0233B752C9CA21111,
-				B86ED056F75F0A9E56508527,
-				341378EE581629EF167D0B5A,
-				18B9111B9D59558A9F7CC8B9,
-				E0B4EAD5F2D7C8A2E976C1ED,
-				D9BC7CD290AA1481991510D2,
-				669FC347362C273C012D61F6,
-				A91103794A306786417C2CFC,
-				A25E9ABED45931CBC0F32DAE,
-				9A45FF6F69BFDD48092C915B,
-				02E4ED6786FF3CE4F81A8A8C,
-				86B6EDEAC44B49C4DC62821C,
-				3B5057C202C4320EF60913E4,
-				9272EEBA5CAF0B294DF5332E,
-				742EFB07CE8FADC1607D25F9,
-				43A5FE5A814859C7447499D9,
-				9864CC9AB7CF8200ADD18539,
-				52752A46D6312B9273A56E1B,
-				76F3C43127031F32FE90C96E,
-				BE3E1857172DDFC0F363EDCA,
-				B2EACCEFDD4F8F0BB7E35F94,
-				4A2D25E590EBB8D140F06418,
-				CE4EE3C09314F4D23F212A3A,
-				37269DB0F6FBA548E9B76DD6,
-				5B4F457CCC0FD20F03BEE2AA,
-				69F36C7D4B34BB4927FD50ED,
-				58109F0A94F7AB9A9217BE73,
-				F033AA7DF2A4F7B5F68BA178,
-				3268A33F20D5A610E78B8324,
-				E5A9C06338FD1DC8F6BB2304,
-				D73B5EEAE1483152E34FCA47,
-				4CFD6D11A8BE8387E3273650,
-				9492E8FB8D078204CE7763DE,
-				88057FA0DE74A972B57C9EE8,
-				FFC3C5C05460C9373790740E,
-				8214A5027A10D652C7BBD52E,
-				17C8D517F2D5457C77F4BDF1,
-				1295870E820F67E81AD69D23,
-				99A23724E9F782C97F51938D,
-				4539645B65F34253CFEB8C16,
-				0B443C9805119357E75B7C86,
-				76A271ADF93E331345FE555D,
-				2B2C8AB805BAC5BD7D5EC8DF,
-				2E0B8E4FBEF4E5FDDE4C1AB3,
-				FD47C604076F28D4C05896FE,
-				E60E69E7C150BA4C8B49E572,
-				C52A3CF0461C652128A24235,
-				531D2C7E3AF1919F3FFB9F2D,
-				34889179B9D6E9F51F8AFE53,
-				BD7A77654D5CD0E53D1719CF,
-				5437906D3A36CA3097CB26CE,
-				905CF1D34E6D344F2BBD8434,
-				CC2EE2E7D93FBC0E462A40AE,
-				0BD1D70D7B5BCC1C94004B17,
-				57AA6D95B29DF97422008DB6,
-				D78E644A3B47042D8A9730BF,
-				2391FA8661EBE6FC021235D3,
-				CF648320B7094CCB05F054B1,
-				A83A1E36D5543972CA5B6BC0,
-				AB3B8133E99D180EBD1AB3FF,
-				9C8621DD8E5FF0C2657FA0C0,
-				46145318460DB56D2184BB71,
-				4BAC31F432459A660F9F8D22,
-				880E6A121E66A6BB941335C1,
-				22E244A332F14AD6D5A30251,
-				CBD8FE264801F526B30C289A,
-				65F72E0703EF0EB7E0C9B3E9,
-				DA1D504FDA5FE6D06DB89636,
-				87DBDDFFCFA71AB9CDC3BC71,
-				D07A172E77769C3430C7099B,
-				A70A1D3790854702D401A2E7,
-				7DF1D4D207D2CB6012D54712,
-				37EF2F53B3BA480F4A2D7C5F,
-				4C41BC8E390746C991CA96CE,
-				C7B7C0ACC7BF0EEB45FBB18A,
-				F3952158AFC0BAC5A6F0915C,
-				676B38CC421CDF2C8F569530,
-				833E9DBAA779406B6534FF41,
-				1AC13F10BA38E4D47808F644,
-				EAACB569EEAC06969932F317,
-				73458CCFC9AF8012AF1A2A73,
-				934544165D4AF2D9C57BF426,
-				D47B11D5655CE26724132B0D,
-				4DEBD6A4F0BC2767C07F9AFA,
-				30A827ACC9B4A92A66EA3B64,
-				D65BECD13A5F97A7E712B37A,
-				BD65E7F3C40FB5315D687DE6,
-				4B7768449885D0E0E27EFFB1,
-				FF19B88190072E6269810D93,
-				4F1F787F8B7004FB7C891E5E,
-				D435B080B55638E8ABF45996,
-				E93F1AF05193CA485F71D98C,
-				439A238EC237FA5F4537A2F8,
-				DABE613ED147A8D441E07B4D,
-				760D56268C1970B1019EEBDE,
-				BDF8D294FD4D2604D62CDAF7,
-				29ADDB41439781C18DBF3874,
-				C8816A6956459D145CAEFBDA,
-				9CF22A57113686C23375A19C,
-				139029AFCD05E7008A080219,
-				CA04B68383FFFF2AC6770F50,
-				52350220D5094F163C19AF14,
-				CCC7924248D890AE01CE9985,
-				183DB4F63C9B81CF9A19ACA2,
-				0E372F7F77B84F4AAE54D9CD,
-				E4B665C3238AE95B2BD45A95,
-				BBB6E0561C1C371E46516101,
-				6F213B8C13217244BF217905,
-				4599B5E04EB6B3E91C1144B4,
-				B10116547F630E5B5D98547F,
-				666A50D7AC64B36244A40C8A,
-				0ED4008D16A8422744EACE49,
-				05A42DA88D66923C977F8611,
-				99B92944C71A698CB17D37A6,
-				5E3E846C6C4E3CF8EEAA3731,
-				CFED59759A4A7B846B0CEE5B,
-				A4BCA9044939F3C21C62FAE9,
-				B043947D370D1D4E6A5C78F1,
-				1F06E3C968BB5A8C9B307596,
-				FEFF1E2BA7917C5B5E3F5FF7,
-				289F1DB29096F2E076E9B550,
-				08FFBFC1B9C6EE17E4AFEE43,
-				3184DE11239C4555F2A6D887,
-				BBC52C85908D7C146C35DA58,
-				0889E3ADC6E3D27899369B05,
-				8BD40EC5E4EBBC19F46D088A,
-				0B9B36B2EAA54B98567C1D17,
-				B7F687EAE75C852FB670BAF6,
-				2450B6BF09CE375FDE0296BB,
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		523713D69BBF469242122227 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCEF62639CCE49EC09B7913D /* Opaline/Core/Common/VideoFormatters.swift in Sources */,
+				7443092AB0252A42C4217C5C /* Opaline/Core/API/APIClient.swift in Sources */,
+				F1E20C5A16BF165E2B4CA474 /* Opaline/Core/API/Clients/AndroidClient.swift in Sources */,
+				EF69C205B723D28E5155DFB7 /* Opaline/Core/API/Clients/PlaybackClient.swift in Sources */,
+				583A7F20621CEB983548C95E /* Opaline/Core/API/Clients/SABRClientInfo.swift in Sources */,
+				EBC0A74BBE4CCCC000D98DF3 /* Opaline/Core/API/Clients/TVClient.swift in Sources */,
+				DB9416946EB9D86D1950346F /* Opaline/Core/API/Clients/VisionOSClient.swift in Sources */,
+				84A808FB1291A4AD84845A08 /* Opaline/Core/API/InnertubeClient+Account.swift in Sources */,
+				D023F54A3F11D758D1228897 /* Opaline/Core/API/InnertubeClient+AudioTracks.swift in Sources */,
+				3DBB42149B4057DEBC23FAA2 /* Opaline/Core/API/InnertubeClient+Browse.swift in Sources */,
+				B0C418A1E587B20975E3A0B0 /* Opaline/Core/API/InnertubeClient+BrowseHelpers.swift in Sources */,
+				A99BCA8A749EB633DA9E93B9 /* Opaline/Core/API/InnertubeClient+BrowseParsing.swift in Sources */,
+				811FD0ACFBB37034A7921AF0 /* Opaline/Core/API/InnertubeClient+Captions.swift in Sources */,
+				FF5DD477FA6F9169CFE3DB48 /* Opaline/Core/API/InnertubeClient+Channel.swift in Sources */,
+				3316DB6E01C39895D46495BC /* Opaline/Core/API/InnertubeClient+ChannelHeaderAbout.swift in Sources */,
+				2E8FA2303644F8D62638411F /* Opaline/Core/API/InnertubeClient+ChannelHelpers.swift in Sources */,
+				05B66AF7F8A3D892F32379AA /* Opaline/Core/API/InnertubeClient+ChannelLegacy.swift in Sources */,
+				9C96EAA26474369FD8459C1C /* Opaline/Core/API/InnertubeClient+ChannelParsing.swift in Sources */,
+				5E12809FC9FC7EA30853E4A4 /* Opaline/Core/API/InnertubeClient+ChannelSearch.swift in Sources */,
+				6E54EC42468367505D36F43C /* Opaline/Core/API/InnertubeClient+ChannelSearchParsing.swift in Sources */,
+				353D4C17AC895A7514538B70 /* Opaline/Core/API/InnertubeClient+ChannelTabs.swift in Sources */,
+				C0FD7E4E7BFDF94676A6B563 /* Opaline/Core/API/InnertubeClient+ChannelTabsParsing.swift in Sources */,
+				5E3FAFB5A5D17C7B65C2D477 /* Opaline/Core/API/InnertubeClient+CommentBuilding.swift in Sources */,
+				9247201789AA7184F4D0531B /* Opaline/Core/API/InnertubeClient+CommentParsing.swift in Sources */,
+				16A97FF3B1F0BCA401934CE8 /* Opaline/Core/API/InnertubeClient+Feedback.swift in Sources */,
+				0863A2B8664BC4D99CDB6BE4 /* Opaline/Core/API/InnertubeClient+HistoryShorts.swift in Sources */,
+				B864F36E2BDAB0CC689489AC /* Opaline/Core/API/InnertubeClient+LockupParsing.swift in Sources */,
+				B3267D8417AAF882854B8B32 /* Opaline/Core/API/InnertubeClient+ParsingHelpers.swift in Sources */,
+				095058B015AFCE9C0B9D6543 /* Opaline/Core/API/InnertubeClient+PivotParsing.swift in Sources */,
+				3FD67376630875B4F6B6B40E /* Opaline/Core/API/InnertubeClient+Playback.swift in Sources */,
+				1C05418D3DA878F65EEBE367 /* Opaline/Core/API/InnertubeClient+PlaybackParsing.swift in Sources */,
+				94E115867C530F3A81202D2A /* Opaline/Core/API/InnertubeClient+PlaylistEdit.swift in Sources */,
+				9D88DB78F90B8936B93FE9F9 /* Opaline/Core/API/InnertubeClient+PlaylistParams.swift in Sources */,
+				402123E4EF4A0683550889F4 /* Opaline/Core/API/InnertubeClient+Playlists.swift in Sources */,
+				357356C91142C941237429E8 /* Opaline/Core/API/InnertubeClient+RendererParsing.swift in Sources */,
+				D478643E230197609C3447B6 /* Opaline/Core/API/InnertubeClient+SearchSuggest.swift in Sources */,
+				B6A270BB78EAC84F4314AA35 /* Opaline/Core/API/InnertubeClient+ShelfContinuations.swift in Sources */,
+				AD227D20484D46AEED3F1692 /* Opaline/Core/API/InnertubeClient+Shorts.swift in Sources */,
+				53DAD9CF889E0D71C4776208 /* Opaline/Core/API/InnertubeClient+SignatureCipher.swift in Sources */,
+				D39517D16C92EC6602DDB64D /* Opaline/Core/API/InnertubeClient+SubscribedChannels.swift in Sources */,
+				8E511AA7C4A5D158358BF4F7 /* Opaline/Core/API/InnertubeClient+ThumbnailHelpers.swift in Sources */,
+				B87BBDB46E46E32C255DC67A /* Opaline/Core/API/InnertubeClient+TileHelpers.swift in Sources */,
+				2DA7994412BC32769D3B9E8A /* Opaline/Core/API/InnertubeClient+VisitorData.swift in Sources */,
+				1223FD229ACC336F7258A977 /* Opaline/Core/API/InnertubeClient+WatchHTMLParsing.swift in Sources */,
+				17F11AC1D8493AF276FBAEB6 /* Opaline/Core/API/InnertubeClient+WatchOwner.swift in Sources */,
+				1CAD7B5ED3F9FF014413EB32 /* Opaline/Core/API/InnertubeClient+WatchParsing.swift in Sources */,
+				3B2AE185885B6498D639AE31 /* Opaline/Core/API/InnertubeClient.swift in Sources */,
+				825A212D2856C879D16D4EE6 /* Opaline/Core/API/InnertubeClientDebugLogging.swift in Sources */,
+				87527D42597EA528821EF980 /* Opaline/Core/API/InnertubeClientPageParsing.swift in Sources */,
+				DE50CE3E79FEC5DC58B59CA3 /* Opaline/Core/API/InnertubeClientParsing.swift in Sources */,
+				D7AE987FF19C805CF5DB3D5F /* Opaline/Core/API/InnertubeClientPlayerParsing.swift in Sources */,
+				01D6DB7E9460D7382A8B1886 /* Opaline/Core/API/InnertubeContexts.swift in Sources */,
+				7879651A423B4DD56E62C2FB /* Opaline/Core/API/InnertubeKeys.swift in Sources */,
+				F3D7BBC2A916E5E86E03354C /* Opaline/Core/API/InnertubeRequestExecutor.swift in Sources */,
+				E991165F526307EACABAD436 /* Opaline/Core/API/InnertubeSession.swift in Sources */,
+				AE2B338194533A1FAF3ECCA8 /* Opaline/Core/API/Models/DirectPlaybackInfo.swift in Sources */,
+				9D5865D47FA253991A43751A /* Opaline/Core/API/Models/FeedbackAction.swift in Sources */,
+				6C65EC936786CF6C0A0F8FDC /* Opaline/Core/API/Models/Playlist.swift in Sources */,
+				AE6B6455D4F21E26AA39DE98 /* Opaline/Core/API/Models/SearchFilters.swift in Sources */,
+				19B49EE0388698FD5BE3C209 /* Opaline/Core/API/Models/SubscribedChannel.swift in Sources */,
+				A80CAF483DC994FBCB27888C /* Opaline/Core/API/Models/SubtitleTrack.swift in Sources */,
+				DF92BF6A9F398A38E3C8C5CA /* Opaline/Core/API/Models/Video.swift in Sources */,
+				7CC952B758D8A36EB0283F72 /* Opaline/Core/API/Models/WatchMetadata.swift in Sources */,
+				559CA9404514D06441AC15AE /* Opaline/Core/API/Models/WatchPage.swift in Sources */,
+				5A4E580D1E50771BCC90D5CE /* Opaline/Core/API/Parsing/ConcreteRendererParsers.swift in Sources */,
+				2E3DBCA2DFF83C0B0A737DD8 /* Opaline/Core/API/Parsing/FeedbackActionParser.swift in Sources */,
+				EF0E18FA8B25B975659168F8 /* Opaline/Core/API/Parsing/VideoRendererParser.swift in Sources */,
+				2BA5B4DB143F948CCA3F1260 /* Opaline/Core/Auth/OAuthClient+Credentials.swift in Sources */,
+				6281D63AD9053DC5DF043F5C /* Opaline/Core/Auth/OAuthClient+Refresh.swift in Sources */,
+				8731B7D3DC3A5C8A20D9CECE /* Opaline/Core/Auth/OAuthTokens.swift in Sources */,
+				88783150263143CB755270EA /* Opaline/Core/Common/AppLog.swift in Sources */,
+				063538D5EB5352ED6ABD2C02 /* Opaline/Core/Common/CancellationToken.swift in Sources */,
+				C719D139399A064446844063 /* Opaline/Core/Common/Extensions/Dictionary+Dig.swift in Sources */,
+				0279F685B7FAA35738CBF301 /* Opaline/Core/Common/ThumbnailLoader+Decode.swift in Sources */,
+				5D3666121A18105068202CEB /* Opaline/Core/Common/ThumbnailLoader+Network.swift in Sources */,
+				04DB726E0D91DF3568DB3238 /* Opaline/Core/Common/ThumbnailLoader.swift in Sources */,
+				80C28BCFBDE2A8D38190199B /* Opaline/Core/Common/ThumbnailURLPolicy.swift in Sources */,
+				E315D22320AEF3D77C8032BD /* Opaline/Core/Common/UserProfileStore.swift in Sources */,
+				51D09228F8404577324C5EA4 /* Opaline/Core/Config/AppURLs.swift in Sources */,
+				2C778678120062778C87631B /* Opaline/Core/Config/HTTPConstants.swift in Sources */,
+				9EE20C048C354BA75701BF7D /* Opaline/Core/Config/PlaybackChainSettings.swift in Sources */,
+				566849C7ABF43838875F94A6 /* Opaline/Core/Config/UserDefaultsKeys.swift in Sources */,
+				14A9FA2AD34E42BCEBDA5076 /* Opaline/Core/Localization/AppLanguage.swift in Sources */,
+				35D63620131CC89341F4657D /* Opaline/Core/Localization/ContentKeywords.swift in Sources */,
+				0AB71F713EC41C0126A34739 /* Opaline/Core/Localization/LocalePreferences.swift in Sources */,
+				CA73F42BA20BE50992521D40 /* Opaline/Core/Localization/LocalizationManager.swift in Sources */,
+				36CC67E0EE20922567CC2DCC /* Opaline/Core/Playback/AudioOnlyMode.swift in Sources */,
+				0AE6DAF6B68761E1BE891015 /* Opaline/Core/Playback/AutoDubPreference.swift in Sources */,
+				0F668D8200A18FE689000525 /* Opaline/Core/Playback/AutoplayPreference.swift in Sources */,
+				A4AF6F7853998653D1FA12FB /* Opaline/Core/Playback/HLSGenerator+Sidx.swift in Sources */,
+				2CC59A8F21E433AA913C9329 /* Opaline/Core/Playback/HLSGenerator.swift in Sources */,
+				AAA815A79062AB389DA74982 /* Opaline/Core/Playback/HLSPlaybackBuilder+Diagnostics.swift in Sources */,
+				DD35775590C0E527F4EB57D9 /* Opaline/Core/Playback/HLSPlaybackBuilder+Fetch.swift in Sources */,
+				62D9FD0F95F216336E35D911 /* Opaline/Core/Playback/HLSPlaybackBuilder.swift in Sources */,
+				061EEF6E219B0786328DB501 /* Opaline/Core/Playback/HLSPlaylistLoader.swift in Sources */,
+				C163AB71659086C86BE1E6D6 /* Opaline/Core/Playback/HLSStreamResolver+Remote.swift in Sources */,
+				A67AE49B43EB7984D9F10F1A /* Opaline/Core/Playback/HLSStreamResolver+Solve.swift in Sources */,
+				61DF98B975FC9111BEF81548 /* Opaline/Core/Playback/HLSStreamResolver.swift in Sources */,
+				773C3723B413B0EE06FA46D4 /* Opaline/Core/Playback/LiveHLSPlayback.swift in Sources */,
+				BFF6C09824C420AFAF5D1F72 /* Opaline/Core/Playback/LiveHLSVariants.swift in Sources */,
+				5F353FC33510F9985052560F /* Opaline/Core/Playback/PlaybackContext.swift in Sources */,
+				32C6864328E57CD7B1CFCEB3 /* Opaline/Core/Playback/PlaybackFacade+Identity.swift in Sources */,
+				D4DA51ADB15564D38C7C7049 /* Opaline/Core/Playback/PlaybackNonce.swift in Sources */,
+				D1CD02EF0D7D31E1B072E3FA /* Opaline/Core/Playback/PlaybackProgress.swift in Sources */,
+				07A9ABF078E8F384EB62CB7E /* Opaline/Core/Playback/PlaybackQueue.swift in Sources */,
+				2A3829E20FD48A96287526E3 /* Opaline/Core/Playback/PlaybackStep.swift in Sources */,
+				E586CC48F922E3C429916C0C /* Opaline/Core/Playback/SABR/Data+Slice.swift in Sources */,
+				1B90E4CD6E85BC0F174571E7 /* Opaline/Core/Playback/SABR/LocalMediaServer+HTTP.swift in Sources */,
+				9EC6AA0B3217107FDF374F64 /* Opaline/Core/Playback/SABR/LocalMediaServer.swift in Sources */,
+				4B49362601A92055C55F08A0 /* Opaline/Core/Playback/SABR/MediaHeader.swift in Sources */,
+				C44BFC6F42C87CF735682DAD /* Opaline/Core/Playback/SABR/Protobuf.swift in Sources */,
+				A1CFF54D0A96D70D4DDE3486 /* Opaline/Core/Playback/SABR/SABRDelivery+NSolve.swift in Sources */,
+				7CF012395994B5E463385792 /* Opaline/Core/Playback/SABR/SABRDelivery+Serving.swift in Sources */,
+				B7C14F3ADCD5CD0879BA251B /* Opaline/Core/Playback/SABR/SABRDelivery.swift in Sources */,
+				BF35207146335D6443E695F9 /* Opaline/Core/Playback/SABR/SABRFetcher.swift in Sources */,
+				BC3B9C689BF97CE66CA0DA1F /* Opaline/Core/Playback/SABR/SABRRequest.swift in Sources */,
+				307C7CDEF1E4DB78AB9D8545 /* Opaline/Core/Playback/SABR/SABRSegmentCollector.swift in Sources */,
+				BC736F9E49241253F2620A7D /* Opaline/Core/Playback/SABR/StreamURLParams.swift in Sources */,
+				F61B486A72A16E607827B8D9 /* Opaline/Core/Playback/SABR/UMPReader.swift in Sources */,
+				127A409BD46362414D97DD4F /* Opaline/Core/Playback/Sources/AutoDubSource.swift in Sources */,
+				633224611D77333D7A243563 /* Opaline/Core/Playback/Sources/FallbackChainSource.swift in Sources */,
+				2E9CD7C14B117D4AE5653F21 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Attestation.swift in Sources */,
+				5F876AD8F8876C881DD11ABC /* Opaline/Core/Playback/Sources/InnertubeVideoSource+AudioTracks.swift in Sources */,
+				C34D635383D4D0AFDAA9DBDE /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Delivery.swift in Sources */,
+				94B464626F4C9E5AC16F55D5 /* Opaline/Core/Playback/Sources/InnertubeVideoSource+Qualities.swift in Sources */,
+				3D6BA066200E655402CA4A0B /* Opaline/Core/Playback/Sources/InnertubeVideoSource.swift in Sources */,
+				2AE28349BFDD6535A0779739 /* Opaline/Core/Playback/Sources/ProgressiveSource.swift in Sources */,
+				9BA2116FA118BC29564DC9D5 /* Opaline/Core/Playback/Sources/TVDeviceIdentity.swift in Sources */,
+				C19208A045697667597B63B5 /* Opaline/Core/Playback/StreamDelivery.swift in Sources */,
+				D18CFBD9C0C17CCE700D3A5F /* Opaline/Core/Playback/StreamDeliveryFactory.swift in Sources */,
+				74A4F791E6E2C6EFF26F126F /* Opaline/Core/Playback/TVSolverWarmup.swift in Sources */,
+				4158311ABEFC8546B294CD41 /* Opaline/Core/Playback/VideoSource.swift in Sources */,
+				3AF4615ED388723B65F38341 /* Opaline/Core/Playback/WebViewHLSSolverJS.swift in Sources */,
+				D44D7EC6F1EDB70700017ABF /* Opaline/Core/Services/AppCache+Feeds.swift in Sources */,
+				0ABE4553D96B9C242DD6F3EE /* Opaline/Core/Services/ChannelRSSParser.swift in Sources */,
+				0058B615B16196C3EF95E0EF /* Opaline/Core/Services/ChannelRSSService+Fetching.swift in Sources */,
+				920EB34ADA3784A5C50A15B8 /* Opaline/Core/Services/ChannelRSSService.swift in Sources */,
+				AFC0BBAE18EDA86088D49DFF /* Opaline/Core/Services/ChannelTabService.swift in Sources */,
+				8D4AFABCB50733DB15653669 /* Opaline/Core/Services/PoToken/RemotePoTokenService.swift in Sources */,
+				15651FC64ACDCAD3BC581DFA /* Opaline/Core/Services/SBCategory.swift in Sources */,
+				A9FC68E5BB26A8FBD83578F1 /* Opaline/Core/Services/SignatureTimestampService+TVPlayer.swift in Sources */,
+				360027A336F6DCA6BEAE42A9 /* Opaline/Core/Services/SignatureTimestampService+TVTimestamp.swift in Sources */,
+				D49425B35F41CEE138866CF7 /* Opaline/Core/Services/SignatureTimestampService.swift in Sources */,
+				0CA495ED0FF765EC71E6DC70 /* Opaline/Core/Services/SponsorBlockService.swift in Sources */,
+				C61DC9D18B729C866508BDED /* Opaline/Core/Services/SubtitleService.swift in Sources */,
+				E0ADC278BB9F428A153AC14A /* Opaline/Core/Services/VTTParser.swift in Sources */,
+				DA628B371B7B2DA233FAEDC1 /* Opaline/Core/Services/Video+RSSShort.swift in Sources */,
+				E6364EA6C62618EEF4640A68 /* Opaline/Core/Services/VideoService.swift in Sources */,
+				259C18BADF39AF9E1295BF9A /* Opaline/Core/Services/WatchService+Defaults.swift in Sources */,
+				4E8F9B6747CDD68AABD6BAAD /* Opaline/Core/Services/WatchtimeTracker.swift in Sources */,
+				04FA610BC8B78DA35913A1D6 /* Opaline/Core/Transport/HTTPTransport.swift in Sources */,
+				F581410D0B1D4C6F3C7B3934 /* Opaline/Core/Transport/LoggingTransport.swift in Sources */,
+				41E984DC92FCE84A3729487A /* Opaline/Core/Transport/StreamingSession.swift in Sources */,
+				E97BABC558C4D53BBC1903F3 /* Opaline/Core/Transport/URLSessionTransport.swift in Sources */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C56967C74A121F31E44B8BA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		06FFFB6BBE465152818DF4F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13177ACCB5A626FAD211C5C5 /* OpalineTV */;
+			targetProxy = 1F2E1B6E6ECCF40BFFF633A7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2450B6BF09CE375FDE0296BB /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B4F56E2227AD102E89B6DF72 /* de */,
+				4A9E4F3A831B6D645B469601 /* en */,
+				6ED4C0CBAEF7C5D2A8929AB6 /* es */,
+				4DEC7996FAF581FB082B2120 /* fr */,
+				22AE552887BA9EFEFFBD5AE5 /* it */,
+				199B81F7F59C0263969CCD68 /* ja */,
+				3D9194306C7AC61B6A1E379D /* pt */,
+				28C7DE3EEFDA3DC54C0A28BA /* ru */,
+				C982A27DCBDA541732CBC266 /* tr */,
+				F2E7E5E9D962C335657CEC04 /* uk */,
+				0A27F4EED303E9EC99B0CA85 /* vi */,
+				0E09F5507FC30EA4F7546D3D /* zh-Hans */,
+				7C1B3BA7EEDB47151148723A /* zh-Hant */,
+			);
+			name = Localizable.stringsdict;
 			sourceTree = "<group>";
 		};
-		B4ACC6D0233B752C9CA21111 = {
-			path = "Opaline/Core/API/InnertubeClient+PlaylistParams.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
+		B7F687EAE75C852FB670BAF6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B63D0BB966FC2EB4A30E5E55 /* de */,
+				9187C876B61C37B39E31BE59 /* en */,
+				81EC9ACC6EC8289434D46B87 /* es */,
+				7E4282CC1EF8EAF804AD61AF /* fr */,
+				82E2B0DB6042D52C1639334F /* it */,
+				7270A75829536DF5524A6262 /* ja */,
+				CCCF486EB100C71C9F9FBAEB /* pt */,
+				181C10B36140EE4BB4E48E20 /* ru */,
+				53C35D422174A001DBC0F258 /* tr */,
+				A3B73290D97FB41DCBAD291C /* uk */,
+				6B9961498E7FDCB06F242FB7 /* vi */,
+				95505184961664F3974770FB /* zh-Hans */,
+				890BE04AF88B2B8428595562 /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
 		};
-		360027A336F6DCA6BEAE42A9 = {
-			isa = PBXBuildFile;
-			fileRef = 0ED4008D16A8422744EACE49;
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4940A7352F6AD27A00E6C599 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
 		};
-		53DAD9CF889E0D71C4776208 = {
-			isa = PBXBuildFile;
-			fileRef = 669FC347362C273C012D61F6;
+		4940A7362F6AD27A00E6C599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = appletvos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
-		999736A2D0B279EDEC45D08F = {
-			path = "Opaline/Core/API/InnertubeClient+ParsingHelpers.swift";
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
+		516599837532A8B047E2B31E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6AAB6E6D7BB20400638FDFD7 /* Config/TV.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpalineTV/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Opaline;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OPALINE_TV_BUNDLE_IDENTIFIER)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = com.example.OpalineTV;
+				PRODUCT_NAME = OpalineTV;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
 		};
-		4F1F787F8B7004FB7C891E5E = {
-			path = Opaline/Core/Playback/Sources/AutoDubSource.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
+		693E1923E43491E4AE80B810 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OpalineTVTests;
+				PRODUCT_NAME = OpalineTVTests;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpalineTV.app/OpalineTV";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
 		};
-		3DBB42149B4057DEBC23FAA2 = {
-			isa = PBXBuildFile;
-			fileRef = 51C75C79E832B8D8AC80FCA9;
+		69667B17045D59EEE2C74253 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.OpalineTVTests;
+				PRODUCT_NAME = OpalineTVTests;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OpalineTV.app/OpalineTV";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
 		};
-		905CF1D34E6D344F2BBD8434 = {
-			path = Opaline/Core/Config/UserDefaultsKeys.swift;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.swift;
-			sourceTree = SOURCE_ROOT;
+		9D86CFAC15BD4216307A3C6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6AAB6E6D7BB20400638FDFD7 /* Config/TV.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpalineTV/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Opaline;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OPALINE_TV_BUNDLE_IDENTIFIER)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = com.example.OpalineTV;
+				PRODUCT_NAME = OpalineTV;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
 		};
-		9EC6AA0B3217107FDF374F64 = {
-			isa = PBXBuildFile;
-			fileRef = 1AC13F10BA38E4D47808F644;
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4940A71A2F6AD27900E6C599 /* Build configuration list for PBXProject "OpalineTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4940A7352F6AD27A00E6C599 /* Debug */,
+				4940A7362F6AD27A00E6C599 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
+		528E756B08305AA671945148 /* Build configuration list for PBXNativeTarget "OpalineTVTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				693E1923E43491E4AE80B810 /* Debug */,
+				69667B17045D59EEE2C74253 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9A78F5901D9CF68BB1A4741 /* Build configuration list for PBXNativeTarget "OpalineTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				516599837532A8B047E2B31E /* Debug */,
+				9D86CFAC15BD4216307A3C6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
 	};
-	rootObject = 4940A7172F6AD27900E6C599;
+	rootObject = 4940A7172F6AD27900E6C599 /* Project object */;
 }

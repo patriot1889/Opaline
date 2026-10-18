@@ -19,7 +19,11 @@ final class TVAppDelegate: UIResponder, UIApplicationDelegate {
         ChannelInfoStore.shared.configure(channelService: dependencies.channelService)
         UserProfileStore.shared.configure(accountService: dependencies.accountService)
         window = UIWindow(frame: UIScreen.main.bounds)
-        if OAuthClient.shared.isSignedIn || OAuthClient.shared.isAnonymous {
+        if TVAccountStore.shared.accounts.count > 1 {
+            let accounts = TVAccountsController(choosingAccount: true)
+            window?.rootViewController = UINavigationController(rootViewController: accounts)
+            applyAppearance()
+        } else if OAuthClient.shared.isSignedIn || OAuthClient.shared.isAnonymous {
             showMain()
         } else {
             let auth = TVAuthController()
@@ -35,6 +39,8 @@ final class TVAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        // Wait for the launch account choice before making account-scoped requests.
+        guard window?.rootViewController is TVRootController else { return }
         OAuthClient.shared.refreshIfStale()
         WatchProgressSyncService.shared.syncIfNeeded()
     }
@@ -61,6 +67,8 @@ final class TVAppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 final class TVRootController: UITabBarController {
+    private let accountButton = UIButton(type: .system)
+
     init(dependencies: ServiceDependencies) {
         super.init(nibName: nil, bundle: nil)
         let router = TVRouter(dependencies: dependencies)
@@ -91,6 +99,33 @@ final class TVRootController: UITabBarController {
         }
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: "person.crop.circle")
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 36)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
+        accountButton.configuration = configuration
+        accountButton.accessibilityLabel = TVAccountText.string("Switch account")
+        accountButton.accessibilityValue = TVAccountStore.shared.activeAccount?.name ?? TVAccountText.string("Guest")
+        accountButton.accessibilityIdentifier = "TV.switchAccount"
+        accountButton.addAction(UIAction { [weak self] _ in
+            guard let self, self.presentedViewController == nil else { return }
+            let accounts = TVAccountsController(choosingAccount: true)
+            self.present(UINavigationController(rootViewController: accounts), animated: true)
+        }, for: .primaryActionTriggered)
+        accountButton.translatesAutoresizingMaskIntoConstraints = false
+        // Keep the button in the tab bar so it follows the bar offscreen while browsing.
+        // Accessory views disable interaction, so use the bar itself as the container.
+        tabBar.addSubview(accountButton)
+        NSLayoutConstraint.activate([
+            accountButton.centerYAnchor.constraint(equalTo: tabBar.centerYAnchor),
+            accountButton.leadingAnchor.constraint(equalTo: tabBar.safeAreaLayoutGuide.leadingAnchor, constant: 24),
+            accountButton.widthAnchor.constraint(equalToConstant: 72),
+            accountButton.heightAnchor.constraint(equalToConstant: 72)
+        ])
+    }
 }
 
 struct TVMenuRow {

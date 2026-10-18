@@ -7,11 +7,19 @@ enum TVAccountText {
 }
 
 final class TVAccountsController: TVMenuController {
-    init() { super.init(title: TVAccountText.string("Accounts")) }
+    private let choosingAccount: Bool
+
+    init(choosingAccount: Bool = false) {
+        self.choosingAccount = choosingAccount
+        super.init(title: TVAccountText.string(choosingAccount ? "Who's watching?" : "Accounts"))
+    }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if choosingAccount {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        }
         reload()
     }
 
@@ -19,7 +27,11 @@ final class TVAccountsController: TVMenuController {
         let store = TVAccountStore.shared
         rows = store.accounts.map { account in
             TVMenuRow(account.name, detail: account.id == store.activeAccount?.id ? TVAccountText.string("Active") : nil) { [weak self] in
-                self?.options(account)
+                if self?.choosingAccount == true {
+                    self?.change { try store.select(account.id) }
+                } else {
+                    self?.options(account)
+                }
             }
         }
         rows.append(TVMenuRow(TVAccountText.string("Add account")) { [weak self] in self?.addAccount() })
