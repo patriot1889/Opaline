@@ -2,24 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AppManifestURL</key>
+	<string>$(APP_MANIFEST_URL)</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>AppIconLight</key>
+			<key>AppIconClearDark</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>AppIconLight</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>AppIconDark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>AppIconDark</string>
+					<string>AppIconClearDark</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -33,11 +26,20 @@
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
-			<key>AppIconClearDark</key>
+			<key>AppIconDark</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>AppIconClearDark</string>
+					<string>AppIconDark</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>AppIconLight</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AppIconLight</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -48,20 +50,11 @@
 	<dict>
 		<key>CFBundleAlternateIcons</key>
 		<dict>
-			<key>AppIconLight</key>
+			<key>AppIconClearDark</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>AppIconLight</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>AppIconDark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>AppIconDark</string>
+					<string>AppIconClearDark</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
@@ -75,19 +68,26 @@
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
-			<key>AppIconClearDark</key>
+			<key>AppIconDark</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>AppIconClearDark</string>
+					<string>AppIconDark</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>AppIconLight</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AppIconLight</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<false/>
 			</dict>
 		</dict>
 	</dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>
@@ -104,8 +104,6 @@
 		<string>zh-Hans</string>
 		<string>zh-Hant</string>
 	</array>
-	<key>AppManifestURL</key>
-	<string>$(APP_MANIFEST_URL)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -117,24 +115,12 @@
 			</array>
 		</dict>
 	</array>
-	<!-- The system share sheet offers "Save Video", which writes to Photos.
-	     Without this key iOS kills the app the moment that item is tapped.
-	     English in every language on purpose: the official app carries no
-	     equivalent wording to take a translation from (#115). -->
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This lets you save a downloaded video to your photo library.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 		<key>NSExceptionDomains</key>
-		<dict>
-			<key>192.168.31.224</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
+		<dict/>
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
