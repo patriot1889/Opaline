@@ -61,8 +61,10 @@ struct TVBrowsePage {
 
 final class TVCardCell: UICollectionViewCell {
     private let thumbnail = UIImageView()
+    private let durationLabel = UILabel()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
+    private let metadataLabel = UILabel()
     private var imageToken: CancellationToken?
 
     override init(frame: CGRect) {
@@ -75,21 +77,39 @@ final class TVCardCell: UICollectionViewCell {
         titleLabel.numberOfLines = 2
         subtitleLabel.font = .systemFont(ofSize: 22)
         subtitleLabel.textColor = .secondaryLabel
-        [thumbnail, titleLabel, subtitleLabel].forEach {
+        metadataLabel.font = .systemFont(ofSize: 22)
+        metadataLabel.textColor = .secondaryLabel
+        durationLabel.font = .monospacedDigitSystemFont(ofSize: 22, weight: .semibold)
+        durationLabel.textColor = .white
+        durationLabel.backgroundColor = UIColor.black.withAlphaComponent(0.85)
+        durationLabel.textAlignment = .center
+        durationLabel.layer.cornerRadius = 6
+        durationLabel.clipsToBounds = true
+        durationLabel.isHidden = true
+        [thumbnail, titleLabel, subtitleLabel, metadataLabel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
+        durationLabel.translatesAutoresizingMaskIntoConstraints = false
+        thumbnail.addSubview(durationLabel)
         NSLayoutConstraint.activate([
             thumbnail.topAnchor.constraint(equalTo: contentView.topAnchor),
             thumbnail.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             thumbnail.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             thumbnail.heightAnchor.constraint(equalTo: thumbnail.widthAnchor, multiplier: 9.0 / 16),
+            durationLabel.trailingAnchor.constraint(equalTo: thumbnail.trailingAnchor, constant: -10),
+            durationLabel.bottomAnchor.constraint(equalTo: thumbnail.bottomAnchor, constant: -10),
+            durationLabel.leadingAnchor.constraint(greaterThanOrEqualTo: thumbnail.leadingAnchor, constant: 10),
+            durationLabel.heightAnchor.constraint(equalToConstant: 32),
             titleLabel.topAnchor.constraint(equalTo: thumbnail.bottomAnchor, constant: 14),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            metadataLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 6),
+            metadataLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            metadataLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -97,13 +117,31 @@ final class TVCardCell: UICollectionViewCell {
         super.prepareForReuse()
         imageToken?.cancel()
         thumbnail.image = nil
+        durationLabel.text = nil
+        durationLabel.isHidden = true
+        metadataLabel.text = nil
         transform = .identity
     }
     func configure(_ item: TVItem) {
         imageToken?.cancel()
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
-        accessibilityLabel = [item.title, item.subtitle].compactMap { $0 }.joined(separator: ", ")
+        durationLabel.text = nil
+        durationLabel.isHidden = true
+        metadataLabel.text = nil
+        if case .video(let video) = item {
+            metadataLabel.text = [
+                video.viewCount.map(VideoFormatters.formatViewCount),
+                video.publishedAt.map(VideoFormatters.formatRelativeDate)
+            ].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: " • ")
+            let duration = video.isLive ? "● LIVE" : video.duration
+            if let duration, !duration.isEmpty {
+                durationLabel.text = " \(duration) "
+                durationLabel.isHidden = false
+            }
+        }
+        accessibilityLabel = [item.title, item.subtitle, metadataLabel.text, durationLabel.text]
+            .compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ", ")
         thumbnail.image = UIImage(systemName: "play.rectangle")
         guard let string = item.imageURL, let url = URL(string: string) else { return }
         imageToken = ThumbnailLoader.shared.load(url: url, maxPixelSize: 640) { [weak self] result in
@@ -240,7 +278,7 @@ class TVGridController: UICollectionViewController {
                 ? self.sections[index] : TVSection(title: nil, items: [])
             let width = max(240, (environment.container.effectiveContentSize.width - 220) / 3)
             let actionsOnly = section.items.allSatisfy { if case .action = $0 { return true }; return false }
-            let height: CGFloat = actionsOnly ? 80 : width * 9 / 16 + 110
+            let height: CGFloat = actionsOnly ? 80 : width * 9 / 16 + 150
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
                 widthDimension: .absolute(width), heightDimension: .absolute(height)))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
