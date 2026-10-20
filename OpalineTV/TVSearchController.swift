@@ -41,7 +41,7 @@ final class TVSearchController: UISearchContainerViewController, UISearchResults
         super.viewDidLoad()
         navigationItem.title = ""
         showRecentQueries()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "search.filters".localized, menu: filterMenu())
+        results.headerFilterMenu = filterMenu()
     }
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -151,7 +151,7 @@ final class TVSearchController: UISearchContainerViewController, UISearchResults
                 UIAction(title: name(value), state: value == selected ? .on : .off) { [weak self] _ in
                     set(value)
                     guard let self else { return }
-                    self.navigationItem.rightBarButtonItem?.menu = self.filterMenu()
+                    self.results.headerFilterMenu = self.filterMenu()
                     if let query = self.searchController.searchBar.text, !query.isEmpty { self.runSearch(query, force: true) }
                 }
             })

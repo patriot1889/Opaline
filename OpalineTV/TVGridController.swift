@@ -198,6 +198,7 @@ final class TVShelfHeader: UICollectionReusableView {
     let label = UILabel()
     private let pageTitleLabel = UILabel()
     private let refreshButton = UIButton(type: .system)
+    private let filtersButton = UIButton(type: .system)
     var onRefresh: (() -> Void)?
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -212,22 +213,35 @@ final class TVShelfHeader: UICollectionReusableView {
         refreshButton.setTitle("TV.refresh".tvLocalized, for: .normal)
         refreshButton.addAction(UIAction { [weak self] _ in self?.onRefresh?() }, for: .primaryActionTriggered)
         addSubview(refreshButton)
+        filtersButton.setTitle("search.filters".localized, for: .normal)
+        filtersButton.accessibilityIdentifier = "TV.searchFilters"
+        filtersButton.showsMenuAsPrimaryAction = true
+        addSubview(filtersButton)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func layoutSubviews() {
         super.layoutSubviews()
         let buttonWidth: CGFloat = refreshButton.isHidden ? 0 : 210
+        let filtersWidth: CGFloat = filtersButton.isHidden ? 0 : 234
+        let titleWidth = max(0, bounds.width - buttonWidth - filtersWidth - 24)
         let hasPageTitle = !pageTitleLabel.isHidden
         let hasSectionTitle = !(label.text ?? "").isEmpty
         let sectionTop: CGFloat = hasPageTitle && hasSectionTitle ? 80 : 0
         pageTitleLabel.frame = CGRect(x: 0, y: 0,
-                                     width: hasSectionTitle ? bounds.width : max(0, bounds.width - buttonWidth - 24),
+                                     width: hasSectionTitle ? bounds.width : titleWidth,
                                      height: min(80, bounds.height))
         label.frame = CGRect(x: 0, y: sectionTop,
-                             width: max(0, bounds.width - buttonWidth - 24),
+                             width: titleWidth,
                              height: bounds.height - sectionTop)
         refreshButton.frame = CGRect(x: bounds.width - buttonWidth, y: sectionTop,
                                      width: buttonWidth, height: bounds.height - sectionTop)
+        filtersButton.frame = CGRect(x: bounds.width - buttonWidth - filtersWidth, y: sectionTop,
+                                     width: max(0, filtersWidth - 24), height: bounds.height - sectionTop)
+    }
+    func setFilterMenu(_ menu: UIMenu?) {
+        filtersButton.menu = menu
+        filtersButton.isHidden = menu == nil
+        setNeedsLayout()
     }
     func configure(title: String?, pageTitle: String? = nil, onRefresh: (() -> Void)?) {
         pageTitleLabel.text = pageTitle
@@ -247,6 +261,15 @@ class TVGridController: UICollectionViewController {
     var requiresAccount = false
     var onRefresh: (() -> Void)?
     var contentHeading: String?
+    var headerFilterMenu: UIMenu? {
+        didSet {
+            guard isViewLoaded else { return }
+            for path in collectionView.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader) {
+                let header = collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: path) as? TVShelfHeader
+                header?.setFilterMenu(path.section == 0 ? headerFilterMenu : nil)
+            }
+        }
+    }
     var sections: [TVSection] {
         var content = contentSections
         if let contentHeading, let firstVideoSection = content.firstIndex(where: { section in
@@ -474,6 +497,7 @@ class TVGridController: UICollectionViewController {
         let sectionTitle = sections.indices.contains(path.section) ? sections[path.section].title : nil
         header.configure(title: sectionTitle, pageTitle: path.section == 0 ? pageHeading : nil,
                          onRefresh: path.section == 0 ? { [weak self] in self?.refresh() } : nil)
+        header.setFilterMenu(path.section == 0 ? headerFilterMenu : nil)
         return header
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt path: IndexPath) {
