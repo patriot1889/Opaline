@@ -133,6 +133,7 @@ struct TVMenuRow {
 
 class TVMenuController: UITableViewController {
     var rows: [TVMenuRow] = []
+    var showsPageHeadingAtRoot = false
     init(title: String) {
         super.init(style: .plain)
         self.title = title
@@ -147,9 +148,18 @@ class TVMenuController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Root titles already live in the tab menu. A blank navigation bar
-        // still draws a shaded overlay that can cover the focused table row.
-        navigationController?.setNavigationBarHidden(navigationController?.viewControllers.first === self, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        // Keep page titles in a compact row without the system bar's shaded overlay.
+        if showsPageHeadingAtRoot || navigationController?.viewControllers.first !== self {
+            let heading = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 80))
+            heading.text = title
+            heading.font = .systemFont(ofSize: 32, weight: .semibold)
+            heading.textColor = .label
+            heading.accessibilityTraits = .header
+            tableView.tableHeaderView = heading
+        } else {
+            tableView.tableHeaderView = nil
+        }
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

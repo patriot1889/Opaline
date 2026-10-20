@@ -12,14 +12,12 @@ final class TVAccountsController: TVMenuController {
     init(choosingAccount: Bool = false) {
         self.choosingAccount = choosingAccount
         super.init(title: TVAccountText.string(choosingAccount ? "Who's watching?" : "Accounts"))
+        showsPageHeadingAtRoot = choosingAccount
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if choosingAccount {
-            navigationController?.setNavigationBarHidden(false, animated: animated)
-        }
         reload()
     }
 

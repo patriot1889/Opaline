@@ -196,11 +196,16 @@ final class TVActionCell: UICollectionViewCell {
 
 final class TVShelfHeader: UICollectionReusableView {
     let label = UILabel()
+    private let pageTitleLabel = UILabel()
     private let refreshButton = UIButton(type: .system)
     var onRefresh: (() -> Void)?
     override init(frame: CGRect) {
         super.init(frame: frame)
+        pageTitleLabel.font = .systemFont(ofSize: 38, weight: .bold)
+        pageTitleLabel.accessibilityTraits = .header
+        addSubview(pageTitleLabel)
         label.font = .systemFont(ofSize: 34, weight: .semibold)
+        label.accessibilityTraits = .header
         label.frame = bounds
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(label)
@@ -212,11 +217,21 @@ final class TVShelfHeader: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let buttonWidth: CGFloat = refreshButton.isHidden ? 0 : 210
-        label.frame = bounds
-        label.frame.size.width = max(0, bounds.width - buttonWidth - 24)
-        refreshButton.frame = CGRect(x: bounds.width - buttonWidth, y: 0, width: buttonWidth, height: bounds.height)
+        let hasPageTitle = !pageTitleLabel.isHidden
+        let hasSectionTitle = !(label.text ?? "").isEmpty
+        let sectionTop: CGFloat = hasPageTitle && hasSectionTitle ? 80 : 0
+        pageTitleLabel.frame = CGRect(x: 0, y: 0,
+                                     width: hasSectionTitle ? bounds.width : max(0, bounds.width - buttonWidth - 24),
+                                     height: min(80, bounds.height))
+        label.frame = CGRect(x: 0, y: sectionTop,
+                             width: max(0, bounds.width - buttonWidth - 24),
+                             height: bounds.height - sectionTop)
+        refreshButton.frame = CGRect(x: bounds.width - buttonWidth, y: sectionTop,
+                                     width: buttonWidth, height: bounds.height - sectionTop)
     }
-    func configure(title: String?, onRefresh: (() -> Void)?) {
+    func configure(title: String?, pageTitle: String? = nil, onRefresh: (() -> Void)?) {
+        pageTitleLabel.text = pageTitle
+        pageTitleLabel.isHidden = (pageTitle ?? "").isEmpty
         label.text = title
         self.onRefresh = onRefresh
         refreshButton.isHidden = onRefresh == nil
@@ -250,6 +265,10 @@ class TVGridController: UICollectionViewController {
     private var generation = 0
     private var didLoad = false
     private let status = UILabel()
+    private var pageHeading: String? {
+        let root = navigationController?.viewControllers.first
+        return root === self || root === parent ? nil : title
+    }
 
     init(title: String) {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -290,8 +309,11 @@ class TVGridController: UICollectionViewController {
             layout.contentInsets = NSDirectionalEdgeInsets(top: 24, leading: 70, bottom: 40, trailing: 70)
             if section.scrollsHorizontally { layout.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary }
             if section.title != nil || index == 0 {
+                let headerHeight: CGFloat = index == 0
+                    ? (self.pageHeading != nil && !(section.title ?? "").isEmpty ? 145 : 80)
+                    : 65
                 layout.boundarySupplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem(
-                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(index == 0 ? 80 : 65)),
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(headerHeight)),
                     elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)]
             }
             return layout
@@ -299,8 +321,9 @@ class TVGridController: UICollectionViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let root = navigationController?.viewControllers.first
-        navigationController?.setNavigationBarHidden(root === self || root === parent, animated: animated)
+        // Use compact title and section rows instead of the tall, shaded
+        // navigation bar, which can obscure focused cards on tvOS.
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         if requiresAccount && !OAuthClient.shared.isSignedIn {
             showSignIn()
         } else if !didLoad && loader != nil { refresh() }
@@ -449,7 +472,8 @@ class TVGridController: UICollectionViewController {
                                  at path: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: path) as! TVShelfHeader
         let sectionTitle = sections.indices.contains(path.section) ? sections[path.section].title : nil
-        header.configure(title: sectionTitle, onRefresh: path.section == 0 ? { [weak self] in self?.refresh() } : nil)
+        header.configure(title: sectionTitle, pageTitle: path.section == 0 ? pageHeading : nil,
+                         onRefresh: path.section == 0 ? { [weak self] in self?.refresh() } : nil)
         return header
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt path: IndexPath) {
