@@ -137,6 +137,70 @@ final class PlayerControlsTests: XCTestCase {
         savePreview(controller.view, name: "player-comments")
     }
 
+    func testLongPanelTextRemainsOneCardAndScrollsToBothEnds() {
+        let controller = TVPlayerPanel(style: .plain)
+        controller.showsFullText = true
+        let text = String(repeating: "This is one complete comment with a long description.\n", count: 100) + "Final paragraph."
+        controller.cards = [.init(title: "Author", body: text, footer: "37 likes"),
+                            .init(title: "Next comment", body: "Another comment")]
+        controller.loadViewIfNeeded()
+        controller.view.frame = CGRect(x: 0, y: 0, width: 630, height: 1000)
+        controller.view.layoutIfNeeded()
+        let first = IndexPath(row: 0, section: 0)
+        XCTAssertGreaterThan(controller.tableView.rectForRow(at: first).height, 1000)
+        XCTAssertTrue(controller.scrollCard(at: first, heading: .down))
+        XCTAssertGreaterThan(controller.tableView.contentOffset.y, 0)
+        for _ in 0..<100 {
+            if !controller.scrollCard(at: first, heading: .down) { break }
+            controller.view.layoutIfNeeded()
+        }
+        let inset = controller.tableView.adjustedContentInset
+        let row = controller.tableView.rectForRow(at: first)
+        XCTAssertGreaterThanOrEqual(controller.tableView.contentOffset.y + controller.tableView.bounds.height - inset.bottom, row.maxY - 1)
+        XCTAssertFalse(controller.scrollCard(at: first, heading: .down))
+        for _ in 0..<100 {
+            if !controller.scrollCard(at: first, heading: .up) { break }
+            controller.view.layoutIfNeeded()
+        }
+        XCTAssertLessThanOrEqual(controller.tableView.contentOffset.y + inset.top, row.minY + 1)
+        XCTAssertFalse(controller.scrollCard(at: first, heading: .up))
+        XCTAssertFalse(controller.scrollCard(at: IndexPath(row: 1, section: 0), heading: .down))
+        XCTAssertEqual(controller.cards.count, 2)
+        XCTAssertEqual(controller.cards[0].body, text)
+    }
+
+    func testPanelPreviewCutoffPreservesWholeCharactersAndOriginalText() {
+        for count in [599, 600, 601] {
+            let body = String(repeating: "👨‍👩‍👧‍👦", count: count)
+            let card = TVPlayerPanel.Card(title: "Author", body: body)
+            XCTAssertEqual(card.isTruncated, count > 600)
+            XCTAssertEqual(card.body, body)
+            XCTAssertEqual(card.previewBody, count > 600 ? String(body.prefix(600)) + "…" : body)
+        }
+    }
+
+    func testSelectingTruncatedCardOpensFullTextOverlay() throws {
+        let controller = TVPlayerPanel(style: .plain)
+        let body = String(repeating: "Long comment. ", count: 100) + "Last sentence."
+        controller.cards = [.init(title: "Author", body: body, footer: "37 likes")]
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+        window.rootViewController = controller
+        window.isHidden = false
+        defer {
+            controller.dismiss(animated: false)
+            window.isHidden = true
+            window.rootViewController = nil
+        }
+        controller.view.layoutIfNeeded()
+        controller.tableView(controller.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        let overlay = try XCTUnwrap(controller.presentedViewController as? TVPlayerTextOverlay)
+        XCTAssertEqual(overlay.modalPresentationStyle, .overFullScreen)
+        XCTAssertTrue(overlay.content.showsFullText)
+        XCTAssertEqual(overlay.content.cards.first?.body, body)
+        XCTAssertEqual(overlay.content.cards.first?.footer, "37 likes")
+        XCTAssertEqual(controller.cards.first?.body, body)
+    }
+
     private func savePreview(_ view: UIView, name: String) {
         let image = UIGraphicsImageRenderer(bounds: view.bounds).image { view.layer.render(in: $0.cgContext) }
         let attachment = XCTAttachment(image: image)

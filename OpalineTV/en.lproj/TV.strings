@@ -50,3 +50,4 @@
 "TV.player.signInRequired" = "Sign in required";
 "TV.player.signInMessage" = "Sign in from Accounts to like videos and subscribe to channels.";
 "TV.player.actionFailed" = "Couldn’t update your account. Please try again.";
+"TV.player.readMore" = "Read more";

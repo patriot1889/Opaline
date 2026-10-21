@@ -268,7 +268,11 @@ final class TVPlayerPanel: UITableViewController {
         var footer: String = ""
         var avatarURL: String?
         var action: (() -> Void)?
+
+        var isTruncated: Bool { body.count > 600 }
+        var previewBody: String { isTruncated ? String(body.prefix(600)) + "…" : body }
     }
+    var showsFullText = false
     var cards: [Card] = [] { didSet { if isViewLoaded { tableView.reloadData() } } }
     private let heading = UILabel()
     var panelTitle: String = "" { didSet { heading.text = panelTitle } }
@@ -296,10 +300,95 @@ final class TVPlayerPanel: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { cards.count }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "card", for: indexPath) as! TVPlayerCardCell
-        cell.configure(cards[indexPath.row])
+        cell.configure(cards[indexPath.row], showsFullText: showsFullText)
         return cell
     }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { cards[indexPath.row].action?() }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let card = cards[indexPath.row]
+        if card.isTruncated, !showsFullText {
+            guard presentedViewController == nil else { return }
+            present(TVPlayerTextOverlay(card: card), animated: true)
+        } else { card.action?() }
+    }
+
+    override func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool {
+        guard let current = context.previouslyFocusedIndexPath else { return true }
+        return !scrollCard(at: current, heading: context.focusHeading)
+    }
+
+    /// Read an oversized card to its edge before directional focus can leave it.
+    @discardableResult
+    func scrollCard(at indexPath: IndexPath, heading: UIFocusHeading) -> Bool {
+        let row = tableView.rectForRow(at: indexPath)
+        let inset = tableView.adjustedContentInset
+        let visibleTop = tableView.contentOffset.y + inset.top
+        let visibleHeight = tableView.bounds.height - inset.top - inset.bottom
+        guard visibleHeight > 0, row.height > visibleHeight else { return false }
+        let visibleBottom = visibleTop + visibleHeight
+        let step = visibleHeight * 0.7
+        var offset = tableView.contentOffset.y
+        if heading.contains(.down), row.maxY > visibleBottom + 1 {
+            offset += min(step, row.maxY - visibleBottom)
+        } else if heading.contains(.up), row.minY < visibleTop - 1 {
+            offset -= min(step, visibleTop - row.minY)
+        } else { return false }
+        tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: offset), animated: false)
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext,
+                            with coordinator: UIFocusAnimationCoordinator) {
+        guard let next = context.nextFocusedIndexPath, next != context.previouslyFocusedIndexPath else { return }
+        let row = tableView.rectForRow(at: next)
+        let inset = tableView.adjustedContentInset
+        let height = tableView.bounds.height - inset.top - inset.bottom
+        guard row.height > height else { return }
+        // Enter at the beginning when moving down, or at the end when moving up.
+        let y = context.focusHeading.contains(.up) ? row.maxY - height - inset.top : row.minY - inset.top
+        coordinator.addCoordinatedAnimations {
+            tableView.setContentOffset(CGPoint(x: tableView.contentOffset.x, y: y), animated: false)
+        }
+    }
+}
+
+/// An overlay keeps the underlying watch layout and display mode intact.
+final class TVPlayerTextOverlay: UIViewController {
+    let content = TVPlayerPanel(style: .plain)
+    private let closeButton = UIButton(type: .system)
+
+    init(card: TVPlayerPanel.Card) {
+        super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .overFullScreen
+        isModalInPresentation = true
+        content.showsFullText = true
+        content.panelTitle = card.title
+        content.cards = [.init(title: "", body: card.body, footer: card.footer)]
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    override var preferredFocusEnvironments: [UIFocusEnvironment] { [content, closeButton] }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        overrideUserInterfaceStyle = .dark
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        addChild(content)
+        view.addSubview(content.view)
+        content.didMove(toParent: self)
+        closeButton.setTitle("TV.close".tvLocalized, for: .normal)
+        closeButton.addAction(UIAction { [weak self] _ in self?.dismiss(animated: true) }, for: .primaryActionTriggered)
+        view.addSubview(closeButton)
+        let menu = UITapGestureRecognizer(target: self, action: #selector(closeOverlay))
+        menu.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        menu.allowedTouchTypes = []
+        view.addGestureRecognizer(menu)
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let width = min(1100, view.bounds.width - 200)
+        content.view.frame = CGRect(x: (view.bounds.width - width) / 2, y: 70,
+                                    width: width, height: view.bounds.height - 140)
+        closeButton.frame = CGRect(x: view.bounds.width - 220, y: 65, width: 140, height: 65)
+    }
+    @objc private func closeOverlay() { dismiss(animated: true) }
 }
 
 private final class TVPlayerCardCell: UITableViewCell {
@@ -307,6 +396,7 @@ private final class TVPlayerCardCell: UITableViewCell {
     private let avatar = UIImageView()
     private let heading = UILabel()
     private let bodyLabel = UILabel()
+    private let readMore = UILabel()
     private let footer = UILabel()
     private var footerText = ""
     private var token: CancellationToken?
@@ -323,6 +413,8 @@ private final class TVPlayerCardCell: UITableViewCell {
         heading.numberOfLines = 2
         bodyLabel.font = .preferredFont(forTextStyle: .caption1)
         bodyLabel.numberOfLines = 0
+        readMore.font = .preferredFont(forTextStyle: .caption2)
+        readMore.text = "TV.player.readMore".tvLocalized + " ›"
         footer.font = .preferredFont(forTextStyle: .caption2)
         avatar.contentMode = .scaleAspectFill
         avatar.clipsToBounds = true
@@ -330,7 +422,7 @@ private final class TVPlayerCardCell: UITableViewCell {
         let author = UIStackView(arrangedSubviews: [avatar, heading])
         author.spacing = 16
         author.alignment = .center
-        let stack = UIStackView(arrangedSubviews: [author, bodyLabel, footer])
+        let stack = UIStackView(arrangedSubviews: [author, bodyLabel, readMore, footer])
         stack.axis = .vertical
         stack.spacing = 20
         contentView.addSubview(card)
@@ -351,14 +443,15 @@ private final class TVPlayerCardCell: UITableViewCell {
         ])
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    func configure(_ model: TVPlayerPanel.Card) {
+    func configure(_ model: TVPlayerPanel.Card, showsFullText: Bool) {
         token?.cancel()
         avatar.image = nil
         avatar.isHidden = model.avatarURL == nil
         heading.text = model.title
         heading.isHidden = model.title.isEmpty
-        bodyLabel.text = model.body
+        bodyLabel.text = showsFullText ? model.body : model.previewBody
         bodyLabel.isHidden = model.body.isEmpty
+        readMore.isHidden = showsFullText || !model.isTruncated
         footerText = model.footer
         footer.text = model.footer
         footer.isHidden = model.footer.isEmpty
@@ -372,7 +465,7 @@ private final class TVPlayerCardCell: UITableViewCell {
     private func updateColors() {
         card.backgroundColor = isFocused ? UIColor(white: 0.88, alpha: 1) : UIColor(white: 0.17, alpha: 1)
         let color: UIColor = isFocused ? .black : .white
-        [heading, bodyLabel, footer].forEach { $0.textColor = color }
+        [heading, bodyLabel, readMore, footer].forEach { $0.textColor = color }
         let text = NSMutableAttributedString(string: footerText)
         for (marker, symbol) in [("♡", "hand.thumbsup"), ("▢", "text.bubble")] {
             let range = (text.string as NSString).range(of: marker)

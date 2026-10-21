@@ -781,36 +781,23 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
                                         avatarURL: video.channelAvatarURL ?? watchPage?.channelInfo?.avatarURL,
                                         action: { [weak self] in self?.openChannel() })]
         let description = watchPage?.description ?? "TV.player.noDescription".tvLocalized
-        cards += textCards(title: "TV.player.description".tvLocalized, text: description)
+        cards.append(TVPlayerPanel.Card(title: "TV.player.description".tvLocalized, body: description))
         cards.append(TVPlayerPanel.Card(title: "TV.player.comments".tvLocalized,
                                         body: watchPage?.commentCount ?? "", action: { [weak self] in self?.openPanel(comments: true) }))
         panel.cards = cards
-    }
-
-    private func textCards(title: String, text: String) -> [TVPlayerPanel.Card] {
-        // Bound each focus target's height so the remote can reach every line.
-        var remaining = text[...]
-        var cards: [TVPlayerPanel.Card] = []
-        while !remaining.isEmpty {
-            let end = remaining.index(remaining.startIndex, offsetBy: min(420, remaining.count))
-            cards.append(TVPlayerPanel.Card(title: cards.isEmpty ? title : "", body: String(remaining[..<end])))
-            remaining = remaining[end...]
-        }
-        return cards
     }
 
     private func populateComments() {
         guard panelShowsComments, let panel else { return }
         var cards: [TVPlayerPanel.Card] = []
         for comment in loadedComments {
-            var chunks = textCards(title: [comment.isPinned ? "📌" : nil, comment.authorName, comment.publishedTime]
-                .compactMap { $0 }.joined(separator: " · "), text: comment.content)
-            if !chunks.isEmpty {
-                chunks[0].avatarURL = comment.authorAvatarURL
-                chunks[chunks.count - 1].footer = [comment.likeCount.map { "♡ \($0)" }, comment.replyCount.map { "▢ \($0)" }]
-                    .compactMap { $0 }.joined(separator: "    ")
-            }
-            cards += chunks
+            cards.append(TVPlayerPanel.Card(
+                title: [comment.isPinned ? "📌" : nil, comment.authorName, comment.publishedTime]
+                    .compactMap { $0 }.joined(separator: " · "),
+                body: comment.content,
+                footer: [comment.likeCount.map { "♡ \($0)" }, comment.replyCount.map { "▢ \($0)" }]
+                    .compactMap { $0 }.joined(separator: "    "),
+                avatarURL: comment.authorAvatarURL))
         }
         if cards.isEmpty {
             cards = [TVPlayerPanel.Card(title: "TV.player.comments".tvLocalized,
