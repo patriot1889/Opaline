@@ -199,6 +199,7 @@ final class TVShelfHeader: UICollectionReusableView {
     private let pageTitleLabel = UILabel()
     private let refreshButton = UIButton(type: .system)
     private let filtersButton = UIButton(type: .system)
+    private let refreshFocusGuide = UIFocusGuide()
     var onRefresh: (() -> Void)?
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -211,14 +212,32 @@ final class TVShelfHeader: UICollectionReusableView {
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(label)
         refreshButton.setTitle("TV.refresh".tvLocalized, for: .normal)
+        refreshButton.accessibilityIdentifier = "TV.refresh"
         refreshButton.addAction(UIAction { [weak self] _ in self?.onRefresh?() }, for: .primaryActionTriggered)
         addSubview(refreshButton)
         filtersButton.setTitle("search.filters".localized, for: .normal)
         filtersButton.accessibilityIdentifier = "TV.searchFilters"
         filtersButton.showsMenuAsPrimaryAction = true
         addSubview(filtersButton)
+        // Extend the action row across the title so Up from a leading card
+        // can reach Refresh even when no card sits directly below the button.
+        addLayoutGuide(refreshFocusGuide)
+        NSLayoutConstraint.activate([
+            refreshFocusGuide.leadingAnchor.constraint(equalTo: leadingAnchor),
+            refreshFocusGuide.trailingAnchor.constraint(equalTo: refreshButton.leadingAnchor),
+            refreshFocusGuide.topAnchor.constraint(equalTo: refreshButton.topAnchor),
+            refreshFocusGuide.bottomAnchor.constraint(equalTo: refreshButton.bottomAnchor)
+        ])
+        refreshFocusGuide.preferredFocusEnvironments = [refreshButton]
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        super.didUpdateFocus(in: context, with: coordinator)
+        // Once in the action row, let Left/Right move normally between actions
+        // and let Up leave for the tab bar without redirecting back to Refresh.
+        let focusIsInHeader = context.nextFocusedView?.isDescendant(of: self) == true
+        refreshFocusGuide.isEnabled = !refreshButton.isHidden && !focusIsInHeader
+    }
     override func layoutSubviews() {
         super.layoutSubviews()
         let buttonWidth: CGFloat = refreshButton.isHidden ? 0 : 210
@@ -249,6 +268,7 @@ final class TVShelfHeader: UICollectionReusableView {
         label.text = title
         self.onRefresh = onRefresh
         refreshButton.isHidden = onRefresh == nil
+        refreshFocusGuide.isEnabled = onRefresh != nil && !refreshButton.isFocused && !filtersButton.isFocused
         setNeedsLayout()
     }
 }
