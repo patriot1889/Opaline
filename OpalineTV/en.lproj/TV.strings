@@ -37,3 +37,16 @@
 "TV.save" = "Save";
 "TV.skipSegment" = "Skip %@";
 "TV.viewAll" = "View All";
+
+"TV.player.description" = "Description";
+"TV.player.comments" = "Comments";
+"TV.player.likes" = "likes";
+"TV.player.speed" = "Playback speed";
+"TV.player.noDescription" = "No description available.";
+"TV.player.loadingComments" = "Loading comments…";
+"TV.player.noComments" = "No comments available.";
+"TV.player.moreComments" = "Load more comments";
+"TV.player.commentsFailed" = "Couldn’t load comments";
+"TV.player.signInRequired" = "Sign in required";
+"TV.player.signInMessage" = "Sign in from Accounts to like videos and subscribe to channels.";
+"TV.player.actionFailed" = "Couldn’t update your account. Please try again.";

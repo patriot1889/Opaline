@@ -1,14 +1,30 @@
 import AVKit
 import UIKit
 
-/// The TV host shares stream preparation with iOS while AVKit owns remote transport input.
-final class TVPlayerController: AVPlayerViewController, PlaybackContext {
+/// The TV host shares stream preparation with iOS and owns its remote-driven presentation.
+final class TVPlayerController: UIViewController, PlaybackContext, UIGestureRecognizerDelegate {
     var onChannelRequested: ((String, String) -> Void)?
     private let dependencies: ServiceDependencies
     private let queueUsesPlaylistBrowse: Bool
     private var video: Video
     private let facade = PlaybackFacade()
     private let avPlayer = AVPlayer()
+    private let playbackController = AVPlayerViewController()
+    private let displayMode = TVPlaybackDisplayMode()
+    let chrome = TVPlayerChrome()
+    private var panel: TVPlayerPanel?
+    private var watchPage: WatchPage?
+    private var commentsPage: CommentsPage?
+    private var loadedComments: [Comment] = []
+    private var commentsLoading = false
+    private var engagementLoading = false
+    private var likeStatus: LikeStatus?
+    private var subscribed = false
+    private var controlsVisible = true
+    private var hideControlsTimer: Timer?
+    private var panelShowsComments = false
+    private var handledPresses = Set<UIPress.PressType>()
+    private let menuPressRecognizer = UITapGestureRecognizer()
     private var cancellation = CancellationToken()
     private var resourceLoader: AVAssetResourceLoaderDelegate?
     private var statusObservation: NSKeyValueObservation?
@@ -44,13 +60,25 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         self.queueUsesPlaylistBrowse = playlistQueue
         self.dependencies = dependencies
         super.init(nibName: nil, bundle: nil)
+        // Back is handled explicitly below, including when UIKit would dismiss this modal.
+        isModalInPresentation = true
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func viewDidLoad() {
         super.viewDidLoad()
-        player = avPlayer
-        allowsPictureInPicturePlayback = false
-        speeds = AVPlaybackSpeed.systemDefaultSpeeds
+        view.backgroundColor = .black
+        overrideUserInterfaceStyle = .dark
+        // Resizing for side panels must not relinquish the video's matched display mode.
+        playbackController.appliesPreferredDisplayCriteriaAutomatically = false
+        playbackController.player = avPlayer
+        playbackController.showsPlaybackControls = false
+        playbackController.view.isUserInteractionEnabled = false
+        playbackController.allowsPictureInPicturePlayback = false
+        addChild(playbackController)
+        view.addSubview(playbackController.view)
+        playbackController.didMove(toParent: self)
+        view.addSubview(chrome)
+        configureControls()
         facade.context = self
         facade.watchtimeTracker.timeProvider = { [weak self] in self?.avPlayer.currentTime().seconds ?? 0 }
         facade.watchtimeTracker.durationProvider = { [weak self] in self?.avPlayer.currentItem?.duration.seconds ?? 0 }
@@ -70,6 +98,11 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         }
         start(video)
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !closed, let manager = view.window?.avDisplayManager { displayMode.bind(to: manager) }
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if isBeingDismissed || presentingViewController == nil { close() }
@@ -87,7 +120,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         status.textColor = .white
         status.textAlignment = .center
         status.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        guard let overlay = contentOverlayView else { return }
+        guard let overlay = playbackController.contentOverlayView else { return }
         [subtitle, status].forEach {
             $0.isUserInteractionEnabled = false
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +136,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
     }
     private func start(_ next: Video) {
         saveProgress()
+        displayMode.cancelPendingUpdate()
         cancellation.cancel()
         stopObservingCurrentItem()
         facade.reset()
@@ -112,6 +146,16 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         cancellation = CancellationToken()
         let token = cancellation
         video = next
+        engagementLoading = false
+        likeStatus = nil
+        subscribed = false
+        watchPage = nil
+        commentsPage = nil
+        loadedComments = []
+        commentsLoading = false
+        closePanel()
+        chrome.update(video: next)
+        showControls()
         lastPosition = nil
         desiredPlaying = true
         switching = false
@@ -135,6 +179,11 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
             DispatchQueue.main.async {
                 guard let self, !token.isCancelled, case .success(let page) = result else { return }
                 self.video = page.video
+                self.watchPage = page
+                self.likeStatus = page.likeStatus
+                self.subscribed = page.isSubscribed
+                self.chrome.update(video: page.video)
+                if self.panel != nil, !self.panelShowsComments { self.populateDescription() }
                 self.nextVideo = page.nextVideo
                 if let videos = page.playlistVideos, !videos.isEmpty, !self.queueUsesPlaylistBrowse {
                     if PlaybackQueue.shared.playlistId != next.playlistId {
@@ -164,6 +213,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
     }
     func attachPrepared(_ prepared: PreparedPlayback, resumeAt: CMTime?) {
         guard !closed, !cancellation.isCancelled else { return }
+        displayMode.cancelPendingUpdate()
         stopObservingCurrentItem()
         resourceLoader = prepared.resourceLoader
         PlaybackBufferPolicy.configure(item: prepared.item)
@@ -225,10 +275,14 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         present(alert, animated: true)
     }
     func startObservingPlayerItem(_ item: AVPlayerItem) {
-        statusObservation = item.observe(\.status, options: [.new]) { [weak self] item, _ in
+        statusObservation = item.observe(\.status, options: [.initial, .new]) { [weak self] item, _ in
             DispatchQueue.main.async {
-                guard let self, self.avPlayer.currentItem === item, item.status == .failed else { return }
-                self.recover()
+                guard let self, !self.closed, self.avPlayer.currentItem === item else { return }
+                switch item.status {
+                case .readyToPlay: self.displayMode.update(for: item.asset)
+                case .failed: self.recover()
+                default: break
+                }
             }
         }
         notifications = [
@@ -279,6 +333,8 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         let text = TVPlaybackPolicy.caption(at: seconds, cues: cues)
         subtitle.text = text.map { "  \($0)  " }
         subtitle.isHidden = text == nil
+        chrome.updateTime(seconds: seconds, total: avPlayer.currentItem?.duration.seconds ?? 0,
+                          playing: avPlayer.timeControlStatus == .playing)
         saveProgress()
         if SponsorBlockService.enabled, avPlayer.rate > 0,
            let segment = segments.first(where: {
@@ -453,11 +509,348 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
                 self.onChannelRequested?(channelId, self.video.channelName)
             })
         }
-        transportBarCustomMenuItems = menus
+        let speedMenu = UIMenu(title: "TV.player.speed".tvLocalized, image: UIImage(systemName: "speedometer"), children: [0.5, 0.75, 1, 1.25, 1.5, 2].map { speed in
+            UIAction(title: "\(speed)×", state: avPlayer.defaultRate == Float(speed) ? .on : .off) { [weak self] _ in
+                guard let self else { return }
+                self.avPlayer.defaultRate = Float(speed)
+                if self.avPlayer.rate > 0 { self.avPlayer.rate = Float(speed) }
+                self.rebuildMenus()
+            }
+        })
+        chrome.settings.menu = UIMenu(children: menus + [speedMenu])
+        chrome.captions.menu = UIMenu(title: "player.menu.subtitles".localized, children: captions)
+        chrome.previous.isEnabled = queue.currentIndex > 0
+        chrome.nextButton.isEnabled = upcomingVideo != nil
+        chrome.channel.isEnabled = video.channelId != nil
+        chrome.subscribe.isEnabled = video.channelId != nil && !engagementLoading
+        chrome.like.isEnabled = !engagementLoading
+        chrome.dislike.isEnabled = !engagementLoading
+        chrome.like.configuration?.image = UIImage(systemName: likeStatus == .like ? "hand.thumbsup.fill" : "hand.thumbsup")
+        chrome.dislike.configuration?.image = UIImage(systemName: likeStatus == .dislike ? "hand.thumbsdown.fill" : "hand.thumbsdown")
+        chrome.subscribe.configuration?.image = UIImage(systemName: subscribed ? "bell.fill" : "bell")
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let bounds = view.bounds
+        chrome.frame = bounds
+        if let panel {
+            let width = bounds.width * 0.61
+            let height = width * 9 / 16
+            playbackController.view.frame = CGRect(x: 32, y: (bounds.height - height) / 2, width: width, height: height)
+            playbackController.view.layer.cornerRadius = 28
+            playbackController.view.clipsToBounds = true
+            panel.view.frame = CGRect(x: bounds.width * 0.65, y: 40, width: bounds.width * 0.33, height: bounds.height - 40)
+        } else {
+            playbackController.view.frame = bounds
+            playbackController.view.layer.cornerRadius = 0
+        }
+    }
+
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        if let panel { return [panel] }
+        return controlsVisible ? [chrome.play] : [view]
+    }
+
+    private func configureControls() {
+        menuPressRecognizer.addTarget(self, action: #selector(handleMenuPress(_:)))
+        menuPressRecognizer.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
+        menuPressRecognizer.allowedTouchTypes = []
+        menuPressRecognizer.delegate = self
+        view.addGestureRecognizer(menuPressRecognizer)
+        chrome.play.addAction(UIAction { [weak self] _ in self?.togglePlayback() }, for: .primaryActionTriggered)
+        chrome.previous.addAction(UIAction { [weak self] _ in
+            let queue = PlaybackQueue.shared
+            guard queue.currentIndex > 0 else { return }
+            self?.advance(queue.videos[queue.currentIndex - 1])
+        }, for: .primaryActionTriggered)
+        chrome.nextButton.addAction(UIAction { [weak self] _ in
+            guard let self, let next = self.upcomingVideo else { return }
+            self.advance(next)
+        }, for: .primaryActionTriggered)
+        chrome.descriptionButton.addAction(UIAction { [weak self] _ in self?.openPanel(comments: false) }, for: .primaryActionTriggered)
+        chrome.comments.addAction(UIAction { [weak self] _ in self?.openPanel(comments: true) }, for: .primaryActionTriggered)
+        chrome.like.addAction(UIAction { [weak self] _ in self?.rateVideo(.like) }, for: .primaryActionTriggered)
+        chrome.dislike.addAction(UIAction { [weak self] _ in self?.rateVideo(.dislike) }, for: .primaryActionTriggered)
+        chrome.subscribe.addAction(UIAction { [weak self] _ in self?.toggleSubscription() }, for: .primaryActionTriggered)
+        chrome.channel.addAction(UIAction { [weak self] _ in self?.openChannel() }, for: .primaryActionTriggered)
+        chrome.timeline.addAction(UIAction { [weak self] _ in self?.togglePlayback(keepingFocus: true) }, for: .primaryActionTriggered)
+        chrome.timeline.onSeekTo = { [weak self] seconds in
+            guard let self, let total = self.avPlayer.currentItem?.duration.seconds, total.isFinite else { return }
+            let target = min(total, max(0, seconds))
+            self.avPlayer.seek(to: CMTime(seconds: target, preferredTimescale: 600))
+            self.scheduleHideControls()
+        }
+        chrome.timeline.onScrubbingChanged = { [weak self] scrubbing in
+            guard let self else { return }
+            if scrubbing {
+                self.hideControlsTimer?.invalidate()
+                self.avPlayer.pause()
+            } else {
+                if self.desiredPlaying { self.avPlayer.play() }
+                self.scheduleHideControls()
+            }
+        }
+        chrome.onInteraction = { [weak self] in self?.scheduleHideControls() }
+        for direction: UISwipeGestureRecognizer.Direction in [.up, .down, .left, .right] {
+            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(revealControls))
+            swipe.direction = direction
+            swipe.cancelsTouchesInView = false
+            swipe.delegate = self
+            view.addGestureRecognizer(swipe)
+        }
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer === menuPressRecognizer { return presentedViewController == nil }
+        // These gestures only reveal hidden controls. Visible controls handle their own input.
+        return panel == nil && !controlsVisible
+    }
+
+    private func requireAccount() -> Bool {
+        guard TVAccountStore.shared.activeAccount == nil else { return true }
+        let alert = UIAlertController(title: "TV.player.signInRequired".tvLocalized,
+                                      message: "TV.player.signInMessage".tvLocalized, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "TV.close".tvLocalized, style: .cancel))
+        present(alert, animated: true)
+        return false
+    }
+
+    private func rateVideo(_ status: LikeStatus) {
+        guard !engagementLoading, requireAccount() else { return }
+        let nextStatus: LikeStatus = likeStatus == status ? .indifferent : status
+        performEngagement(update: { [weak self] in self?.likeStatus = nextStatus }) { done in
+            switch nextStatus {
+            case .like: dependencies.engagementService.sendLike(videoId: video.id, completion: done)
+            case .dislike: dependencies.engagementService.sendDislike(videoId: video.id, completion: done)
+            case .indifferent: dependencies.engagementService.removeLike(videoId: video.id, completion: done)
+            }
+        }
+    }
+
+    private func toggleSubscription() {
+        guard !engagementLoading, let channelId = video.channelId, requireAccount() else { return }
+        let nextSubscribed = !subscribed
+        performEngagement(update: { [weak self] in self?.subscribed = nextSubscribed }) { done in
+            if nextSubscribed {
+                dependencies.engagementService.subscribeToChannel(channelId: channelId, cancellationToken: cancellation, completion: done)
+            } else {
+                dependencies.engagementService.unsubscribeFromChannel(channelId: channelId, cancellationToken: cancellation, completion: done)
+            }
+        }
+    }
+
+    private func performEngagement(update: @escaping () -> Void,
+                                   operation: (@escaping (Result<Void, Error>) -> Void) -> Void) {
+        engagementLoading = true
+        rebuildMenus()
+        let token = cancellation
+        operation { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self, !token.isCancelled else { return }
+                self.engagementLoading = false
+                if case .success = result { update() }
+                else {
+                    let alert = UIAlertController(title: "TV.player.actionFailed".tvLocalized, message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "TV.close".tvLocalized, style: .cancel))
+                    if self.presentedViewController == nil { self.present(alert, animated: true) }
+                }
+                self.rebuildMenus()
+            }
+        }
+    }
+
+    private func openChannel() {
+        guard let id = video.channelId else { return }
+        onChannelRequested?(id, video.channelName)
+    }
+
+    private func togglePlayback(keepingFocus: Bool = false) {
+        if avPlayer.timeControlStatus == .paused { desiredPlaying = true; avPlayer.play() }
+        else { desiredPlaying = false; avPlayer.pause() }
+        chrome.updateTime(seconds: avPlayer.currentTime().seconds, total: avPlayer.currentItem?.duration.seconds ?? 0,
+                          playing: desiredPlaying)
+        if keepingFocus { scheduleHideControls() }
+        else { showControls() }
+    }
+
+    @objc private func revealControls() {
+        guard panel == nil, !controlsVisible else { return }
+        showControls()
+    }
+
+    private func showControls() {
+        controlsVisible = true
+        chrome.isHidden = panel != nil
+        setNeedsFocusUpdate()
+        scheduleHideControls()
+    }
+
+    private func hideControls() {
+        chrome.timeline.endScrubbing(cancelled: true)
+        controlsVisible = false
+        chrome.isHidden = true
+        hideControlsTimer?.invalidate()
+        setNeedsFocusUpdate()
+    }
+
+    @objc private func handleMenuPress(_ recognizer: UITapGestureRecognizer) {
+        guard recognizer.state == .ended else { return }
+        if panel != nil { closePanel() }
+        else if controlsVisible { hideControls() }
+        else { dismiss(animated: true) }
+    }
+
+    private func scheduleHideControls() {
+        hideControlsTimer?.invalidate()
+        guard panel == nil, desiredPlaying, !chrome.timeline.isScrubbing else { return }
+        hideControlsTimer = Timer.scheduledTimer(withTimeInterval: 7, repeats: false) { [weak self] _ in
+            guard let self, self.presentedViewController == nil,
+                  self.avPlayer.timeControlStatus == .playing else { return }
+            self.hideControls()
+        }
+    }
+
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if presses.contains(where: { $0.type == .menu }) {
+            // The recognizer handles Back on release. Do not also change state on press-down.
+            handledPresses.formUnion(presses.map(\.type))
+        } else if presses.contains(where: { $0.type == .playPause || ($0.type == .select && panel == nil && !controlsVisible) }) {
+            handledPresses.formUnion(presses.map(\.type))
+            togglePlayback()
+        } else if panel == nil, !controlsVisible {
+            handledPresses.formUnion(presses.map(\.type))
+            showControls()
+        } else { super.pressesBegan(presses, with: event) }
+    }
+
+    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        let remaining = presses.filter { !handledPresses.contains($0.type) }
+        presses.forEach { handledPresses.remove($0.type) }
+        if !remaining.isEmpty { super.pressesEnded(remaining, with: event) }
+    }
+
+    override func pressesChanged(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        let remaining = presses.filter { !handledPresses.contains($0.type) }
+        if !remaining.isEmpty { super.pressesChanged(remaining, with: event) }
+    }
+
+    override func pressesCancelled(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        let remaining = presses.filter { !handledPresses.contains($0.type) }
+        presses.forEach { handledPresses.remove($0.type) }
+        if !remaining.isEmpty { super.pressesCancelled(remaining, with: event) }
+    }
+
+    func openPanel(comments: Bool) {
+        closePanel()
+        panelShowsComments = comments
+        let controller = TVPlayerPanel(style: .plain)
+        panel = controller
+        addChild(controller)
+        view.addSubview(controller.view)
+        controller.didMove(toParent: self)
+        hideControlsTimer?.invalidate()
+        chrome.isHidden = true
+        if comments {
+            controller.panelTitle = "TV.player.comments".tvLocalized + (watchPage?.commentCount.map { " \($0)" } ?? "")
+            populateComments()
+            if commentsPage == nil { loadComments() }
+        } else { populateDescription() }
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+        setNeedsFocusUpdate()
+        updateFocusIfNeeded()
+    }
+
+    func closePanel() {
+        guard let panel else { return }
+        panel.willMove(toParent: nil)
+        panel.view.removeFromSuperview()
+        panel.removeFromParent()
+        self.panel = nil
+        view.setNeedsLayout()
+        showControls()
+    }
+
+    private func populateDescription() {
+        guard let panel else { return }
+        panel.panelTitle = video.title
+        let stats = [watchPage?.likeCount.map { "\($0) " + "TV.player.likes".tvLocalized }, video.viewCount, video.publishedAt]
+            .compactMap { $0 }.joined(separator: "    ·    ")
+        var cards = [TVPlayerPanel.Card(title: stats, body: ""),
+                     TVPlayerPanel.Card(title: video.channelName, body: watchPage?.channelInfo?.subscriberCountText ?? "",
+                                        avatarURL: video.channelAvatarURL ?? watchPage?.channelInfo?.avatarURL,
+                                        action: { [weak self] in self?.openChannel() })]
+        let description = watchPage?.description ?? "TV.player.noDescription".tvLocalized
+        cards += textCards(title: "TV.player.description".tvLocalized, text: description)
+        cards.append(TVPlayerPanel.Card(title: "TV.player.comments".tvLocalized,
+                                        body: watchPage?.commentCount ?? "", action: { [weak self] in self?.openPanel(comments: true) }))
+        panel.cards = cards
+    }
+
+    private func textCards(title: String, text: String) -> [TVPlayerPanel.Card] {
+        // Bound each focus target's height so the remote can reach every line.
+        var remaining = text[...]
+        var cards: [TVPlayerPanel.Card] = []
+        while !remaining.isEmpty {
+            let end = remaining.index(remaining.startIndex, offsetBy: min(420, remaining.count))
+            cards.append(TVPlayerPanel.Card(title: cards.isEmpty ? title : "", body: String(remaining[..<end])))
+            remaining = remaining[end...]
+        }
+        return cards
+    }
+
+    private func populateComments() {
+        guard panelShowsComments, let panel else { return }
+        var cards: [TVPlayerPanel.Card] = []
+        for comment in loadedComments {
+            var chunks = textCards(title: [comment.isPinned ? "📌" : nil, comment.authorName, comment.publishedTime]
+                .compactMap { $0 }.joined(separator: " · "), text: comment.content)
+            if !chunks.isEmpty {
+                chunks[0].avatarURL = comment.authorAvatarURL
+                chunks[chunks.count - 1].footer = [comment.likeCount.map { "♡ \($0)" }, comment.replyCount.map { "▢ \($0)" }]
+                    .compactMap { $0 }.joined(separator: "    ")
+            }
+            cards += chunks
+        }
+        if cards.isEmpty {
+            cards = [TVPlayerPanel.Card(title: "TV.player.comments".tvLocalized,
+                                       body: (commentsPage == nil ? "TV.player.loadingComments" : "TV.player.noComments").tvLocalized)]
+        }
+        if commentsPage?.continuation != nil {
+            cards.append(TVPlayerPanel.Card(title: "TV.player.moreComments".tvLocalized, body: "", action: { [weak self] in self?.loadComments() }))
+        }
+        panel.cards = cards
+    }
+
+    private func loadComments() {
+        guard !commentsLoading, commentsPage == nil || commentsPage?.continuation != nil else { return }
+        commentsLoading = true
+        let token = cancellation
+        dependencies.watchService.fetchComments(videoId: video.id, continuation: commentsPage?.continuation,
+                                                 cancellationToken: token) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self, !token.isCancelled else { return }
+                self.commentsLoading = false
+                switch result {
+                case .success(let page):
+                    self.commentsPage = page
+                    var ids = Set(self.loadedComments.map(\.id))
+                    self.loadedComments += page.comments.filter { ids.insert($0.id).inserted }
+                    self.populateComments()
+                case .failure:
+                    guard self.panelShowsComments else { return }
+                    self.panel?.cards = [TVPlayerPanel.Card(title: "TV.player.commentsFailed".tvLocalized,
+                        body: "TV.retry".tvLocalized, action: { [weak self] in self?.loadComments() })]
+                }
+            }
+        }
+    }
+
     private func close() {
         guard !closed else { return }
         closed = true
+        displayMode.restore()
+        hideControlsTimer?.invalidate()
         saveProgress()
         cancellation.cancel()
         dismissUpNext()
