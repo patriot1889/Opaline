@@ -36,7 +36,14 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         TVPlaybackPolicy.upcomingVideo(in: PlaybackQueue.shared, suggestion: nextVideo)
     }
     private let subtitle = UILabel()
+    private var subtitleBottom: NSLayoutConstraint?
     private let status = UILabel()
+    private let transport = TVTransportView()
+    private var controlsTimer: Timer?
+    private var playbackRate: Float = 1
+    private var seekGeneration = 0
+    private var pendingSeek: Double?
+
 
     init(video: Video, dependencies: ServiceDependencies, playlistQueue: Bool = false) {
         self.video = video
@@ -48,6 +55,8 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
     override func viewDidLoad() {
         super.viewDidLoad()
         player = avPlayer
+        showsPlaybackControls = false
+        configureTransport()
         allowsPictureInPicturePlayback = false
         speeds = AVPlaybackSpeed.systemDefaultSpeeds
         facade.context = self
@@ -72,6 +81,99 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         super.viewDidDisappear(animated)
         if isBeingDismissed || presentingViewController == nil { close() }
     }
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        transport.isHidden ? super.preferredFocusEnvironments : [transport.seekBar, transport.playButton]
+    }
+
+    private func configureTransport() {
+        transport.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(transport)
+        NSLayoutConstraint.activate([
+            transport.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            transport.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            transport.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            transport.heightAnchor.constraint(equalToConstant: 300)
+        ])
+        transport.playButton.addAction(UIAction { [weak self] _ in self?.togglePlayback() }, for: .primaryActionTriggered)
+        transport.seekBar.onPlayPause = { [weak self] in self?.togglePlayback() }
+        transport.seekBar.onSeek = { [weak self] seconds in
+            guard let self else { return }
+            self.seekGeneration += 1
+            let generation = self.seekGeneration
+            self.pendingSeek = seconds
+            self.avPlayer.seek(to: CMTime(seconds: seconds, preferredTimescale: 600),
+                               toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] _ in
+                DispatchQueue.main.async {
+                    guard let self, self.seekGeneration == generation else { return }
+                    self.pendingSeek = nil
+                }
+            }
+            self.showControls()
+        }
+        transport.onInteraction = { [weak self] in self?.scheduleControlsHide() }
+    }
+
+    private func updateTimelineSegments() {
+        transport.setSegments(SponsorBlockService.enabled ? segments : [])
+    }
+
+    private func togglePlayback() {
+        if avPlayer.rate > 0 { avPlayer.pause() }
+        else {
+            if let duration = avPlayer.currentItem?.duration.seconds,
+               duration.isFinite, avPlayer.currentTime().seconds >= duration - 0.2 {
+                avPlayer.seek(to: .zero)
+            }
+            avPlayer.playImmediately(atRate: playbackRate)
+        }
+        showControls()
+    }
+
+    private func showControls() {
+        let wasHidden = transport.isHidden
+        transport.isHidden = false
+        subtitleBottom?.constant = -324
+        if wasHidden { setNeedsFocusUpdate(); updateFocusIfNeeded() }
+        scheduleControlsHide()
+    }
+
+    private func scheduleControlsHide() {
+        controlsTimer?.invalidate()
+        controlsTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
+            guard let self else { return }
+            self.controlsTimer = nil
+            // A menu owns focus while it is open; leave its underlying controls visible.
+            guard self.avPlayer.rate > 0, self.transportContainsFocus else { return }
+            self.hideControls()
+        }
+    }
+
+    private func hideControls() {
+        transport.isHidden = true
+        subtitleBottom?.constant = -80
+    }
+
+    private var transportContainsFocus: Bool {
+        guard let focused = UIFocusSystem.focusSystem(for: view)?.focusedItem as? UIView else { return false }
+        return focused.isDescendant(of: transport)
+    }
+
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        if presses.contains(where: { $0.type == .playPause }) {
+            togglePlayback()
+        } else if presses.contains(where: { $0.type == .menu }), !transport.isHidden {
+            controlsTimer?.invalidate()
+            controlsTimer = nil
+            hideControls()
+        } else if transport.isHidden, presses.contains(where: {
+            [.select, .upArrow, .downArrow, .leftArrow, .rightArrow].contains($0.type)
+        }) {
+            showControls()
+        } else {
+            super.pressesBegan(presses, with: event)
+        }
+    }
+
     private func configureOverlays() {
         subtitle.font = .systemFont(ofSize: 36, weight: .semibold)
         subtitle.textAlignment = .center
@@ -91,9 +193,11 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
             $0.translatesAutoresizingMaskIntoConstraints = false
             overlay.addSubview($0)
         }
+        let bottom = subtitle.bottomAnchor.constraint(equalTo: overlay.safeAreaLayoutGuide.bottomAnchor, constant: -324)
+        subtitleBottom = bottom
         NSLayoutConstraint.activate([
             subtitle.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
-            subtitle.bottomAnchor.constraint(equalTo: overlay.safeAreaLayoutGuide.bottomAnchor, constant: -180),
+            bottom,
             subtitle.widthAnchor.constraint(lessThanOrEqualTo: overlay.widthAnchor, multiplier: 0.8),
             status.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
             status.centerYAnchor.constraint(equalTo: overlay.centerYAnchor)
@@ -109,7 +213,13 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         awaitingQueueEnd = false
         cancellation = CancellationToken()
         let token = cancellation
+        seekGeneration += 1
+        pendingSeek = nil
         video = next
+        transport.titleLabel.text = next.title
+        transport.setSegments([])
+        transport.update(position: 0, duration: 0, buffered: 0, playing: true)
+        showControls()
         lastPosition = nil
         desiredPlaying = true
         switching = false
@@ -133,6 +243,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
             DispatchQueue.main.async {
                 guard let self, !token.isCancelled, case .success(let page) = result else { return }
                 self.video = page.video
+                self.transport.titleLabel.text = page.video.title
                 self.nextVideo = page.nextVideo
                 if let videos = page.playlistVideos, !videos.isEmpty, !self.queueUsesPlaylistBrowse {
                     if PlaybackQueue.shared.playlistId != next.playlistId {
@@ -156,6 +267,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
             DispatchQueue.main.async {
                 guard !token.isCancelled else { return }
                 self?.segments = (try? result.get()) ?? []
+                self?.updateTimelineSegments()
                 self?.rebuildMenus()
             }
         }
@@ -185,7 +297,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         startObservingPlayerItem(prepared.item)
         switching = false
         status.isHidden = true
-        if desiredPlaying { avPlayer.play() }
+        if desiredPlaying { avPlayer.playImmediately(atRate: playbackRate) }
         rebuildMenus()
     }
     private func metadata() -> [AVMetadataItem] {
@@ -278,6 +390,11 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         subtitle.text = text.map { "  \($0)  " }
         subtitle.isHidden = text == nil
         saveProgress()
+        let duration = avPlayer.currentItem?.duration.seconds ?? 0
+        let buffered = avPlayer.currentItem?.loadedTimeRanges.compactMap {
+            $0.timeRangeValue.end.seconds
+        }.filter { $0.isFinite }.max() ?? 0
+        transport.update(position: pendingSeek ?? seconds, duration: duration, buffered: buffered, playing: avPlayer.rate > 0)
         if SponsorBlockService.enabled, avPlayer.rate > 0,
            let segment = segments.first(where: {
                $0.actionType == "skip" && $0.startTime <= seconds && seconds < $0.endTime &&
@@ -329,6 +446,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         }
     }
     private func ended() {
+        showControls()
         saveProgress()
         let enabled = PlaybackQueue.shared.playlistId == nil ? AutoplayPreference.isEnabled : AutoplayPreference.isMixEnabled
         guard enabled else { return }
@@ -409,6 +527,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
                               state: SponsorBlockService.enabled ? .on : .off) { [weak self] _ in
             SponsorBlockService.enabled.toggle()
             self?.loadSegments()
+            self?.updateTimelineSegments()
             self?.rebuildMenus()
         })
         if let segment = manualSegment {
@@ -431,11 +550,23 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
                 self.onChannelRequested?(channelId, self.video.channelName)
             })
         }
-        transportBarCustomMenuItems = menus
+        menus.insert(UIMenu(title: "TV.playbackSpeed".tvLocalized, image: UIImage(systemName: "speedometer"), children:
+            [Float(0.25), 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].map { rate in
+                UIAction(title: "\(rate)×", state: playbackRate == rate ? .on : .off) { [weak self] _ in
+                    guard let self else { return }
+                    self.playbackRate = rate
+                    if self.avPlayer.rate > 0 { self.avPlayer.rate = rate }
+                    self.rebuildMenus()
+                    self.showControls()
+                }
+            }), at: 0)
+        transport.settingsButton.menu = UIMenu(children: menus)
     }
     private func close() {
         guard !closed else { return }
         closed = true
+        controlsTimer?.invalidate()
+        controlsTimer = nil
         saveProgress()
         cancellation.cancel()
         autoplayTimer?.invalidate()
