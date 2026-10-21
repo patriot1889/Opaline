@@ -26,9 +26,7 @@ final class TVAppDelegate: UIResponder, UIApplicationDelegate {
         } else if OAuthClient.shared.isSignedIn || OAuthClient.shared.isAnonymous {
             showMain()
         } else {
-            let auth = TVAuthController()
-            auth.onComplete = { [weak self] in self?.showMain() }
-            window?.rootViewController = auth
+            window?.rootViewController = UINavigationController(rootViewController: TVAccountsController(choosingAccount: true))
             applyAppearance()
         }
         window?.makeKeyAndVisible()

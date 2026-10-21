@@ -12,7 +12,10 @@ final class TVAuthController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = TVPalette.background
+        overrideUserInterfaceStyle = .dark
+        let backdrop = TVAccountBackdropView(frame: view.bounds)
+        backdrop.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(backdrop)
         let heading = UILabel()
         heading.text = "account.signIn".localized
         heading.font = .systemFont(ofSize: 48, weight: .bold)
