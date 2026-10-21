@@ -155,6 +155,56 @@ final class BrowseTests: XCTestCase {
         XCTAssertNotNil(grid.collectionView.supplementaryView(forElementKind: kind, at: path))
     }
 
+    @MainActor
+    func testShelfContinuationVideosStayInTheirOriginalCategories() {
+        var requests: [(String?, TVGridController.Completion)] = []
+        let grid = TVGridController(title: "Home")
+        grid.loader = { token, done in requests.append((token, done)) }
+        grid.loadViewIfNeeded()
+        grid.refresh()
+
+        func deliver(_ feed: FeedPage) {
+            var page = TVBrowsePage(feed)
+            for index in page.sections.indices { page.sections[index].scrollsHorizontally = true }
+            requests.last?.1(.success(page))
+            drainBrowseQueue()
+        }
+        func loadNext(_ token: String, section: Int) {
+            grid.collectionView(grid.collectionView, willDisplay: UICollectionViewCell(),
+                                forItemAt: IndexPath(item: grid.sections[section].items.count - 1, section: section))
+            XCTAssertEqual(requests.last?.0, token)
+        }
+        func videoIDs() -> [[String]] {
+            grid.sections.map { $0.items.compactMap {
+                if case .video(let video) = $0 { return video.id }; return nil
+            } }
+        }
+
+        deliver(FeedPage(videos: [Video(id: "music")], continuation: "home-next",
+                         shelves: [FeedShelf(title: "Music", count: 1)],
+                         shelfContinuations: [ShelfContinuation(title: "Music", token: "music-next")]))
+        loadNext("home-next", section: 0)
+        deliver(FeedPage(videos: [Video(id: "games")], continuation: nil,
+                         shelves: [FeedShelf(title: "Gaming", count: 1)],
+                         shelfContinuations: [ShelfContinuation(title: "Gaming", token: "games-next")]))
+        loadNext("music-next", section: 0)
+        deliver(FeedPage(videos: [Video(id: "music"), Video(id: "music-2")], continuation: "music-last"))
+        XCTAssertEqual(grid.sections.map(\.title), ["Music", "Gaming"])
+        XCTAssertEqual(videoIDs(), [["music", "music-2"], ["games"]])
+        loadNext("music-last", section: 0)
+        deliver(FeedPage(videos: [Video(id: "music-3")], continuation: nil))
+        let countBeforeExhaustedRow = requests.count
+        grid.collectionView(grid.collectionView, willDisplay: UICollectionViewCell(),
+                            forItemAt: IndexPath(item: 2, section: 0))
+        XCTAssertEqual(requests.count, countBeforeExhaustedRow)
+        loadNext("games-next", section: 1)
+        deliver(FeedPage(videos: [Video(id: "games-2"), Video(id: "short", isShort: true)], continuation: nil))
+        XCTAssertEqual(grid.sections.map(\.title), ["Music", "Gaming"])
+        XCTAssertTrue(grid.sections.allSatisfy(\.scrollsHorizontally))
+        XCTAssertEqual(videoIDs(), [["music", "music-2", "music-3"], ["games", "games-2"]])
+        XCTAssertNil(grid.continuation)
+    }
+
     func testShelvesRetainTitlesAndExcludeShorts() {
         let videos = [Video(id: "short", isShort: true), Video(id: "long")]
         let page = TVBrowsePage(FeedPage(videos: videos, continuation: "next", shelves: [

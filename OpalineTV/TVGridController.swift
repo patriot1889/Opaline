@@ -415,30 +415,40 @@ class TVGridController: UICollectionViewController {
         collectionView.reloadData()
     }
 
-    private func loadMore() {
+    private func loadMore(shelfSectionIndex: Int? = nil) {
         guard let loader, !loading, !failed else { return }
         loading = true
         if contentSections.isEmpty { status.text = "TV.loading".tvLocalized }
         let requestGeneration = generation
-        let token = continuation ?? shelfContinuations.first?.token
+        // Shelf responses contain bare videos; request and extend the row being browsed.
+        let shelf = shelfSectionIndex.flatMap { index in
+            shelfContinuations.first { $0.title == contentSections[index].title }
+        }
+        let token = shelf?.token ?? continuation
         loader(token) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self, self.generation == requestGeneration else { return }
                 self.loading = false
                 switch result {
                 case .success(let page):
-                    if self.continuation == nil, token != nil, !self.shelfContinuations.isEmpty {
-                        self.shelfContinuations.removeFirst()
+                    let next = page.continuation == token ? nil : page.continuation
+                    if let shelf {
+                        self.shelfContinuations.removeAll { $0.token == shelf.token }
+                        if let next {
+                            self.shelfContinuations.append(ShelfContinuation(title: shelf.title, token: next))
+                        }
+                    } else {
+                        self.continuation = next
                     }
-                    self.continuation = page.continuation == token ? nil : page.continuation
-                    if token == nil { self.shelfContinuations = page.shelfContinuations }
-                    self.append(page)
+                    self.shelfContinuations.append(contentsOf: page.shelfContinuations)
+                    self.append(page, to: shelfSectionIndex)
                     self.status.text = self.contentSections.allSatisfy({ $0.items.isEmpty }) ? "TV.empty".tvLocalized : nil
                     self.collectionView.reloadData()
                     // Empty/Shorts-only pages must not strand a still-valid continuation.
                     if page.sections.allSatisfy({ $0.items.isEmpty }),
-                       self.continuation != token,
-                       self.continuation != nil || !self.shelfContinuations.isEmpty { self.loadMore() }
+                       next != nil {
+                        self.loadMore(shelfSectionIndex: shelfSectionIndex)
+                    }
                 case .failure:
                     self.failed = true
                     let retry = TVItem.action("TV.retry".tvLocalized) { [weak self] in
@@ -446,7 +456,7 @@ class TVGridController: UICollectionViewController {
                         self.contentSections.removeAll { $0.title == "TV.loadFailed".tvLocalized }
                         self.collectionView.reloadData()
                         self.failed = false
-                        self.loadMore()
+                        self.loadMore(shelfSectionIndex: shelfSectionIndex)
                     }
                     self.contentSections.append(TVSection(title: "TV.loadFailed".tvLocalized, items: [retry]))
                     self.status.text = nil
@@ -455,7 +465,7 @@ class TVGridController: UICollectionViewController {
             }
         }
     }
-    private func append(_ page: TVBrowsePage) {
+    private func append(_ page: TVBrowsePage, to sectionIndex: Int? = nil) {
         func identity(_ item: TVItem) -> String? {
             switch item {
             case .video(let video): return "video:" + video.id
@@ -471,8 +481,12 @@ class TVGridController: UICollectionViewController {
                 return known.insert(id).inserted
             }
             if !items.isEmpty {
-                contentSections.append(TVSection(title: section.title, items: items,
-                                                 scrollsHorizontally: section.scrollsHorizontally))
+                if let sectionIndex, contentSections.indices.contains(sectionIndex) {
+                    contentSections[sectionIndex].items.append(contentsOf: items)
+                } else {
+                    contentSections.append(TVSection(title: section.title, items: items,
+                                                     scrollsHorizontally: section.scrollsHorizontally))
+                }
             }
         }
     }
@@ -505,9 +519,15 @@ class TVGridController: UICollectionViewController {
         if case .action(_, let action) = item { action() } else { selection?(item, self) }
     }
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt path: IndexPath) {
-        if path.section == sections.count - 1,
-           path.item >= sections[path.section].items.count - 3,
-           continuation != nil || !shelfContinuations.isEmpty { loadMore() }
+        guard sections.indices.contains(path.section),
+              path.item >= sections[path.section].items.count - 3 else { return }
+        let contentIndex = path.section - leadingSections.count
+        if path.section == sections.count - 1, continuation != nil {
+            loadMore()
+        } else if contentSections.indices.contains(contentIndex),
+                  shelfContinuations.contains(where: { $0.title == contentSections[contentIndex].title }) {
+            loadMore(shelfSectionIndex: contentIndex)
+        }
     }
 }
 
