@@ -1,0 +1,63 @@
+{
+  "playerOverlays": {
+    "playerOverlayRenderer": {
+      "decoratedPlayerBarRenderer": {
+        "decoratedPlayerBarRenderer": {
+          "playerBar": {
+            "multiMarkersPlayerBarRenderer": {
+              "markersMap": [
+                {
+                  "key": "DESCRIPTION_CHAPTERS",
+                  "value": {
+                    "chapters": [
+                      {
+                        "chapterRenderer": {
+                          "title": {
+                            "simpleText": "Intro"
+                          },
+                          "timeRangeStartMillis": 0
+                        }
+                      },
+                      {
+                        "chapterRenderer": {
+                          "title": {
+                            "simpleText": "How does compression work?"
+                          },
+                          "timeRangeStartMillis": 139000
+                        }
+                      },
+                      {
+                        "chapterRenderer": {
+                          "title": {
+                            "simpleText": "It's pronounced 'gif'"
+                          },
+                          "timeRangeStartMillis": 302000
+                        }
+                      },
+                      {
+                        "chapterRenderer": {
+                          "title": {
+                            "simpleText": "Where did it go?"
+                          },
+                          "timeRangeStartMillis": 405000
+                        }
+                      },
+                      {
+                        "chapterRenderer": {
+                          "title": {
+                            "simpleText": "Credits"
+                          },
+                          "timeRangeStartMillis": 708000
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

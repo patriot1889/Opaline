@@ -12,6 +12,7 @@ struct WatchPage: Codable {
         case video, description, channelInfo, subscribeButtonText
         case isSubscribed, relatedVideos, likeCount, likeStatus
         case commentCount, nextVideo, playlistTitle, playlistVideos
+        case chapters
     }
 
     let video: Video
@@ -28,6 +29,8 @@ struct WatchPage: Codable {
     let nextVideo: Video?
     let playlistTitle: String?
     let playlistVideos: [Video]?
+    /// Missing on older saved pages; independent of the selected playback source.
+    var chapters: [VideoChapter]?
     /// Handles on the rest of the queue: a token for the items past the
     /// window `playlistVideos` holds, and the params that ask for the same
     /// queue shuffled. Both belong to one live response, so they stay out of
