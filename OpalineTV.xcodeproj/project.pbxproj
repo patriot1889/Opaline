@@ -372,6 +372,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Scripts/generate_app_icons.swift,
 			);
 			target = 13177ACCB5A626FAD211C5C5 /* OpalineTV */;
 		};
