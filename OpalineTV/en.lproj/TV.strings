@@ -13,7 +13,7 @@
 "TV.playbackFailed" = "Unable to Play Video";
 "TV.close" = "Close";
 "TV.cancel" = "Cancel";
-"TV.upNext" = "Up Next · Playing in 5 Seconds";
+"TV.upNextHeading" = "Up Next";
 "TV.playNow" = "Play Now";
 "TV.previous" = "Previous Video";
 "TV.next" = "Next Video";

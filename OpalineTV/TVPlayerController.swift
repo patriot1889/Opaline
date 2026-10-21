@@ -28,7 +28,8 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
     private var desiredPlaying = true
     private var switching = false
     private var closed = false
-    private var autoplayTimer: Timer?
+    private var upNextController: TVUpNextController?
+    private var autoplayGeneration = 0
     private var queueLoading = false
     private var attemptedQueuePage: String?
     private var awaitingQueueEnd = false
@@ -73,6 +74,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         backgroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification,
                                                                      object: nil, queue: .main) { [weak self] _ in
             self?.saveProgress()
+            self?.dismissUpNext()
             self?.avPlayer.pause()
         }
         start(video)
@@ -232,7 +234,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         segments = []
         manualSegment = nil
         skipped = []
-        autoplayTimer?.invalidate()
+        dismissUpNext()
         avPlayer.replaceCurrentItem(with: nil)
         resourceLoader = nil
         WatchProgressStore.shared.suppressResume = PlaybackQueue.shared.playlistId != nil
@@ -459,16 +461,40 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         }
         guard let next = upcomingVideo else { return }
         if PlaybackQueue.shared.playlistId != nil { advance(next); return }
-        let alert = UIAlertController(title: "TV.upNext".tvLocalized, message: next.title, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "TV.playNow".tvLocalized, style: .default) { [weak self] _ in self?.advance(next) })
-        alert.addAction(UIAlertAction(title: "TV.cancel".tvLocalized, style: .cancel) { [weak self] _ in self?.autoplayTimer?.invalidate() })
-        present(alert, animated: true)
-        autoplayTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self, weak alert] _ in
-            alert?.dismiss(animated: true) { self?.advance(next) }
+        guard upNextController == nil, presentedViewController == nil else { return }
+        let generation = autoplayGeneration
+        let overlay = TVUpNextController(video: next)
+        upNextController = overlay
+        controlsTimer?.invalidate()
+        controlsTimer = nil
+        hideControls()
+        overlay.onPlay = { [weak self, weak overlay] in
+            guard let self, self.upNextController === overlay else { return }
+            self.upNextController = nil
+            overlay?.dismiss(animated: true) { [weak self] in
+                guard let self, !self.closed, self.autoplayGeneration == generation else { return }
+                self.advance(next)
+            }
         }
+        overlay.onCancel = { [weak self] in
+            self?.dismissUpNext()
+            self?.showControls()
+        }
+        present(overlay, animated: true)
     }
+
+    private func dismissUpNext() {
+        autoplayGeneration += 1
+        guard let overlay = upNextController else { return }
+        upNextController = nil
+        overlay.stopCountdown()
+        overlay.onPlay = nil
+        overlay.onCancel = nil
+        overlay.dismiss(animated: false)
+    }
+
     private func advance(_ next: Video) {
-        autoplayTimer?.invalidate()
+        dismissUpNext()
         PlaybackQueue.shared.seekTo(videoId: next.id)
         start(next)
     }
@@ -569,7 +595,7 @@ final class TVPlayerController: AVPlayerViewController, PlaybackContext {
         controlsTimer = nil
         saveProgress()
         cancellation.cancel()
-        autoplayTimer?.invalidate()
+        dismissUpNext()
         avPlayer.pause()
         stopObservingCurrentItem()
         if let timeObserver { avPlayer.removeTimeObserver(timeObserver); self.timeObserver = nil }
