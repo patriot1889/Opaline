@@ -12,6 +12,7 @@ final class TVAccountsController: UIViewController, UICollectionViewDataSource, 
     private lazy var profiles = UICollectionView(frame: .zero, collectionViewLayout: layout)
     private let manage = UIButton(type: .system)
     private let guest = UIButton(type: .system)
+    private var manageCenterX: NSLayoutConstraint!
     private var accounts: [TVAccountStore.Account] = []
     private var focusedAccountID: String?
 
@@ -74,6 +75,7 @@ final class TVAccountsController: UIViewController, UICollectionViewDataSource, 
             child.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child)
         }
+        manageCenterX = manage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         NSLayoutConstraint.activate([
             heading.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             heading.topAnchor.constraint(equalTo: view.topAnchor, constant: 184),
@@ -82,7 +84,7 @@ final class TVAccountsController: UIViewController, UICollectionViewDataSource, 
             profiles.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             profiles.heightAnchor.constraint(equalToConstant: 390),
             manage.topAnchor.constraint(equalTo: profiles.bottomAnchor, constant: 24),
-            manage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            manageCenterX,
             manage.widthAnchor.constraint(equalToConstant: 68),
             manage.heightAnchor.constraint(equalToConstant: 68),
             guest.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -104,6 +106,7 @@ final class TVAccountsController: UIViewController, UICollectionViewDataSource, 
         let inset = max(90, (profiles.bounds.width - totalWidth) / 2)
         let next = UIEdgeInsets(top: 16, left: inset, bottom: 16, right: inset)
         if layout.sectionInset != next { layout.sectionInset = next }
+        updateManagePosition()
     }
 
     private func reload() {
@@ -120,6 +123,21 @@ final class TVAccountsController: UIViewController, UICollectionViewDataSource, 
         manage.isHidden = focusedAccountID == nil
         let name = accounts.first { $0.id == focusedAccountID }?.name ?? ""
         manage.accessibilityLabel = TVAccountText.string("Manage account") + ": " + name
+        updateManagePosition()
+    }
+
+    private func updateManagePosition() {
+        guard let index = accounts.firstIndex(where: { $0.id == focusedAccountID }),
+              let attributes = profiles.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: index, section: 0))
+        else { return }
+        // Convert from scrolling content coordinates so Down stays aligned with this profile,
+        // including while the collection view scrolls to reveal accounts at either end.
+        let center = profiles.convert(attributes.center, to: view)
+        manageCenterX.constant = center.x - view.bounds.midX
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateManagePosition()
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -151,6 +169,9 @@ final class TVAccountsController: UIViewController, UICollectionViewDataSource, 
         // Retain the profile while navigating down to its management action.
         focusedAccountID = index < accounts.count ? accounts[index].id : nil
         updateManageButton()
+        coordinator.addCoordinatedAnimations {
+            self.view.layoutIfNeeded()
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
