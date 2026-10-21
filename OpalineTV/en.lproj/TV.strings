@@ -37,10 +37,3 @@
 "TV.save" = "Save";
 "TV.skipSegment" = "Skip %@";
 "TV.viewAll" = "View All";
-
-"TV.timeline" = "Timeline";
-"TV.seekHint" = "Press left or right to seek ten seconds. Press Select to play or pause.";
-"TV.playerSettings" = "Player Settings";
-"TV.play" = "Play";
-"TV.pause" = "Pause";
-"TV.playbackSpeed" = "Playback Speed";
