@@ -1,0 +1,237 @@
+{
+  "directMediaMetadata" : [
+    {
+      "chapterCount" : 0,
+      "chapterLocales" : [
+
+      ],
+      "itag" : 137,
+      "kind" : "video",
+      "playable" : true
+    },
+    {
+      "chapterCount" : 0,
+      "chapterLocales" : [
+
+      ],
+      "itag" : 140,
+      "kind" : "audio",
+      "playable" : true
+    }
+  ],
+  "playbackSteps" : [
+    "visionos.range",
+    "visionos.sabr",
+    "progressive"
+  ],
+  "responses" : [
+    {
+      "chapterKeys" : [
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[0].macroMarkersListItemRenderer",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[0].macroMarkersListItemRenderer.endRepeatCommand.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[0].macroMarkersListItemRenderer.macroMarkerRepeatStateEntityKey",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[0].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.defaultServiceEndpoint.repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[0].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.toggledServiceEndpoint.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[1].macroMarkersListItemRenderer",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[1].macroMarkersListItemRenderer.endRepeatCommand.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[1].macroMarkersListItemRenderer.macroMarkerRepeatStateEntityKey",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[1].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.defaultServiceEndpoint.repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[1].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.toggledServiceEndpoint.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[2].macroMarkersListItemRenderer",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[2].macroMarkersListItemRenderer.endRepeatCommand.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[2].macroMarkersListItemRenderer.macroMarkerRepeatStateEntityKey",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[2].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.defaultServiceEndpoint.repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[2].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.toggledServiceEndpoint.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[3].macroMarkersListItemRenderer",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[3].macroMarkersListItemRenderer.endRepeatCommand.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[3].macroMarkersListItemRenderer.macroMarkerRepeatStateEntityKey",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[3].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.defaultServiceEndpoint.repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[3].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.toggledServiceEndpoint.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[4].macroMarkersListItemRenderer",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[4].macroMarkersListItemRenderer.endRepeatCommand.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[4].macroMarkersListItemRenderer.macroMarkerRepeatStateEntityKey",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[4].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.defaultServiceEndpoint.repeatChapterCommand",
+        "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[4].macroMarkersListItemRenderer.repeatButton.toggleButtonRenderer.toggledServiceEndpoint.commandExecutorCommand.commands[1].repeatChapterCommand",
+        "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[0].macroMarkersListItemRenderer",
+        "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[1].macroMarkersListItemRenderer",
+        "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[2].macroMarkersListItemRenderer",
+        "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[3].macroMarkersListItemRenderer",
+        "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[4].macroMarkersListItemRenderer",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[0].chapterRenderer",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[1].chapterRenderer",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[2].chapterRenderer",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[3].chapterRenderer",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[4].chapterRenderer",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.onChapterRepeat",
+        "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.onChapterRepeat.openPopupAction.popup.notificationActionRenderer.actionButton.buttonRenderer.command.repeatChapterCommand"
+      ],
+      "chapters" : [
+        {
+          "path" : "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[0].macroMarkersListItemRenderer",
+          "timeText" : "0:00",
+          "title" : "Intro"
+        },
+        {
+          "path" : "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[1].macroMarkersListItemRenderer",
+          "timeText" : "2:19",
+          "title" : "How does compression work?"
+        },
+        {
+          "path" : "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[2].macroMarkersListItemRenderer",
+          "timeText" : "5:02",
+          "title" : "It's pronounced 'gif'"
+        },
+        {
+          "path" : "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[3].macroMarkersListItemRenderer",
+          "timeText" : "6:45",
+          "title" : "Where did it go?"
+        },
+        {
+          "path" : "$.engagementPanels[4].engagementPanelSectionListRenderer.content.macroMarkersListRenderer.contents[4].macroMarkersListItemRenderer",
+          "timeText" : "11:48",
+          "title" : "Credits"
+        },
+        {
+          "path" : "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[0].macroMarkersListItemRenderer",
+          "timeText" : "0:00",
+          "title" : "Intro"
+        },
+        {
+          "path" : "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[1].macroMarkersListItemRenderer",
+          "timeText" : "2:19",
+          "title" : "How does compression work?"
+        },
+        {
+          "path" : "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[2].macroMarkersListItemRenderer",
+          "timeText" : "5:02",
+          "title" : "It's pronounced 'gif'"
+        },
+        {
+          "path" : "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[3].macroMarkersListItemRenderer",
+          "timeText" : "6:45",
+          "title" : "Where did it go?"
+        },
+        {
+          "path" : "$.engagementPanels[7].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[4].horizontalCardListRenderer.cards[4].macroMarkersListItemRenderer",
+          "timeText" : "11:48",
+          "title" : "Credits"
+        },
+        {
+          "path" : "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[0].chapterRenderer",
+          "startMillis" : 0,
+          "timeText" : "",
+          "title" : "Intro"
+        },
+        {
+          "path" : "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[1].chapterRenderer",
+          "startMillis" : 139000,
+          "timeText" : "",
+          "title" : "How does compression work?"
+        },
+        {
+          "path" : "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[2].chapterRenderer",
+          "startMillis" : 302000,
+          "timeText" : "",
+          "title" : "It's pronounced 'gif'"
+        },
+        {
+          "path" : "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[3].chapterRenderer",
+          "startMillis" : 405000,
+          "timeText" : "",
+          "title" : "Where did it go?"
+        },
+        {
+          "path" : "$.playerOverlays.playerOverlayRenderer.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar.multiMarkersPlayerBarRenderer.markersMap[0].value.chapters[4].chapterRenderer",
+          "startMillis" : 708000,
+          "timeText" : "",
+          "title" : "Credits"
+        }
+      ],
+      "client" : "WEB",
+      "endpoint" : "\/youtubei\/v1\/next",
+      "httpStatus" : 200,
+      "topLevelKeys" : [
+        "contents",
+        "currentVideoEndpoint",
+        "engagementPanels",
+        "frameworkUpdates",
+        "microformat",
+        "onResponseReceivedEndpoints",
+        "pageVisualEffects",
+        "playerOverlays",
+        "responseContext",
+        "topbar",
+        "trackingParams"
+      ]
+    },
+    {
+      "chapterKeys" : [
+        "$.engagementPanels[1].engagementPanelSectionListRenderer.content.macroMarkersListViewModel",
+        "$.engagementPanels[1].engagementPanelSectionListRenderer.content.macroMarkersListViewModel.macroMarkerListEntityKey",
+        "$.engagementPanels[5].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[6].macroMarkersListViewModel",
+        "$.engagementPanels[5].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[6].macroMarkersListViewModel.macroMarkerListEntityKey",
+        "$.frameworkUpdates.entityBatchUpdate.mutations[0].payload.macroMarkersListEntity"
+      ],
+      "chapters" : [
+
+      ],
+      "client" : "TVHTML5",
+      "endpoint" : "\/youtubei\/v1\/next",
+      "httpStatus" : 200,
+      "topLevelKeys" : [
+        "contents",
+        "currentVideoEndpoint",
+        "engagementPanels",
+        "frameworkUpdates",
+        "onUiReady",
+        "playerOverlays",
+        "responseContext",
+        "trackingParams",
+        "transportControls",
+        "videoReporting"
+      ]
+    },
+    {
+      "chapterKeys" : [
+
+      ],
+      "chapters" : [
+
+      ],
+      "client" : "VISIONOS",
+      "endpoint" : "\/youtubei\/v1\/player",
+      "httpStatus" : 200,
+      "playability" : "OK",
+      "topLevelKeys" : [
+        "adBreakHeartbeatParams",
+        "attestation",
+        "captions",
+        "playabilityStatus",
+        "playbackTracking",
+        "playerConfig",
+        "responseContext",
+        "storyboards",
+        "streamingData",
+        "trackingParams",
+        "videoDetails"
+      ]
+    }
+  ],
+  "selectedSource" : "visionos.range",
+  "signedIn" : false,
+  "streamChapterLocales" : [
+
+  ],
+  "streamChapters" : [
+
+  ],
+  "streamDuration" : 720.95299999999997,
+  "videoID" : "LGA4ZFr-hfo",
+  "watchPage" : {
+    "description" : "...more",
+    "modelHasChapterField" : false,
+    "title" : ""
+  }
+}
