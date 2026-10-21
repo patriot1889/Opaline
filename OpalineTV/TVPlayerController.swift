@@ -71,13 +71,16 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
         overrideUserInterfaceStyle = .dark
         // Resizing for side panels must not relinquish the video's matched display mode.
         playbackController.appliesPreferredDisplayCriteriaAutomatically = false
-        playbackController.player = avPlayer
         playbackController.showsPlaybackControls = false
         playbackController.view.isUserInteractionEnabled = false
         playbackController.allowsPictureInPicturePlayback = false
         addChild(playbackController)
+        // AVKit lays out its internal views as soon as it receives a player.
+        // Give it the host's size first instead of an initial zero-sized frame.
+        playbackController.view.frame = view.bounds
         view.addSubview(playbackController.view)
         playbackController.didMove(toParent: self)
+        playbackController.player = avPlayer
         view.addSubview(chrome)
         configureControls()
         facade.context = self
@@ -174,9 +177,15 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
         avPlayer.replaceCurrentItem(with: nil)
         resourceLoader = nil
         WatchProgressStore.shared.suppressResume = PlaybackQueue.shared.playlistId != nil
-        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
-        facade.start(videoId: next.id, apiClient: dependencies.watchService, cancellationToken: token)
+        TVPlaybackAudioSession.activate { [weak self] error in
+            guard let self, !self.closed, !token.isCancelled else { return }
+            if let error {
+                AppLog.player("TV audio session activation failed: \(error.localizedDescription)")
+                self.showPlaybackError("player.error.playback".localized)
+                return
+            }
+            self.facade.start(videoId: next.id, apiClient: self.dependencies.watchService, cancellationToken: token)
+        }
         dependencies.watchService.fetchWatchPage(video: next, cancellationToken: token) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self, !token.isCancelled, case .success(let page) = result else { return }
@@ -864,7 +873,7 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
         resourceLoader = nil
         PlaybackProgress.report = nil
         WatchProgressStore.shared.suppressResume = false
-        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        TVPlaybackAudioSession.deactivate()
     }
     deinit { close() }
 }

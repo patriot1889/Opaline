@@ -8,35 +8,50 @@ final class TVAppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Hosted unit tests exercise shared services without starting live requests.
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
-            window = UIWindow(frame: UIScreen.main.bounds)
-            window?.rootViewController = UIViewController()
-            window?.makeKeyAndVisible()
-            return true
-        }
+        guard !isRunningTests else { return true }
         AppLog.banner()
         ChannelInfoStore.shared.configure(channelService: dependencies.channelService)
         UserProfileStore.shared.configure(accountService: dependencies.accountService)
-        window = UIWindow(frame: UIScreen.main.bounds)
-        if TVAccountStore.shared.accounts.count > 1 {
-            let accounts = TVAccountsController(choosingAccount: true)
-            window?.rootViewController = UINavigationController(rootViewController: accounts)
-            applyAppearance()
-        } else if OAuthClient.shared.isSignedIn || OAuthClient.shared.isAnonymous {
-            showMain()
-        } else {
-            window?.rootViewController = UINavigationController(rootViewController: TVAccountsController(choosingAccount: true))
-            applyAppearance()
-        }
-        window?.makeKeyAndVisible()
         authObserver = NotificationCenter.default.addObserver(
             forName: .authorizationRequired, object: nil, queue: .main
         ) { [weak self] _ in self?.presentSignIn() }
         return true
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func application(_ application: UIApplication,
+                     configurationForConnecting connectingSceneSession: UISceneSession,
+                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(name: "TV", sessionRole: connectingSceneSession.role)
+        configuration.delegateClass = TVSceneDelegate.self
+        return configuration
+    }
+
+    private var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+
+    func connect(window: UIWindow) {
+        self.window = window
+        // Hosted unit tests exercise shared services without starting live requests.
+        guard !isRunningTests else {
+            window.rootViewController = UIViewController()
+            window.makeKeyAndVisible()
+            return
+        }
+        if TVAccountStore.shared.accounts.count > 1 {
+            let accounts = TVAccountsController(choosingAccount: true)
+            window.rootViewController = UINavigationController(rootViewController: accounts)
+            applyAppearance()
+        } else if OAuthClient.shared.isSignedIn || OAuthClient.shared.isAnonymous {
+            showMain()
+        } else {
+            window.rootViewController = UINavigationController(rootViewController: TVAccountsController(choosingAccount: true))
+            applyAppearance()
+        }
+        window.makeKeyAndVisible()
+    }
+
+    func sceneDidBecomeActive() {
         // Wait for the launch account choice before making account-scoped requests.
         guard window?.rootViewController is TVRootController else { return }
         OAuthClient.shared.refreshIfStale()
@@ -61,6 +76,30 @@ final class TVAppDelegate: UIResponder, UIApplicationDelegate {
             auth?.dismiss(animated: true) { self?.showMain() }
         }
         root.present(auth, animated: true)
+    }
+}
+
+final class TVSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene,
+              let app = UIApplication.shared.delegate as? TVAppDelegate else { return }
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+        app.connect(window: window)
+    }
+
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        (UIApplication.shared.delegate as? TVAppDelegate)?.sceneDidBecomeActive()
+    }
+
+    func sceneDidDisconnect(_ scene: UIScene) {
+        if let app = UIApplication.shared.delegate as? TVAppDelegate, app.window === window {
+            app.window = nil
+        }
+        window = nil
     }
 }
 
