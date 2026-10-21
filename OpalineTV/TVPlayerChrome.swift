@@ -6,6 +6,7 @@ final class TVPlayerChrome: UIView {
     let metadata = UILabel()
     let elapsed = UILabel()
     let duration = UILabel()
+    let segmentLabel = UILabel()
     let timeline = TVPlayerTimeline()
     let play = UIButton(type: .system)
     let previous = UIButton(type: .system)
@@ -46,10 +47,14 @@ final class TVPlayerChrome: UIView {
             controls.addSubview($0)
         }
         duration.textAlignment = .right
+        segmentLabel.font = .preferredFont(forTextStyle: .caption2)
+        segmentLabel.isHidden = true
+        controls.addSubview(segmentLabel)
         controls.addSubview(timeline)
         timeline.addAction(UIAction { [weak self] _ in
             guard let self else { return }
             self.elapsed.text = Self.time(self.timeline.fraction * self.timeline.duration)
+            self.updateSegmentLabel()
         }, for: .valueChanged)
         configure(channel, title: nil, symbol: "person.crop.circle", label: "Channel")
         configure(descriptionButton, title: "TV.player.description".tvLocalized, symbol: nil, label: "Description")
@@ -92,6 +97,7 @@ final class TVPlayerChrome: UIView {
         controls.frame = CGRect(x: inset, y: bounds.height - 235, width: width, height: 180)
         elapsed.frame = CGRect(x: 0, y: 0, width: width / 2, height: 30)
         duration.frame = CGRect(x: width / 2, y: 0, width: width / 2, height: 30)
+        segmentLabel.frame = CGRect(x: 150, y: 0, width: width - 350, height: 30)
         timeline.frame = CGRect(x: 0, y: 36, width: width, height: 30)
         channel.frame = CGRect(x: 0, y: 85, width: 72, height: 72)
         descriptionButton.frame = CGRect(x: 88, y: 85, width: 210, height: 72)
@@ -128,6 +134,27 @@ final class TVPlayerChrome: UIView {
         timeline.isEnabled = total.isFinite && total > 0
         play.configuration?.image = UIImage(systemName: playing ? "pause.fill" : "play.fill")
         play.accessibilityLabel = playing ? "Pause" : "Play"
+        updateSegmentLabel()
+    }
+
+    func updateSponsorSegments(_ segments: [SponsorBlockSegment]) {
+        timeline.sponsorSegments = segments
+        updateSegmentLabel()
+    }
+
+    private func updateSegmentLabel() {
+        guard timeline.duration.isFinite, timeline.duration > 0 else {
+            segmentLabel.isHidden = true
+            return
+        }
+        let seconds = timeline.fraction * timeline.duration
+        let active = timeline.sponsorSegments.filter {
+            $0.startTime <= seconds && seconds < $0.endTime
+        }
+        let categories = SBCategory.allCases.filter { category in active.contains { $0.category == category } }
+        segmentLabel.text = categories.map(\.displayName).joined(separator: " · ")
+        segmentLabel.textColor = categories.count == 1 ? categories[0].seekBarColor : .white
+        segmentLabel.isHidden = categories.isEmpty
     }
     static func time(_ value: Double) -> String {
         guard value.isFinite, value >= 0 else { return "0:00" }
@@ -144,7 +171,8 @@ final class TVPlayerChrome: UIView {
 
 final class TVPlayerTimeline: UIControl, UIGestureRecognizerDelegate {
     var fraction: Double = 0 { didSet { setNeedsDisplay() } }
-    var duration: Double = 0
+    var duration: Double = 0 { didSet { if duration != oldValue { setNeedsDisplay() } } }
+    var sponsorSegments: [SponsorBlockSegment] = [] { didSet { setNeedsDisplay() } }
     var onSeekTo: ((Double) -> Void)?
     var onScrubbingChanged: ((Bool) -> Void)?
     private(set) var isScrubbing = false
@@ -167,9 +195,29 @@ final class TVPlayerTimeline: UIControl, UIGestureRecognizerDelegate {
         let x = bounds.width * min(1, max(0, fraction))
         UIColor.white.setFill()
         UIBezierPath(roundedRect: CGRect(x: 0, y: y, width: x, height: 8), cornerRadius: 4).fill()
+        if let context = UIGraphicsGetCurrentContext() {
+            context.saveGState()
+            UIBezierPath(roundedRect: CGRect(x: 0, y: y, width: bounds.width, height: 8), cornerRadius: 4).addClip()
+            // Draw above the progress fill so passed segments remain visible too.
+            for marker in sponsorMarkerRects() {
+                marker.segment.category.seekBarColor.setFill()
+                UIBezierPath(rect: marker.rect).fill()
+            }
+            context.restoreGState()
+        }
         let radius: CGFloat = isFocused ? 14 : 9
         UIBezierPath(ovalIn: CGRect(x: max(radius, min(bounds.width - radius, x)) - radius,
                                   y: bounds.midY - radius, width: radius * 2, height: radius * 2)).fill()
+    }
+
+    func sponsorMarkerRects() -> [(segment: SponsorBlockSegment, rect: CGRect)] {
+        guard bounds.width > 0 else { return [] }
+        return sponsorSegments.compactMap { segment in
+            guard let range = TVPlaybackPolicy.sponsorMarkerRange(segment, duration: duration) else { return nil }
+            let width = min(bounds.width, max(4, bounds.width * CGFloat(range.upperBound - range.lowerBound)))
+            let x = min(bounds.width - width, bounds.width * CGFloat(range.lowerBound))
+            return (segment, CGRect(x: x, y: bounds.midY - 4, width: width, height: 8))
+        }
     }
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
         super.didUpdateFocus(in: context, with: coordinator)

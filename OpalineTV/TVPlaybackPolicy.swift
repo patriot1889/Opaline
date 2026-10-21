@@ -2,6 +2,17 @@ import Foundation
 
 /// Timeline rules shared by the player and deterministic fixture tests.
 enum TVPlaybackPolicy {
+    static func sponsorMarkerRange(_ segment: SponsorBlockSegment, duration: Double) -> ClosedRange<Double>? {
+        guard duration.isFinite, duration > 0,
+              segment.startTime.isFinite, segment.endTime.isFinite,
+              segment.endTime >= segment.startTime,
+              segment.endTime >= 0, segment.startTime <= duration else { return nil }
+        let start = max(0, segment.startTime) / duration
+        let end = min(duration, segment.endTime) / duration
+        guard end > start || segment.actionType == "poi" else { return nil }
+        return start...end
+    }
+
     static func upcomingVideo(in queue: PlaybackQueue, suggestion: Video?) -> Video? {
         queue.nextVideo ?? (queue.playlistId == nil ? suggestion : nil)
     }

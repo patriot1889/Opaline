@@ -4,6 +4,83 @@ import XCTest
 
 @MainActor
 final class PlayerControlsTests: XCTestCase {
+    func testSponsorMarkersClampRangesAndKeepPointMarkersVisible() throws {
+        let timeline = TVPlayerTimeline(frame: CGRect(x: 0, y: 0, width: 1000, height: 60))
+        timeline.duration = 100
+        timeline.fraction = 0.6
+        timeline.sponsorSegments = [
+            segment("start", .sponsor, -10, 10), segment("end", .outro, 80, 120),
+            segment("point", .highlight, 50, 50, action: "poi"),
+            segment("last-point", .highlight, 100, 100, action: "poi"),
+            segment("outside", .sponsor, 120, 130), segment("negative", .sponsor, -20, -10),
+            segment("invalid", .sponsor, .nan, 20), segment("reversed", .sponsor, 30, 20),
+            segment("empty", .sponsor, 40, 40)
+        ]
+        let markers = timeline.sponsorMarkerRects()
+        XCTAssertEqual(markers.map { $0.segment.uuid }, ["start", "end", "point", "last-point"])
+        let expected = [CGRect(x: 0, y: 26, width: 100, height: 8),
+            CGRect(x: 800, y: 26, width: 200, height: 8), CGRect(x: 500, y: 26, width: 4, height: 8),
+            CGRect(x: 996, y: 26, width: 4, height: 8)]
+        for (marker, rect) in zip(markers, expected) {
+            XCTAssertEqual(marker.rect.minX, rect.minX, accuracy: 0.001)
+            XCTAssertEqual(marker.rect.minY, rect.minY, accuracy: 0.001)
+            XCTAssertEqual(marker.rect.width, rect.width, accuracy: 0.001)
+            XCTAssertEqual(marker.rect.height, rect.height, accuracy: 0.001)
+        }
+
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(bounds: timeline.bounds, format: format).image { _ in
+            timeline.draw(timeline.bounds)
+        }
+        // Both passed and upcoming ranges must retain their category colour above progress.
+        try assertPixel(in: image, x: 50, y: 30, matches: SBCategory.sponsor.seekBarColor)
+        try assertPixel(in: image, x: 900, y: 30, matches: SBCategory.outro.seekBarColor)
+        savePreview(timeline, name: "sponsorblock-timeline")
+        timeline.duration = .nan
+        XCTAssertTrue(timeline.sponsorMarkerRects().isEmpty)
+        timeline.duration = 0
+        XCTAssertTrue(timeline.sponsorMarkerRects().isEmpty)
+    }
+
+    func testSponsorCategoryTracksScrubPreviewAndClearsWhenDisabled() {
+        let chrome = TVPlayerChrome(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+        chrome.layoutIfNeeded()
+        chrome.updateSponsorSegments([segment("sponsor", .sponsor, 0, 100),
+                                      segment("promo", .selfpromo, 200, 300)])
+        chrome.updateTime(seconds: 10, total: 1000, playing: true)
+        XCTAssertEqual(chrome.segmentLabel.text, SBCategory.sponsor.displayName)
+        XCTAssertFalse(chrome.segmentLabel.isHidden)
+        chrome.timeline.beginScrubbing()
+        chrome.timeline.updateScrubbing(translation: chrome.timeline.bounds.width)
+        XCTAssertEqual(chrome.segmentLabel.text, SBCategory.selfpromo.displayName)
+        chrome.updateTime(seconds: 11, total: 1000, playing: false)
+        XCTAssertEqual(chrome.segmentLabel.text, SBCategory.selfpromo.displayName)
+        chrome.timeline.endScrubbing(cancelled: true)
+        XCTAssertEqual(chrome.segmentLabel.text, SBCategory.sponsor.displayName)
+        chrome.updateSponsorSegments([])
+        XCTAssertTrue(chrome.segmentLabel.isHidden)
+        XCTAssertTrue(chrome.timeline.sponsorMarkerRects().isEmpty)
+    }
+
+    private func segment(_ id: String, _ category: SBCategory, _ start: Double, _ end: Double,
+                         action: String = "skip") -> SponsorBlockSegment {
+        SponsorBlockSegment(uuid: id, category: category, startTime: start, endTime: end, actionType: action)
+    }
+
+    private func assertPixel(in image: UIImage, x: Int, y: Int, matches color: UIColor) throws {
+        let pixel = try XCTUnwrap(image.cgImage?.cropping(to: CGRect(x: x, y: y, width: 1, height: 1)))
+        var bytes = [UInt8](repeating: 0, count: 4)
+        let context = try XCTUnwrap(CGContext(data: &bytes, width: 1, height: 1, bitsPerComponent: 8,
+            bytesPerRow: 4, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+        context.draw(pixel, in: CGRect(x: 0, y: 0, width: 1, height: 1))
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        for (actual, expected) in zip(bytes, [red, green, blue, alpha]) {
+            XCTAssertEqual(Double(actual) / 255, Double(expected), accuracy: 2.0 / 255)
+        }
+    }
+
     func testTimelineCentrePressActivatesOnReleaseAndCancellationDoesNotActivate() {
         let timeline = TVPlayerTimeline()
         let press: Set<UIPress> = [TimelineCentrePress()]

@@ -37,6 +37,7 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
     private var captionLanguage: String?
     private var subtitleGeneration = 0
     private var segments: [SponsorBlockSegment] = []
+    private var segmentRequestGeneration = 0
     private var skipped = Set<String>()
     private var manualSegment: SponsorBlockSegment?
     private var nextVideo: Video?
@@ -166,6 +167,7 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
         subtitleGeneration += 1
         subtitle.isHidden = true
         segments = []
+        chrome.updateSponsorSegments([])
         manualSegment = nil
         skipped = []
         dismissUpNext()
@@ -201,13 +203,21 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
         rebuildMenus()
     }
     private func loadSegments() {
+        segmentRequestGeneration += 1
+        let generation = segmentRequestGeneration
         let token = cancellation
-        guard SponsorBlockService.enabled else { return }
+        guard SponsorBlockService.enabled else {
+            segments = []
+            manualSegment = nil
+            chrome.updateSponsorSegments([])
+            return
+        }
         SponsorBlockService.shared.fetchSegments(videoId: video.id) { [weak self] result in
             DispatchQueue.main.async {
-                guard !token.isCancelled else { return }
-                self?.segments = (try? result.get()) ?? []
-                self?.rebuildMenus()
+                guard let self, !token.isCancelled, !self.closed, SponsorBlockService.enabled,
+                      self.segmentRequestGeneration == generation else { return }
+                self.segments = (try? result.get()) ?? []
+                self.rebuildMenus()
             }
         }
     }
@@ -452,6 +462,9 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
     }
     private func rebuildMenus() {
         guard isViewLoaded else { return }
+        chrome.updateSponsorSegments(SponsorBlockService.enabled ? segments.filter {
+            SponsorBlockService.skipBehavior(for: $0.category) != .disabled
+        } : [])
         var menus: [UIMenuElement] = []
         if let source = facade.activeVideoSource {
             let qualities = source.availableQualities.filter { ($0.height ?? 0) > 0 }
