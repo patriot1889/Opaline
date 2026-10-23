@@ -1,9 +1,6 @@
 import UIKit
 
-/// Handles `ytlite://` and youtube.com links passed to the app via
-/// `application(_:open:options:)`. The pre-scene, single-window
-/// `AppDelegate` hook is correct here (see `CLAUDE.md`: no scene delegates,
-/// iOS 12 is the primary target).
+/// Handles links from both the scene delegate and legacy application callbacks.
 extension AppDelegate {
     func application(
         _ app: UIApplication,

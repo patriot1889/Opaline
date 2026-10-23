@@ -24,18 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // The player has to know how the phone is held the moment it opens —
         // too late to start asking then.
         HeldOrientation.startTracking()
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = makeSplashViewController()
-        window?.makeKeyAndVisible()
-        applyWindowTheme()
-        // Build the real UI while the splash is still covering the screen.
-        // Its fade is a Core Animation animation, so it keeps running on the
-        // render server even though this blocks the main thread for a while
-        // — the cold-start cost is paid behind the logo instead of in front
-        // of the user. Deferred by one turn so the splash gets its first
-        // frame out before we take the thread.
-        DispatchQueue.main.async { [weak self] in
-            self?.preloadMainIfNeeded()
+        // On newer systems, the scene delegate creates the window.
+        if #unavailable(iOS 13.0) {
+            connectWindow(UIWindow(frame: UIScreen.main.bounds))
         }
 
         NotificationCenter.default.addObserver(
@@ -57,6 +48,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
         return true
+    }
+
+    /// Reuse the existing single-window routing for scene and legacy launches.
+    func connectWindow(_ window: UIWindow) {
+        self.window = window
+        window.rootViewController = makeSplashViewController()
+        window.makeKeyAndVisible()
+        applyWindowTheme()
+        // Let the splash draw before preparing the main UI behind it.
+        DispatchQueue.main.async { [weak self] in
+            self?.preloadMainIfNeeded()
+        }
     }
 
     /// System-drawn elements (table section headers/footers, switches,
