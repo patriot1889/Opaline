@@ -49,6 +49,7 @@ extension WatchViewController {
         let pv = getOrCreatePlayerView()
         configureSponsorBlock(on: pv)
         playerContainer.bringSubviewToFront(pv)
+        pv.setChapters(watchPage?.chapters ?? [])
         pv.attach(player: player)
         // Start as soon as the first frames are decodable instead of
         // waiting for the stall-minimizing buffer to fill.

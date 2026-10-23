@@ -111,6 +111,7 @@ extension WatchViewController {
 
     func applyWatchPage(_ page: WatchPage) {
         watchPage = page
+        videoPlayerView?.setChapters(page.chapters ?? [])
         cache.setWatchPage(page, videoId: initialVideo.id)
         title = page.video.title
         titleLabel.text = page.video.title
@@ -431,6 +432,7 @@ extension WatchViewController {
         // Loop is a property of the video you turned it on for.
         videoPlayerView?.isLooping = false
         watchPage = nil
+        videoPlayerView?.setChapters([])
         isLoadingRelated = true
         allRelatedVideos = []
         visibleRelatedVideos = []
