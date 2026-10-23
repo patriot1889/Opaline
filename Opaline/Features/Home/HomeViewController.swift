@@ -53,9 +53,6 @@ class HomeViewController: VideosViewController {
     override var useRails: Bool { HomeLayout.selected == .rails }
 
     override var columns: Int {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return 1
-        }
         let width = view.bounds.width
         if width < 500 {
             return 1

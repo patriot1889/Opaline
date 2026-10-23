@@ -16,7 +16,7 @@ final class SubscriptionShortsViewController: VideosViewController {
 
     /// Same tiling as the channel's Shorts tab.
     override var columns: Int {
-        UIDevice.current.userInterfaceIdiom == .phone ? 3 : 6
+        view.bounds.width < 500 ? 3 : 6
     }
 
     private let rssService: ChannelRSSFeedService
