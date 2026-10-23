@@ -268,7 +268,9 @@ extension WatchViewController {
                 }
                 // On iPhone landscape *is* fullscreen: the rotation itself
                 // drives entering and leaving it.
-                syncFullscreenWithRotation(isLandscape: size.width > size.height)
+                syncFullscreenWithRotation(
+                    isLandscape: size.width > size.height, containerSize: size
+                )
                 // While in fullscreen the player view lives directly in the
                 // window; keep its frame in sync with the rotating window.
                 if fullscreenSnapshot != nil,
