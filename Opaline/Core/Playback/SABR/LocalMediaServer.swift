@@ -190,7 +190,7 @@ final class LocalMediaServer {
 
     private func respond(to request: Request, on connection: NWConnection) {
         let started = CACurrentMediaTime()
-        handler(request.path) { body, contentType in
+        handler(request.path) { [weak self] body, contentType in
             // Only the interesting ones: a miss, or a wait long enough that
             // the player might notice it.
             let elapsed = (CACurrentMediaTime() - started) * 1_000
