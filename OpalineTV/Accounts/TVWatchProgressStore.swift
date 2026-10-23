@@ -245,7 +245,10 @@ final class WatchProgressStore {
     /// Throttles UserDefaults writes to at most one per
     /// `persistDebounceInterval`. Safe to call from any thread.
     private func schedulePersist() {
-        persistQueue.async {
+        persistQueue.async { [weak self] in
+            guard let self else {
+                return
+            }
             guard self.pendingWork == nil else {
                 return
             }
