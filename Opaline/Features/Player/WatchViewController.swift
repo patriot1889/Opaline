@@ -201,7 +201,7 @@ final class WatchViewController: UIViewController {
 
     override var supportedInterfaceOrientations:
         UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if !usesRotationDrivenFullscreen() {
             return .all
         }
         return orientationLock ?? .allButUpsideDown

@@ -16,6 +16,7 @@ final class VideoSeekBar: UIControl {
     private var progress: Double = 0
     private var buffer: Double   = 0
     private var segments: [SeekBarSegment] = []
+    private let chapterMask = ChapterTrackMask()
     /// Track width the segment bars were last built for, or -1 when the
     /// segment list changed. `layoutSubviews` runs 10x/sec off `setProgress`,
     /// but the bars only depend on the segments and the width — rebuilding
@@ -66,6 +67,10 @@ final class VideoSeekBar: UIControl {
             y: bounds.height / 2
         )
         layoutSegmentViews()
+        chapterMask.layout(
+            width: trackWidth,
+            views: [trackView, bufferView, segmentsView, progressView]
+        )
     }
 
     func setProgress(_ value: Double) {
@@ -83,6 +88,14 @@ final class VideoSeekBar: UIControl {
         segments = newSegments
         segmentsLayoutWidth = -1
         setNeedsLayout()
+    }
+
+    /// Chapter starts normalized to the timeline. Gaps are visual only;
+    /// seeking retains the same continuous time-to-position mapping.
+    func setChapterBreaks(_ values: [Double]) {
+        if chapterMask.setBreaks(values) {
+            setNeedsLayout()
+        }
     }
 
     @objc

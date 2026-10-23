@@ -11,6 +11,7 @@ extension VideoPlayerView {
         setupFullscreenButton()
         addBottomBarSubviews()
         activateBottomBarConstraints()
+        setupChapterTitle()
     }
 
     private func setupTimeLabels() {
@@ -52,8 +53,13 @@ extension VideoPlayerView {
             // Scrubbing back from the end screen while paused leaves the
             // rate at 0, so the observer would not clear it.
             self.isAtEnd = false
+            self.updateChapterTitle(at: progress * self.duration)
             self.scheduleAutoHide()
         }
+        setupScrubChangedCallback()
+    }
+
+    private func setupScrubChangedCallback() {
         seekBar.onScrubChanged = { [weak self] progress in
             guard let self else {
                 return
@@ -61,6 +67,7 @@ extension VideoPlayerView {
             self.currentTimeLabel.text = formatTime(
                 progress * self.duration
             )
+            self.updateChapterTitle(at: progress * self.duration)
         }
     }
 

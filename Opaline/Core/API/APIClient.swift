@@ -52,6 +52,7 @@ final class APIClient {
         cancellationToken: CancellationToken? = nil,
         sendsCookies: Bool = true,
         isPlayback: Bool = false,
+        timeout: TimeInterval? = nil,
         completion: @escaping (Result<Data, Error>) -> Void
     ) {
         transport.send(
@@ -60,6 +61,7 @@ final class APIClient {
                 url: url,
                 headers: headers,
                 body: body,
+                timeout: timeout,
                 sendsCookies: sendsCookies,
                 isPlayback: isPlayback
             ),

@@ -2,8 +2,8 @@ import UIKit
 
 /// The single factory for navigation chevrons. Every screen builds its
 /// back/minimize button here — and `RotatingNavigationController` replaces
-/// the system back button on push — so the glyph and edge inset are
-/// identical on every screen and iOS version.
+/// the system back button on push. Modern bars position the standard item;
+/// older bars use the custom edge-aligned button below.
 enum NavChevron {
     enum Kind {
         case back
@@ -15,7 +15,14 @@ enum NavChevron {
         target: Any?,
         action: Selector
     ) -> UIBarButtonItem {
-        UIBarButtonItem(
+        // Let modern navigation bars center the glyph inside their glass item.
+        // The legacy custom view aligns to the screen edge instead of the item.
+        if #available(iOS 26.0, *) {
+            return UIBarButtonItem(
+                image: image(kind: kind), style: .plain, target: target, action: action
+            )
+        }
+        return UIBarButtonItem(
             customView: NavChevronButton(kind: kind, target: target, action: action)
         )
     }

@@ -15,6 +15,7 @@ extension InnertubeClient {
     ///   - body:               Request body dictionary (will be JSON-encoded).
     ///   - headers:            HTTP headers to attach.
     ///   - cancellationToken:  Optional token; if cancelled the completion is silenced.
+    ///   - timeout:            Optional per-request limit; otherwise use the transport default.
     ///   - logTag:             Short label used in AppLog for this call (e.g. "browse", "player").
     ///   - parse:              Transforms the JSON dictionary into the expected result type.
     ///                         Return `nil` to signal a parse failure.
@@ -26,6 +27,7 @@ extension InnertubeClient {
         cancellationToken: CancellationToken? = nil,
         sendsCookies: Bool = true,
         isPlayback: Bool = false,
+        timeout: TimeInterval? = nil,
         logTag: String = "request",
         parse: @escaping ([String: Any]) -> T?,
         completion: @escaping (Result<T, Error>) -> Void
@@ -52,7 +54,8 @@ extension InnertubeClient {
             headers: headers,
             cancellationToken: cancellationToken,
             sendsCookies: sendsCookies,
-            isPlayback: isPlayback
+            isPlayback: isPlayback,
+            timeout: timeout
         ) { result in
             self.handlePostResult(
                 result,

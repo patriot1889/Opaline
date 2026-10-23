@@ -86,6 +86,7 @@ final class OfflineWatchService: WatchService {
             nextVideo: others.first,
             playlistTitle: nil,
             playlistVideos: nil,
+            chapters: page.chapters,
             servedOffline: true
         )
     }

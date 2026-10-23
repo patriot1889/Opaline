@@ -106,6 +106,8 @@ final class VideoPlayerView: UIView {
     let seekBar = VideoSeekBar()
     let currentTimeLabel = UILabel()
     let durationLabel = UILabel()
+    let chapterTitleContainer = UIView()
+    let chapterTitleLabel = UILabel()
     let fullscreenButton = UIButton(type: .system)
 
     // MARK: - Dim Overlay
@@ -255,10 +257,11 @@ final class VideoPlayerView: UIView {
     var wasPlayingOnResign = false, pipStartPending = false
     let multitaskPause = MultitaskPauseState()
     var pipIsStarting = false, playerNeedsRebuildForPiP = false, pipIsRestoring = false
-    var duration: Double = 0
-    var rateObservation: NSKeyValueObservation?
-    var statusObservation: NSKeyValueObservation?
-    var timeControlObservation: NSKeyValueObservation?
+    var duration: Double = 0 {
+        didSet { refreshChapterSeekBar() }
+    }
+    var chapters: [VideoChapter] = []
+    var rateObservation, statusObservation, timeControlObservation: NSKeyValueObservation?
 
     /// A mid-playback rebuffer can leave the player clock behind the
     /// rendered media on older devices, so subtitles keyed to `currentTime`

@@ -20,9 +20,7 @@ extension InnertubeClient {
             currentVideoId: fb.id
         )
         return WatchPage(
-            video: resolvedVideo(
-                fb, from: json, channel: ch
-            ),
+            video: resolvedVideo(fb, from: json, channel: ch),
             description: parseWatchDescription(json),
             channelInfo: ch,
             subscribeButtonText: sub.text,
@@ -37,6 +35,7 @@ extension InnertubeClient {
             nextVideo: autoplayNextVideo(json),
             playlistTitle: pivot?.title,
             playlistVideos: pivot?.videos,
+            chapters: VideoChapterParser.parse(json),
             queueContinuation: pivot?.continuation,
             shuffleParams: pivot?.shuffleParams
         )

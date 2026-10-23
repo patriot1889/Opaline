@@ -33,7 +33,14 @@ extension InnertubeClient {
                 json,
                 fallbackVideo: video
             )
-        } completion: { completion($0) }
+        } completion: { result in
+            self.completeWatchPage(
+                result,
+                anonymous: anonymous,
+                cancellationToken: cancellationToken,
+                completion: completion
+            )
+        }
     }
 
     // MARK: Queue

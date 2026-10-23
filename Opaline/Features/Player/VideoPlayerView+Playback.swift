@@ -33,8 +33,8 @@ extension VideoPlayerView {
     func rebind(player newPlayer: AVPlayer) {
         player = newPlayer
         removePlayerObservers()
-        addPlayerObservers()
         duration = 0
+        addPlayerObservers()
     }
 
     func detach() {
@@ -49,6 +49,7 @@ extension VideoPlayerView {
         hideSkipButton()
         sponsorSegments = []
         seekBar.setSegments([])
+        setChapters([])
         seekBar.cancelScrubbing()
         speedOverlay.isHidden = true
         hudWorkItem?.cancel()
@@ -99,7 +100,6 @@ extension VideoPlayerView {
     }
 
     // MARK: - Periodic Observer
-
     func addPeriodicObserver() {
         guard let player else {
             return
@@ -252,7 +252,6 @@ extension VideoPlayerView {
     }
 
     // MARK: - Progress
-
     func updateProgress(time: CMTime) {
         guard duration > 0 else {
             return
@@ -275,6 +274,7 @@ extension VideoPlayerView {
             if currentTimeLabel.text != stamp {
                 currentTimeLabel.text = stamp
             }
+            updateChapterTitle(at: secs)
             seekBar.setProgress(secs / duration)
             updateBuffer(at: time)
         }

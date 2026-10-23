@@ -70,10 +70,8 @@ extension WatchViewController: VideoPlayerViewDelegate {
     }
 
     func videoPlayerViewDidTapFullscreen(_ playerView: VideoPlayerView) {
-        // iPad rotates freely, so fullscreen there is a plain window fill.
-        // iPhone is portrait-only outside the player: the button rotates the
-        // interface, and the rotation is what enters or leaves fullscreen.
-        guard UIDevice.current.userInterfaceIdiom != .pad else {
+        // Tablet-sized windows fill directly; compact phones rotate to enter.
+        guard usesRotationDrivenFullscreen() else {
             if playerView.isFullscreen {
                 exitFullscreen(playerView: playerView)
             } else {
@@ -126,6 +124,16 @@ extension WatchViewController {
 // MARK: - iPhone rotation-driven fullscreen
 
 extension WatchViewController {
+    /// Use the short edge so rotating a compact phone doesn't change modes.
+    /// The app window is available even before the watch view has loaded.
+    func usesRotationDrivenFullscreen(for size: CGSize? = nil) -> Bool {
+        let window = viewIfLoaded?.window
+            ?? (UIApplication.shared.delegate as? AppDelegate)?.window
+        let size = size ?? window?.bounds.size ?? .zero
+        return UIDevice.current.userInterfaceIdiom != .pad
+            && min(size.width, size.height) < 500
+    }
+
     /// Rotates the whole interface, so the home indicator, notification and
     /// Control Center edges follow the video — a transform inside a portrait
     /// window leaves the system believing the phone is upright.
@@ -160,7 +168,7 @@ extension WatchViewController {
     /// Only when the interface disagrees with the phone: opened from an already
     /// landscape one — iPad, or a video tapped from fullscreen — it must stay.
     func keepOpeningOrientation() {
-        guard UIDevice.current.userInterfaceIdiom != .pad,
+        guard usesRotationDrivenFullscreen(),
               HeldOrientation.current.isLandscape,
               UIApplication.shared.statusBarOrientation.isPortrait else {
             return
@@ -171,8 +179,8 @@ extension WatchViewController {
 
     /// Landscape *is* fullscreen on iPhone, so the rotation drives the state.
     /// Called from inside the rotation transition — the transition animates it.
-    func syncFullscreenWithRotation(isLandscape: Bool) {
-        guard UIDevice.current.userInterfaceIdiom != .pad,
+    func syncFullscreenWithRotation(isLandscape: Bool, containerSize: CGSize? = nil) {
+        guard usesRotationDrivenFullscreen(for: containerSize),
               let playerView = videoPlayerView,
               playerView.isFullscreen != isLandscape else {
             return
