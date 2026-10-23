@@ -4,6 +4,72 @@ import XCTest
 
 @MainActor
 final class PlayerControlsTests: XCTestCase {
+    func testChapterTitleFollowsPlaybackScrubPreviewAndCancellation() {
+        let chrome = TVPlayerChrome(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+        chrome.updateChapters([
+            VideoChapter(title: "Mountain trails", startTime: 120),
+            VideoChapter(title: "Introduction", startTime: 0),
+            VideoChapter(title: "Invalid", startTime: .nan)
+        ])
+        chrome.layoutIfNeeded()
+        chrome.updateTime(seconds: 60, total: 600, playing: true)
+        XCTAssertEqual(chrome.chapterTitleLabel.text, "Introduction")
+        chrome.timeline.beginScrubbing()
+        chrome.timeline.updateScrubbing(translation: chrome.timeline.bounds.width / 2)
+        XCTAssertEqual(chrome.chapterTitleLabel.text, "Mountain trails")
+        chrome.updateTime(seconds: 61, total: 600, playing: false)
+        XCTAssertEqual(chrome.chapterTitleLabel.text, "Mountain trails")
+        chrome.timeline.endScrubbing(cancelled: true)
+        XCTAssertEqual(chrome.chapterTitleLabel.text, "Introduction")
+        chrome.timeline.step(by: 60)
+        XCTAssertEqual(chrome.chapterTitleLabel.text, "Mountain trails")
+        chrome.updateChapters([])
+        XCTAssertTrue(chrome.chapterTitleContainer.isHidden)
+        XCTAssertTrue(chrome.timeline.chapterTrackPath().contains(CGPoint(x: chrome.timeline.bounds.width / 5, y: 15)))
+    }
+
+    func testChapterGapsIgnoreInvalidBreaksAndKeepShortChaptersVisible() {
+        let timeline = TVPlayerTimeline(frame: CGRect(x: 0, y: 0, width: 1000, height: 30))
+        timeline.duration = 100
+        timeline.chapters = [0, 50, 50, 50.1, 100, -1, .nan, .infinity].map {
+            VideoChapter(title: "Chapter", startTime: $0)
+        }
+        let path = timeline.chapterTrackPath()
+        XCTAssertFalse(path.contains(CGPoint(x: 500, y: 15)))
+        XCTAssertFalse(path.contains(CGPoint(x: 501, y: 15)))
+        XCTAssertTrue(path.contains(CGPoint(x: 500.5, y: 15)))
+        XCTAssertTrue(path.contains(CGPoint(x: 1, y: 15)))
+        XCTAssertTrue(path.contains(CGPoint(x: 999, y: 15)))
+        timeline.duration = .nan
+        XCTAssertTrue(timeline.chapterTrackPath().contains(CGPoint(x: 500, y: 15)))
+    }
+
+    func testChapterTitleLayoutAndSponsorMarkersCoexist() {
+        let chrome = TVPlayerChrome(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+        let video = Video(id: "chapter-fixture", title: "A journey through the mountains",
+                          channelId: nil, channelName: "Opaline Travel", channelAvatarURL: nil,
+                          thumbnailURL: "", viewCount: nil, publishedAt: nil, duration: nil)
+        chrome.update(video: video)
+        chrome.updateChapters([
+            VideoChapter(title: "Introduction", startTime: 0),
+            VideoChapter(title: "Mountain trails", startTime: 120),
+            VideoChapter(title: "The summit", startTime: 400)
+        ])
+        chrome.updateSponsorSegments([segment("sponsor", .sponsor, 150, 210)])
+        chrome.updateTime(seconds: 180, total: 600, playing: true)
+        chrome.layoutIfNeeded()
+        XCTAssertEqual(chrome.chapterTitleLabel.text, "Mountain trails")
+        XCTAssertFalse(chrome.chapterTitleContainer.isHidden)
+        XCTAssertFalse(chrome.chapterTitleContainer.frame.intersects(chrome.segmentLabel.frame))
+        XCTAssertEqual(chrome.timeline.sponsorMarkerRects().count, 1)
+        savePreview(chrome, name: "player-chapters")
+        chrome.updateChapters([VideoChapter(title: String(repeating: "Long chapter title ", count: 30), startTime: 0)])
+        chrome.layoutIfNeeded()
+        XCTAssertLessThanOrEqual(chrome.chapterTitleContainer.frame.width, chrome.timeline.frame.width)
+        chrome.updateTime(seconds: 0, total: .nan, playing: true)
+        XCTAssertTrue(chrome.chapterTitleContainer.isHidden)
+    }
+
     func testSponsorMarkersClampRangesAndKeepPointMarkersVisible() throws {
         let timeline = TVPlayerTimeline(frame: CGRect(x: 0, y: 0, width: 1000, height: 60))
         timeline.duration = 100

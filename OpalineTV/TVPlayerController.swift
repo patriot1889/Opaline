@@ -154,6 +154,7 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
         likeStatus = nil
         subscribed = false
         watchPage = nil
+        chrome.updateChapters([])
         commentsPage = nil
         loadedComments = []
         commentsLoading = false
@@ -191,6 +192,7 @@ final class TVPlayerController: UIViewController, PlaybackContext, UIGestureReco
                 guard let self, !token.isCancelled, case .success(let page) = result else { return }
                 self.video = page.video
                 self.watchPage = page
+                self.chrome.updateChapters(page.chapters ?? [])
                 self.likeStatus = page.likeStatus
                 self.subscribed = page.isSubscribed
                 self.chrome.update(video: page.video)
