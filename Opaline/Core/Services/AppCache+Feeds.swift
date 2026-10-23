@@ -2,7 +2,7 @@ import Foundation
 
 extension AppCache {
     func loadDiskValue<T: Codable>(
-        _ type: T.Type,
+        _: T.Type,
         key: String,
         ttl: TimeInterval,
         completion: @escaping (T?) -> Void
@@ -15,7 +15,7 @@ extension AppCache {
             guard let self else {
                 return
             }
-            let value = self.readDisk(type, key: key, ttl: ttl)
+            let value = self.readDisk(T.self, key: key, ttl: ttl)
             self.deliverOnMain(value, completion: completion)
         }
     }
