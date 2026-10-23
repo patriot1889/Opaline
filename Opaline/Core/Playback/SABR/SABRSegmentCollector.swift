@@ -149,6 +149,10 @@ final class SABRSegmentCollector {
             "sabr \(label) served sequence \(header.sequence) at \(header.startMs)ms"
                 + " itag \(header.itag) xtags \(header.xtags ?? "-")"
         )
+        noteDeliveredRange(header)
+    }
+
+    private func noteDeliveredRange(_ header: MediaHeader) {
         // An init segment is not a position in the stream, so it must not be
         // acknowledged as one: a buffered range starting at 0 alongside a
         // player time in the middle of the video is a contradiction, and the
