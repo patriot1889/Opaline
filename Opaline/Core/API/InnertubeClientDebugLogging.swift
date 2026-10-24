@@ -153,7 +153,7 @@ private extension InnertubeClient {
                         .contains("avc1")
             }
             .sorted {
-                !heightBitrateLess($0, $1)
+                videoFormatLess($1, $0)
             }
     }
 

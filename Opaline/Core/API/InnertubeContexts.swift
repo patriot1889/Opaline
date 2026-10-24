@@ -21,6 +21,12 @@ enum InnertubeContexts {
     static var visionOS: [String: Any] { localized(visionOSTemplate) }
     static var ios: [String: Any] { localized(iosTemplate) }
 
+    // Keep /player and SABR on the same AV1-capable visionOS identity.
+    // Matches yt-dlp's VISIONOS profile; the original RealityDevice14,1
+    // describes the M2 model and can cause the server to omit AV1 formats.
+    static let visionOSDeviceModel = "RealityDevice17,1"
+    static let visionOSVersion = "26.5.23O471"
+
     private static let webTemplate: [String: Any] = [
         "context": [
             "client": [
@@ -120,9 +126,9 @@ enum InnertubeContexts {
                 "timeZone": "UTC",
                 "utcOffsetMinutes": 0,
                 "deviceMake": "Apple",
-                "deviceModel": "RealityDevice14,1",
+                "deviceModel": visionOSDeviceModel,
                 "osName": "visionOS",
-                "osVersion": "1.0.2.21O209",
+                "osVersion": visionOSVersion,
                 "userAgent": UserAgent.visionOS
             ]
         ]

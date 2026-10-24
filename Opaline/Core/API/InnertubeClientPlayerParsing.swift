@@ -70,17 +70,29 @@ extension InnertubeClient {
         _ format: [String: Any]
     ) -> Int? { format["itag"] as? Int }
 
-    static func heightBitrateLess(
+    /// Compare resolution and frame rate before codec efficiency. Bitrates
+    /// only compare renditions of the same codec: AVC's larger stream must
+    /// not hide AV1 at the same tier on hardware that can decode both.
+    static func videoFormatLess(
         _ lhs: [String: Any],
         _ rhs: [String: Any]
     ) -> Bool {
         let leftHeight = fmtHeight(lhs)
         let rightHeight = fmtHeight(rhs)
-        if leftHeight == rightHeight {
-            return fmtBitrate(lhs)
-                < fmtBitrate(rhs)
+        if leftHeight != rightHeight {
+            return leftHeight < rightHeight
         }
-        return leftHeight < rightHeight
+        let leftFPS = lhs["fps"] as? Int ?? 0
+        let rightFPS = rhs["fps"] as? Int ?? 0
+        if leftFPS != rightFPS {
+            return leftFPS < rightFPS
+        }
+        let leftAV1 = fmtMimeType(lhs).contains("av01")
+        let rightAV1 = fmtMimeType(rhs).contains("av01")
+        if leftAV1 != rightAV1 {
+            return !leftAV1
+        }
+        return fmtBitrate(lhs) < fmtBitrate(rhs)
     }
 }
 
@@ -168,7 +180,7 @@ private extension InnertubeClient {
                         fmtHeight(fmt) <= $0
                     } ?? true
             }
-            .max { heightBitrateLess($0, $1) }
+            .max { videoFormatLess($0, $1) }
     }
 
     static func buildSabrInfo(
@@ -336,15 +348,8 @@ private extension InnertubeClient {
             .filter {
                 fmtIsPlayableVideo($0) && fmtHeight($0) > 0
             }
+            .sorted { videoFormatLess($1, $0) }
             .compactMap(buildDashInfo)
-            .sorted { lhs, rhs in
-                let lh = lhs.height ?? 0
-                let rh = rhs.height ?? 0
-                if lh == rh {
-                    return lhs.bitrate > rhs.bitrate
-                }
-                return lh > rh
-            }
     }
 }
 
@@ -539,7 +544,8 @@ private extension InnertubeClient {
             .joined(separator: " ")
         AppLog.innertube(
             "video ladder (✗ = we reject it,"
-                + " hw av1=\(AV1Support.isHardwareSupported)): \(ladder)"
+                + " hw av1=\(AV1Support.isHardwareSupported),"
+                + " cap=\(VideoQualityStore.maxHeight ?? 0)p): \(ladder)"
         )
     }
 

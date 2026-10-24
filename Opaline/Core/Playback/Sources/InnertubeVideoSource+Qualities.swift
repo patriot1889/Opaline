@@ -25,7 +25,7 @@ extension InnertubeVideoSource {
     }
 
     /// One entry per tier label: with av01 admitted alongside avc1 the same
-    /// height appears twice — keep the first (higher-bitrate) format.
+    /// height appears twice — keep the parser's preferred format per label.
     ///
     /// Audio-only leads the list. It needs a DASH pair to strip the video from,
     /// so live and progressive videos never offer it.
@@ -52,7 +52,6 @@ extension InnertubeVideoSource {
                 fps: format.fps
             )
         }
-        .sorted { ($0.height ?? 0) > ($1.height ?? 0) }
         .filter { seenLabels.insert($0.label).inserted }
     }
 

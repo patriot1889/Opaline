@@ -23,11 +23,11 @@ struct VisionOSClient: PlaybackClient {
 
     func sabrClientInfo() -> Data {
         var info = Protobuf.string(12, "Apple")
-        info += Protobuf.string(13, "RealityDevice14,1")
+        info += Protobuf.string(13, InnertubeContexts.visionOSDeviceModel)
         info += Protobuf.int(16, 101)
         info += Protobuf.string(17, version)
         info += Protobuf.string(18, "visionOS")
-        info += Protobuf.string(19, "1.0.2.21O209")
+        info += Protobuf.string(19, InnertubeContexts.visionOSVersion)
         return info + SABRClientInfo.commonTail()
     }
 
