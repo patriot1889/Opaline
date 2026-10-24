@@ -153,7 +153,8 @@ private extension InnertubeClient {
     }
 
     /// avc1 everywhere; av01 additionally on hardware-AV1 devices (the only
-    /// codecs above 1080p are VP9/AV1, and VP9 is undecodable by AVPlayer).
+    /// codecs above 1080p are VP9/AV1; this DASH path requires MP4/SIDX,
+    /// whereas YouTube's adaptive VP9 formats use WebM).
     static func fmtIsPlayableVideo(
         _ fmt: [String: Any]
     ) -> Bool {

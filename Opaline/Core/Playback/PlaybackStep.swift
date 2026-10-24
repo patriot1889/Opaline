@@ -24,6 +24,11 @@ struct PlaybackStep {
 struct PlaybackStepRegistry {
     static let `default` = PlaybackStepRegistry(steps: [
         PlaybackStep(
+            id: "visionos.hls",
+            title: "visionOS · native HLS",
+            requiresSignIn: false
+        ) { NativeHLSSource(apiClient: $0) },
+        PlaybackStep(
             id: "visionos.range",
             title: "visionOS · byte ranges",
             requiresSignIn: false

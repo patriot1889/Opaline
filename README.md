@@ -260,10 +260,12 @@ Opaline/
 
 Playback is built on a single `VideoSource` abstraction — each way of playing a video implements the same interface and owns both stream resolution and quality selection. `PlaybackFacade` just asks a factory for the configured source, calls `loadPlayback`, and hands the prepared `AVPlayerItem` to the player shell. The sources:
 
-1. **Auto** *(default)* — Composite: tries Android VR first, transparently falls back to Mobile Web when a video fails to resolve or start.
-2. **Android VR** — Streams via YouTube's Innertube API; adaptive formats (360p–1080p AVC, up to 4K AV1 on supported hardware) are converted from DASH SIDX byte ranges into an HLS playlist for native `AVPlayer`, with progressive/native-HLS fallbacks.
-3. **Mobile Web** — Handles videos the Android VR client refuses (e.g. kids content). Stream URLs require solving JavaScript challenges from the player page; that step is delegated to the helper server (see above), everything else stays on-device.
-4. **Progressive** — Direct 360p MP4 URL for the restricted case (e.g. server-side A/B experiments).
+1. **visionOS · native HLS** — Plays the HLS manifest returned by YouTube, filtering variants by supported codecs and applying the default quality cap. VP9 in MP4 is enabled after supplemental decoder registration and a hardware check on iOS 26.2+. This does not enable WebM playback.
+2. **visionOS · byte ranges / SABR** — Converts adaptive MP4 formats (AVC and hardware-supported AV1) into HLS using their SIDX indexes. The delivery is selected explicitly in the playback chain.
+3. **TV · SABR** — The signed-in TV client, using the helper server for attestation and signature challenges.
+4. **Progressive** — Direct 360p MP4 fallback.
+
+The playback chain can be enabled, disabled and reordered in Settings. Existing saved chains retain their order and enabled steps: to try native HLS after upgrading, enable **visionOS · native HLS** and move it to the top. Missing manifests, unsupported codecs and playback failures fall through to the next enabled step.
 
 Quality selection is source-agnostic: the player UI simply renders whatever qualities the active source reports. Background audio is `AVAudioSession`-based and works across all sources.
 
