@@ -18,6 +18,9 @@ struct WebMVP9DeliveryPlan: Sendable {
         let endNanoseconds: Int64
         var startNanoseconds: Int64 { entry.timeNanoseconds }
         var durationNanoseconds: Int64 { endNanoseconds - startNanoseconds }
+        /// Publishing enforces this budget, so a master playlist can advertise
+        /// an upper bitrate before downloading/remuxing every cue in the file.
+        var maximumRemuxBytes: Int64 { min(entry.range.count, 16_777_216) + 1_048_576 }
     }
 
     let segments: [Segment]
@@ -37,7 +40,7 @@ struct WebMVP9DeliveryPlan: Sendable {
 
     /// Each cue is independently remuxed, so give it its own initialization map.
     /// Callers serve audio separately on the same zero-based media timeline.
-    func playlist(basePath: String) throws -> String {
+    func playlist(basePath: String, startAt: Double? = nil) throws -> String {
         let characters = "/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
         let allowed = CharacterSet(charactersIn: characters)
         guard basePath.hasPrefix("/"), !basePath.hasSuffix("/"), !basePath.contains("//"),
@@ -50,6 +53,15 @@ struct WebMVP9DeliveryPlan: Sendable {
             "#EXTM3U", "#EXT-X-VERSION:7", "#EXT-X-TARGETDURATION:\(target)",
             "#EXT-X-PLAYLIST-TYPE:VOD", "#EXT-X-MEDIA-SEQUENCE:0", "#EXT-X-INDEPENDENT-SEGMENTS"
         ]
+        if let startAt {
+            guard startAt.isFinite, startAt >= 0,
+                  startAt < Double(segments.last?.endNanoseconds ?? 0) / 1e9 else {
+                throw WebMError.invalidTimestamp
+            }
+            if startAt > 0 {
+                lines.append(String(format: "#EXT-X-START:TIME-OFFSET=%.9f,PRECISE=YES", startAt))
+            }
+        }
         for (index, segment) in segments.enumerated() {
             lines.append("#EXT-X-MAP:URI=\"\(basePath)/\(index)/init\"")
             let duration = segment.durationNanoseconds

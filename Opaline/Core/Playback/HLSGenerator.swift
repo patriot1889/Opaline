@@ -1,7 +1,7 @@
 import Foundation
 import AVFoundation
 
-struct SidxSegment {
+struct SidxSegment: Sendable {
     let offset: Int64
     let size: Int64
     let duration: Double

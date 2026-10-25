@@ -61,14 +61,13 @@ extension InnertubeVideoSource {
         videoId: String,
         completion: @escaping ([VideoQuality]) -> Void
     ) {
+        let factory = deliveryFactory
         fetchInfo(videoId: videoId, cancellation: nil) { result in
-            DispatchQueue.main.async {
-                guard case .success(let info) = result else {
-                    completion([])
-                    return
-                }
-                completion(Self.qualities(from: info))
+            let projected = result.map { info in
+                Self.qualities(from: factory.playbackInfo(info))
             }
+            let qualities = (try? projected.get()) ?? []
+            DispatchQueue.main.async { completion(qualities) }
         }
     }
 }

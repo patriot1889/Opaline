@@ -352,6 +352,17 @@ private extension InnertubeClient {
             .sorted { videoFormatLess($1, $0) }
             .compactMap(buildDashInfo)
     }
+
+    static func buildAllWebMVideo(from adaptive: [[String: Any]]) -> [DashFormatInfo] {
+        adaptive.filter { format in
+            let mime = fmtMimeType(format).lowercased().split(separator: ";").first
+            return mime?.trimmingCharacters(in: .whitespaces) == "video/webm"
+                && fmtHeight(format) > 0
+                && intVal((format["initRange"] as? [String: Any])?["start"]) == 0
+        }
+        .sorted { videoFormatLess($1, $0) }
+        .compactMap(buildDashInfo)
+    }
 }
 
 // MARK: - Playback Assembly
@@ -369,19 +380,16 @@ private extension InnertubeClient {
         let urls = extractURLs(
             sd: sd, selected: selected
         )
-        guard urls.hasAny
+        let webM = buildAllWebMVideo(from: adaptive)
+        guard urls.hasAny || (!webM.isEmpty && dashAudio?.hasDirectURL == true)
         else {
             return nil
         }
         let config = extractPlayerConfig(json: json)
-        let allDash = buildAllDashVideo(
-            from: adaptive
-        )
-        let allAudio = buildAllDashAudio(
-            from: adaptive
-        )
+        let allDash = buildAllDashVideo(from: adaptive)
+        let allAudio = buildAllDashAudio(from: adaptive)
         let duration = extractDuration(selected: selected)
-        return buildPlaybackPart1(
+        var info = buildPlaybackPart1(
             urls: urls,
             cfg: config,
             sel: selected,
@@ -392,6 +400,8 @@ private extension InnertubeClient {
             dur: duration,
             json: json
         )
+        info.webMVideoFormats = webM
+        return info
     }
 
     // swiftlint:disable function_parameter_count
@@ -544,7 +554,7 @@ private extension InnertubeClient {
             }
             .joined(separator: " ")
         AppLog.innertube(
-            "video ladder (✗ = we reject it,"
+            "MP4/SABR ladder (✗ = excluded from MP4,"
                 + " hw av1=\(AV1Support.isHardwareSupported),"
                 + " cap=\(VideoQualityStore.maxHeight ?? 0)p): \(ladder)"
         )

@@ -41,6 +41,18 @@ struct PlaybackStepRegistry {
             )
         },
         PlaybackStep(
+            id: "visionos.webm",
+            title: "visionOS · WebM VP9 (experimental)",
+            requiresSignIn: false
+        ) { apiClient in
+            innertube(
+                apiClient: apiClient,
+                client: VisionOSClient(),
+                delivery: WebMVP9DeliveryFactory(),
+                title: "visionos.webm"
+            )
+        },
+        PlaybackStep(
             id: "tv.sabr",
             title: "TV · SABR",
             requiresSignIn: true

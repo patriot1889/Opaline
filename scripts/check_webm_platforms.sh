@@ -15,13 +15,13 @@ import pathlib
 import sys
 
 source_root = pathlib.Path(sys.argv[1]) / "Opaline/Core/Playback/WebM"
-shared = ["Opaline/Core/Config/HTTPConstants.swift", "Opaline/Core/Common/CancellationToken.swift",
-          "Opaline/Core/Transport/HTTPTransport.swift"]
+shared = json.loads((pathlib.Path(sys.argv[1]) / 'scripts/webm_playback_sources.json').read_text())
+shared += ['scripts/webm_playback_support.swift']
 targets = {}
 for name, platform, minimum in [("WebMCoreIOS", "iOS", "15.0"), ("WebMCoreTV", "tvOS", "17.0")]:
     targets[name] = {
         "type": "framework", "platform": platform, "deploymentTarget": minimum,
-        "sources": [{"path": str(source_root)}] + [
+        "sources": [{"path": str(source_root)}, {"path": str(source_root.parent / "WebMPlayback")}] + [
             {"path": str(pathlib.Path(sys.argv[1]) / source)} for source in shared
         ],
         "settings": {"base": {"PRODUCT_BUNDLE_IDENTIFIER": "test.opaline." + name}},

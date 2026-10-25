@@ -9,6 +9,10 @@ protocol StreamDeliveryFactory {
     /// Short name for logs and the stats overlay, e.g. `range`.
     var label: String { get }
 
+    /// A delivery may expose its own format catalog without changing the
+    /// parser's MP4/SABR defaults. Existing deliveries keep the response as-is.
+    func playbackInfo(_ info: DirectPlaybackInfo) -> DirectPlaybackInfo
+
     /// Whether this delivery can serve the response at hand. A response whose
     /// formats carry no `url` cannot be fetched by range; one without a SABR
     /// stream cannot be fetched by SABR.
@@ -19,6 +23,10 @@ protocol StreamDeliveryFactory {
         transport: HTTPTransport,
         poToken: Data?
     ) -> StreamDelivery
+}
+
+extension StreamDeliveryFactory {
+    func playbackInfo(_ info: DirectPlaybackInfo) -> DirectPlaybackInfo { info }
 }
 
 /// Byte ranges over the `adaptiveFormats` URLs.

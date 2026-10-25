@@ -1,6 +1,6 @@
 # Shared WebM playback groundwork
 
-The shared layer demuxes compressed VP9 packets, fetches cue-bounded media ranges over HTTPTransport and converts SDR profile-0 batches into fragmented MP4 using CoreMedia and AVAssetWriter passthrough, and serves cue ranges on demand through a bounded delivery owner. WebM formats remain disabled in the playback chain.
+The shared layer demuxes compressed VP9 packets, fetches cue-bounded media ranges over HTTPTransport and converts SDR profile-0 batches into fragmented MP4 using CoreMedia and AVAssetWriter passthrough, and serves cue ranges on demand through a bounded delivery owner. The `visionos.webm` playback step is registered as an opt-in experiment and remains disabled by default. Existing native HLS, MP4 range and SABR selections are unchanged.
 
 ## Shared ownership
 
@@ -34,6 +34,16 @@ The iOS synchronized source group picks up these files automatically. The `tvos`
 The tvOS target already references the transport, header constants and cancellation files used by the adapter. Those existing shared references must remain in its compile sources.
 
 Do not copy them into `OpalineTV/`. The platform build check compiles the exact same on-disk files for iOS 15 and tvOS 17 deployment targets. No tvOS project is introduced on the iOS branch and no existing upstream files are reorganized.
+
+The playback composition lives separately in `Opaline/Core/Playback/WebMPlayback/`, also shared directly:
+
+- `WebMVP9Formats.swift` and `WebMVP9Level.swift`
+- `WebMVP9DeliveryFactory.swift` and `WebMStreamDelivery.swift`
+- `WebMPlaybackInput.swift` and `WebMAudioIndex.swift`
+- `WebMPlaybackBuilder.swift` and `WebMPlaybackBuilder+Serving.swift`
+- `WebMPlaybackSession.swift`
+
+For the tvOS branch, reference these same files plus the shared core and existing AVFoundation/HLS/server/client dependencies. Keep tvOS's step registration and settings in its own configuration; do not copy the iOS registry/settings changes into `OpalineTV/`. Shared upstream integration edits are limited to the separate format catalog/parser, defaulted delivery policy/lifecycle hooks and calls from the existing adaptive source. `DashFormatInfo` and `SidxSegment` gain compiler-checked Sendable conformance for immutable metadata crossing preparation queues. No iOS project or UI is reorganized.
 
 Hardware decoder registration, profile eligibility and rendering remain adapter responsibilities. A parser compiling on tvOS does not imply that an Apple TV can hardware-decode VP9.
 
@@ -93,7 +103,29 @@ All delivery state and callbacks run on a private serial queue. Every accepted l
 
 The delivery layer emits video resources. Audio can use the existing MP4/SIDX path on the same zero-based timeline, with HLSGenerator supplying the audio playlist and master. A local six-second fixture test serves VP9 via real HTTP range fetch/remux and an independent AAC rendition. Video intervals total exactly 6.0 seconds; AAC totals 6.021333 seconds, within one 1,024-sample AAC frame at 48 kHz. On the Duo, AVPlayer decoded 111 frames through 5.94 seconds across the three independently remuxed cues, reported two item tracks and selected the audible rendition with no playback error. This verifies timeline composition and rendition selection; perceptual A/V offset on real YouTube content still needs validation.
 
-This owner does not resolve YouTube URLs, sign requests, select formats, start a server or create an AVPlayerItem. Those remain the playback-source composition's responsibilities. No tvOS UI/lifecycle/configuration or existing iOS playback source is changed.
+This owner does not resolve YouTube URLs, sign requests, select formats, start a server or create an AVPlayerItem. The playback composition below owns those responsibilities. No tvOS UI/lifecycle/configuration is changed.
+
+## Opt-in playback source
+
+The normal player-response parser now retains `webMVideoFormats` separately. Its MP4/SABR `dashVideoFormat` and `allDashVideoFormats` keep their existing selection rules. A response containing only WebM video plus direct AAC metadata can be parsed without inventing an MP4 selection. The WebM catalog has a default empty value, preserving existing model construction sites. The parser's rejection log now explicitly identifies the MP4/SABR ladder rather than implying that every crossed-out WebM format is unsupported by every delivery.
+
+`StreamDeliveryFactory.playbackInfo` defaults to identity. Only WebMVP9DeliveryFactory projects its supported catalog into the existing adaptive source's active video/audio fields. InnertubeVideoSource applies that policy to real loads and quality probes, then reuses its existing quality, original/dub, caption and progress handling. This avoids copying the adaptive source or changing default MP4/SABR selection.
+
+Eligibility requires registered hardware VP9 support, direct HTTP(S) URLs, bounded and ordered initialization/index metadata, positive video duration/dimensions/rate/bitrate, SDR profile-0 eight-bit VP9 and direct AAC-LC MP4 audio. VP8, Opus, HDR/profile-2 VP9, cipher challenges and clients requiring signature solving are not routed here. Actual WebM headers, track dimensions, reference frames, colour configuration and cue timing are checked during preparation as well; a JSON MIME label alone never makes a packet playable.
+
+`WebMPlaybackBuilder` fetches and validates the AAC index, opens WebM metadata, and prewarms just the cue preceding the requested playhead before preparing an item. AAC must use a complete flat SIDX with zero first offset and presentation origin, nonempty finite segments and in-file byte coverage. The existing HLS generator serves the AAC rendition; the video owner supplies exact cue resources. Resume adds a precise start tag to the video playlist and the existing audio start tag. Normal HTTP playback keeps the shell's usual post-attachment seek contract. Audio-only mode prepares AAC without fetching any WebM bytes.
+
+The prewarmed decoder configuration determines the advertised VP9 level when present; otherwise a declared format level is retained, or a level is estimated from the format's dimensions, frame rate and bitrate using the published level limits. The tested Duo rejected a master advertising undefined level `00` before decoding; the same fixture played when advertised with its inferred level `21`. The estimate is a compatibility hint, not a full bitstream-level conformance or hardware-resolution test. See the [VP9 level definitions](https://www.webmproject.org/vp9/levels/) and [FFmpeg's analogous MP4 level estimation](https://github.com/FFmpeg/FFmpeg/blob/master/libavformat/vpcc.c).
+
+A source cannot know every remuxed byte count before downloading all cues. Each delivery interval now enforces an output allowance of its source bytes plus 1 MiB for indexes/container overhead (in addition to the writer/cache caps). The master advertises a conservative peak from those enforced per-cue bounds plus the measured AAC peak. This avoids an unbounded bandwidth guess without eagerly remuxing the entire file.
+
+`WebMStreamDelivery` owns preparation identity and releases superseded work. The defaulted StreamDelivery.releaseResources hook lets the adaptive source explicitly stop a delivery even if a pending callback retains it; logging captures a label string rather than retaining the delivery. New prepares, release and deinitialization silence stale callbacks, cancel metadata tasks, close the bounded video owner and stop the loopback server. The ready result retains WebMPlaybackSession through the existing resourceLoader lifetime slot; its AVPlayerItem and caller completion are created/delivered on main. This HTTP session does not intercept AVAssetResourceLoader requests. The ready HTTP asset receives the same client media headers as the range transport, including visitor identity.
+
+The iOS registry adds `visionos.webm` / **visionOS · WebM VP9 (experimental)** at the end of the stored order and excludes it from defaultEnabled. To test it, enable that step in the existing playback-chain settings and move it ahead of other working sources (or temporarily leave only that step enabled). No existing preference is changed automatically. A tvOS-owned registry may expose the same factory independently after merging the shared code.
+
+On the Duo, the complete parser → factory → delivery → prepared-item path decoded 111 frames through 5.95 seconds with AAC selected and two item tracks. A second preparation at 2.5 seconds produced its first displayed frame at exactly 2.5 seconds and decoded 64 frames through 5.95 seconds, again without playback errors. These are generated local fixtures served by real HTTP, not live YouTube/4K validation.
+
+The 25 October 2026 Xcode run on the Duo (iOS 27.1) also exercised live YouTube video `U-QiUAMda7Y`: `visionos.webm` resolved successfully, AVPlayer became ready with video and audio tracks, and watchtime positions advanced from 142 to 165 seconds while the local server continued serving WebM-derived fragments. No source fallback or player failure was logged. The log does not identify the played video resolution or measure dropped frames/A/V offset, so it does not establish sustained 4K playback. Connection resets and a timeout were present and remain to be investigated.
 
 ## Verification
 
@@ -135,18 +167,26 @@ bash scripts/check_webm_delivery_http.sh
 
 This uses two loopback listeners and the shipping transport/server/HLS helpers. It opens metadata with two HTTP ranges, serves each cue's initialization/media/partial-byte probes from one fetched range, refetches an evicted backward cue and verifies the companion AAC timeline. No external network or FFmpeg executable is required. The Apple host checks also cover exact interval boundaries, request coalescing, cache eviction/budget, capacity, deadlines, stale-generation cancellation, session-specific paths, false cue times and configuration changes.
 
+For parser-to-playback composition checks, run:
+
+```sh
+bash scripts/check_webm_playback.sh
+```
+
+This exercises the real player-response parser, separate format catalog, unchanged MP4/SABR policy, hardware eligibility injection, level estimation/precedence, client identity, AAC index validation, preparation, precise resume range/tags, audio-only laziness, superseded failures and explicit/deinit resource release. It opens only local listeners. The checked-in source inventory is reused by host and SDK checks. Existing application composition boundaries (preferences/logging, legacy builders and caption extraction) are stubbed in `scripts/webm_playback_support.swift`; the new adapter, transport, HLS helpers, server, models and parser are shipping sources.
+
 To verify shared SDK compatibility, install XcodeGen and XcodeBuildMCP, select installed simulator IDs, and run:
 
 ```sh
 bash scripts/check_webm_platforms.sh <iOS-simulator-id> <tvOS-simulator-id>
 ```
 
-This creates temporary framework targets referencing the shared files directly, with Swift 5 language mode and complete concurrency checking. It does not modify either app project or require signing.
+This creates temporary iOS 15/tvOS 17 framework targets referencing the core and complete playback adapter directly, with Swift 5 language mode and complete concurrency checking. It does not modify either app project or require signing. The broader check also compiles existing context dictionaries and transport/server code, which currently report their pre-existing Swift 6 concurrency diagnostics; the new adapter adds no such diagnostics. Simulator compilation does not validate Apple TV hardware decoding.
 
 ## Next slice
 
-Compose a playback source that supplies resolved WebM URL/headers, initialization/index byte ranges and an accurate end time, then connects these video resources with the existing AAC path and loopback server. Keep format selection gated while testing representative YouTube videos and real A/V offset.
+Enable the experimental step deliberately and validate live YouTube responses, signed URL/visitor identity behavior, sustained 4K playback and perceptual A/V offset on the Duo. The original test URL is `https://www.youtube.com/watch?v=PLvSMddQtfE`. Keep normal playback-chain defaults intact while collecting actual format/source/error logs.
 
-Actual AVPlayer seeking, quality changes, SABR delivery, 4K, HDR and Apple TV decoding still need verification before enabling this delivery. The range owner has deterministic cancellation and backward-cue coverage, but that does not by itself validate the entire player's seek lifecycle. Keep existing MP4/SIDX and native HLS selection unchanged until those checks pass.
+Actual mid-item seeking, quality/dub switching, long playback, SABR WebM delivery, HDR and Apple TV decoding still need verification. The tested replacement-item resume path does not by itself validate every player seek lifecycle. Keep this step opt-in until real-stream and device coverage supports broader activation.
 
 References: [WebM container guidelines](https://www.webmproject.org/docs/container/), [VP9 MP4 binding](https://www.webmproject.org/vp9/mp4/), [libvpx uncompressed-header decoding](https://github.com/webmproject/libvpx/blob/main/vp9/decoder/vp9_decodeframe.c), [FFmpeg independent superframe splitter](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/bsf/vp9_superframe_split.c).

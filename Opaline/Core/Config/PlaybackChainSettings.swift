@@ -10,11 +10,11 @@ enum PlaybackChainSettings {
     /// play past the anonymous one-minute cut-off, and TV needs an account
     /// to run at all.
     static let defaultOrder = [
-        "visionos.hls", "visionos.range", "visionos.sabr", "tv.sabr", "progressive"
+        "visionos.hls", "visionos.range", "visionos.sabr", "tv.sabr", "progressive", "visionos.webm"
     ]
-    /// Everything is on by default: a step that cannot run (TV without an
-    /// account) already skips itself.
-    static let defaultEnabled = defaultOrder
+    /// Established paths remain enabled; WebM is opt-in during real-stream
+    /// validation. Unsupported steps still skip themselves at runtime.
+    static let defaultEnabled = defaultOrder.filter { $0 != "visionos.webm" }
 
     static var order: [String] {
         get {

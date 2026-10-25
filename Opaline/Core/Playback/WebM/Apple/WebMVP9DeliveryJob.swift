@@ -106,12 +106,13 @@ final class WebMVP9DeliveryJob: @unchecked Sendable {
         }
         finish(result.flatMap { fragments in
             Result {
-                Output(
-                    segment: try WebMVP9DeliverySegment(
-                        fragments: fragments, interval: request.interval
-                    ),
-                    configuration: configuration
+                let segment = try WebMVP9DeliverySegment(
+                    fragments: fragments, interval: request.interval, configuration: configuration
                 )
+                guard segment.byteCount <= request.interval.maximumRemuxBytes else {
+                    throw WebMDeliveryError.capacity
+                }
+                return Output(segment: segment, configuration: configuration)
             }
         })
     }

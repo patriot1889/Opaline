@@ -7,6 +7,7 @@ extension InnertubeVideoSource {
     /// Lets go of the active delivery — for SABR that takes down its session
     /// and loopback server, which otherwise live as long as the source does.
     func releaseDelivery() {
+        delivery?.releaseResources()
         delivery = nil
     }
 
@@ -30,18 +31,20 @@ extension InnertubeVideoSource {
         let stream = deliveryFactory.make(
             client: client, transport: transport, poToken: sabrPoToken
         )
+        releaseDelivery()
         delivery = stream
+        let label = stream.label
         let started = CACurrentMediaTime()
         stream.prepare(request) { result in
             let elapsed = (CACurrentMediaTime() - started) * 1_000
             switch result {
             case .success:
                 AppLog.player(String(
-                    format: "delivery %@ ready in %.0f ms", stream.label, elapsed
+                    format: "delivery %@ ready in %.0f ms", label, elapsed
                 ))
             case .failure(let error):
                 AppLog.player(
-                    "delivery \(stream.label) failed (\(error.localizedDescription))"
+                    "delivery \(label) failed (\(error.localizedDescription))"
                 )
             }
             completion(result)

@@ -6,9 +6,14 @@ struct WebMVP9DeliverySegment: Sendable {
     let media: Data
     let startNanoseconds: Int64
     let endNanoseconds: Int64
+    let configuration: WebMVP9Configuration?
     var byteCount: Int { initialization.count + media.count }
 
-    init(fragments: WebMVP9Fragments, interval: WebMVP9DeliveryPlan.Segment) throws {
+    init(
+        fragments: WebMVP9Fragments,
+        interval: WebMVP9DeliveryPlan.Segment,
+        configuration: WebMVP9Configuration? = nil
+    ) throws {
         guard !fragments.initialization.isEmpty, !fragments.media.isEmpty else {
             throw WebMDeliveryError.invalidTimeline
         }
@@ -28,6 +33,7 @@ struct WebMVP9DeliverySegment: Sendable {
         media = fragments.media.reduce(into: Data()) { $0.append($1.data) }
         startNanoseconds = interval.startNanoseconds
         endNanoseconds = interval.endNanoseconds
+        self.configuration = configuration
     }
 
     private static func nanoseconds(_ time: CMTime) throws -> Int64 {

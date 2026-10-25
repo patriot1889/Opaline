@@ -5,7 +5,7 @@ import Foundation
 // Parsed from /player responses (InnertubeClientPlayerParsing). Split from
 // Video.swift purely by domain: these are streaming formats, not tiles.
 
-struct DashFormatInfo {
+struct DashFormatInfo: Sendable {
     /// Stands in for a format the server described but handed no URL for —
     /// the TV client does this for everything, because it is SABR-only. SABR
     /// addresses formats by id, so the URL is never read on that path; keeping
@@ -89,6 +89,9 @@ struct DirectPlaybackInfo {
     let duration: Double?
     let playbackTrackingURLs: WatchtimeURLs?
     let captionTracks: [SubtitleTrack]
+    /// Kept separate from MP4/SABR selections. Only an explicitly selected
+    /// WebM delivery projects these into the active adaptive-format ladder.
+    var webMVideoFormats: [DashFormatInfo] = []
 }
 
 /// Distinct audio-track (dub) metadata from a /player response — the listing
