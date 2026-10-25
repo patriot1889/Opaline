@@ -22,21 +22,17 @@ Generated HLS remuxes compressed video into fMP4; it does not decode or transcod
 
 The default preferences order is `visionos.hls` → `visionos.range` → `visionos.sabr` → `tv.sabr` → `visionos.webm` → `progressive`. Saved custom orders are preserved. WebM remains disabled by default.
 
-| Priority | Preference | Behavior |
-|---|---|---|
-| 1 | Chosen quality | Try every enabled, eligible path at the highest advertised resolution within the Wi-Fi/cellular quality setting before stepping down. |
-| 2 | Frame rate | Prefer the higher advertised frame rate at the same resolution. |
-| 3 | Native delivery | At equal resolution and frame rate, prefer native HLS/MP4, then MP4 through generated HLS, then WebM remuxing through generated HLS. |
-| 4 | Source order | The order in Playback sources breaks ties within a delivery group. |
+Sources are checked **one at a time in saved order**. For each source, metadata is probed and the highest-frame-rate tier at the selected resolution is prepared. Successful preparation ends discovery immediately; later sources are not probed for quality. There is no separate frame-rate target setting: a working 4K30 source satisfies a 4K selection even if an unvisited source might offer 4K60. Native HLS remains first in the default order, but a saved custom order is authoritative.
 
-This is a delivery preference, not a new codec ranking. Existing per-source hardware/codec checks and codec preferences still determine eligible formats. No software decoder fallback is added. Experimental WebM remains opt-in, and disabled or signed-in-only paths unavailable to the session are excluded as before. The current **Auto** quality setting retains its existing 1080p cap.
+If a source only offers lower resolutions, those tiers are retained without starting playback while the next source is checked. If no source can prepare the target resolution, retained candidates are ranked by resolution, frame rate, native delivery (native HLS/MP4 → generated MP4 HLS → remuxed WebM), then source order. Metadata unavailable after a ten-second deadline **per source** becomes a last-resort candidate. Late probe callbacks cannot replace playback or restart discovery.
 
-The chain probes enabled sources for quality metadata before preparing playback, with a ten-second discovery deadline. Sources whose metadata is unavailable remain last-resort candidates after known quality tiers. A requested tier disappearing between probe and load fails that candidate instead of silently lowering its quality. Startup preparation failures and explicit chain advancement continue through the ranked candidates; after playback starts, recovery refreshes once and then consumes the remaining ranked candidates.
+Each attempted candidate is consumed. Startup preparation failures continue to the next target tier or source before lowering resolution. Runtime recovery refreshes once, then uses remaining target tiers and discovers unvisited sources on demand before falling back to retained lower tiers. A requested tier disappearing between probe and load fails that candidate rather than silently lowering its quality.
 
+Existing per-source hardware/codec checks still determine eligible formats. No software decoder fallback is added. Experimental WebM remains opt-in, and disabled or signed-in-only paths unavailable to the session are excluded. **Auto** retains its 1080p target/cap.
 Automatic dubbing does not bypass quality-first source selection. When the selected adaptive source offers a preferred dub, it still chooses it; otherwise original audio can play at the preferred video quality. Manual audio-track choices remain available. Audio-only playback retains the existing source order.
 
 The policy and chain contain no UIKit/platform-specific code and can be referenced directly from the tvOS branch. The iOS preferences screen and registry remain iOS-owned; tvOS should supply its own registry and delivery preferences.
 
 The iOS/tvOS SDK check also compiles this policy and chain. Under complete Swift 6 checking, the callback-based chain/decorator and existing transport code still report concurrency diagnostics; the app currently builds in Swift 5 mode.
 
-Run `bash scripts/check_playback_selection.sh` for ranking, fallback, cancellation, stale-result, discovery deadline and automatic-dub policy checks.
+Run `bash scripts/check_playback_selection.sh` for sequential early exit, saved source order, frame-rate selection, lower-quality fallback, lazy recovery, cancellation, stale-result, per-source probe deadlines and automatic-dub policy checks.

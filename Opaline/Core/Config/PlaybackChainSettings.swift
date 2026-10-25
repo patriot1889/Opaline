@@ -1,6 +1,6 @@
 import Foundation
 
-/// Enabled playback paths and their tie-breaking order after quality/delivery.
+/// Enabled playback paths and their sequential selection order.
 ///
 /// Playback used to pick sources by a hardcoded ladder, and every time YouTube
 /// moved, the ladder was wrong in a way only a release could fix. This is the
