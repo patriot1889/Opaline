@@ -13,6 +13,7 @@ func tier(_ height: Int, _ fps: Int = 30) -> VideoQuality {
     VideoQuality(id: "\(height)-\(fps)", label: "\(height)p\(fps)", height: height, fps: fps)
 }
 var attempts: [String] = []
+var probes: [String] = []
 final class FakeSource: VideoSource {
     let name: String
     var supportsQualitySelection: Bool { true }
@@ -32,6 +33,7 @@ final class FakeSource: VideoSource {
         availableQualities = qualities
     }
     func probeQualities(videoId: String, completion: @escaping ([VideoQuality]) -> Void) {
+        probes.append(name)
         if hangs { deferredProbe = completion } else { completion(availableQualities) }
     }
     func loadPlayback(videoId: String, cancellation: CancellationToken?,
@@ -73,15 +75,16 @@ let native = FakeSource("native", [tier(1080)])
 let mp4 = FakeSource("mp4", [tier(2160), tier(1440)])
 let webm = FakeSource("webm", [tier(2160)])
 mp4.failing.insert(tier(2160).id)
-let chain = FallbackChainSource(steps: [step(native, .native), step(webm, .remuxedWebM),
-                                      step(mp4, .generatedHLS)], apiClient: WatchService())
+let chain = FallbackChainSource(steps: [step(native, .native), step(mp4, .generatedHLS),
+                                      step(webm, .remuxedWebM)], apiClient: WatchService())
 var done = false
 chain.loadPlayback(videoId: "fixture", cancellation: nil) { result in
     check((try? result.get()) != nil, "load should succeed")
     done = true
 }
 waitFor { done }
-check(attempts == ["mp4:2160p30", "webm:2160p30"], "try every 4K path before lowering quality")
+check(attempts == ["mp4:2160p30", "webm:2160p30"], "try requested resolution in source order before lowering quality")
+check(probes == ["native", "mp4", "webm"], "sources are checked in saved order")
 check(chain.hasNextCandidate, "runtime recovery retains remaining ranked candidates")
 check(chain.name == "webm", "successful WebM candidate owns the chain")
 check(mp4.releases > 0, "failed candidate releases delivery resources")
@@ -93,11 +96,70 @@ check(webm.currentQuality == nil, "advancing releases the previous delivery")
 
 VideoQualityStore.maxHeight = 1080
 attempts = []
+probes = []
 done = false
 chain.loadPlayback(videoId: "fixture", cancellation: nil) { _ in done = true }
 waitFor { done }
-check(!chain.hasNextCandidate, "runtime recovery stops when the ranked plan is exhausted")
+check(chain.hasNextCandidate, "unvisited sources remain available for runtime recovery")
+check(probes == ["native"], "target success skips every later source probe")
 check(attempts == ["native:1080p30"], "quality cap excludes higher tiers")
+
+// Within a source choose the highest frame rate, then stop at the selected resolution.
+let preferred = FakeSource("preferred", [tier(1080, 30), tier(1080, 60)])
+let laterNative = FakeSource("later-native", [tier(1080, 120)])
+let ordered = FallbackChainSource(steps: [step(preferred, .generatedHLS), step(laterNative, .native)],
+                                  apiClient: WatchService())
+attempts = []; probes = []; done = false
+ordered.loadPlayback(videoId: "fixture", cancellation: nil) { _ in done = true }
+waitFor { done }
+check(attempts == ["preferred:1080p60"], "selected resolution uses best frame rate within first source")
+check(probes == ["preferred"], "later native delivery or higher fps does not override saved order")
+done = false
+ordered.advance(videoId: "fixture", cancellation: nil) { _ in done = true }
+waitFor { done }
+check(attempts.last == "preferred:1080p30", "recovery can try another target tier on the same source")
+done = false
+ordered.advance(videoId: "fixture", cancellation: nil) { _ in done = true }
+waitFor { done }
+check(probes == ["preferred", "later-native"], "recovery discovers the next source on demand")
+check(attempts.last == "later-native:1080p120", "recovery prepares the next source")
+check(!ordered.hasNextCandidate, "recovery stops after every candidate and source is exhausted")
+
+// YouTube's named resolution also applies to cropped/wide-aspect formats.
+let wide = FakeSource("wide", [VideoQuality(id: "wide", label: "1080p", height: 1012, fps: 30)])
+let wideChain = FallbackChainSource(steps: [step(wide, .generatedHLS), step(laterNative, .native)],
+                                    apiClient: WatchService())
+attempts = []; probes = []; done = false
+wideChain.loadPlayback(videoId: "fixture", cancellation: nil) { _ in done = true }
+waitFor { done }
+check(attempts == ["wide:1080p"] && probes == ["wide"], "named resolution satisfies target for cropped video")
+
+// If nobody meets the target, compare all retained lower tiers before playing.
+VideoQualityStore.maxHeight = 2160
+let fallbackLow = FakeSource("fallback-low", [tier(720)])
+let fallbackHD = FakeSource("fallback-hd", [tier(1080)])
+let lowerChain = FallbackChainSource(steps: [step(fallbackLow, .native), step(fallbackHD, .generatedHLS)],
+                                     apiClient: WatchService())
+attempts = []; probes = []; done = false
+lowerChain.loadPlayback(videoId: "fixture", cancellation: nil) { _ in done = true }
+waitFor { done }
+check(probes == ["fallback-low", "fallback-hd"], "below-target source does not prevent later discovery")
+check(attempts == ["fallback-hd:1080p30"], "best retained fallback wins when target is unavailable")
+
+// A hanging first probe cannot start the second in parallel.
+let held = FakeSource("held", [])
+held.hangs = true
+let ready = FakeSource("ready", [tier(2160)])
+let serial = FallbackChainSource(steps: [step(held, .native), step(ready, .native)],
+                                 apiClient: WatchService(), probeTimeout: 0.05)
+attempts = []; probes = []; done = false
+serial.loadPlayback(videoId: "fixture", cancellation: nil) { _ in done = true }
+check(probes == ["held"], "next source waits for the first probe to finish or time out")
+waitFor { done }
+check(probes == ["held", "ready"] && attempts == ["ready:2160p30"], "probe deadline moves to next source")
+held.deferredProbe?([tier(2160)])
+RunLoop.main.run(until: Date().addingTimeInterval(0.01))
+check(attempts.count == 1, "late earlier source cannot replace selected playback")
 
 let ranked = PlaybackCandidate.ranked([
     .init(stepIndex: 0, quality: tier(1080), delivery: .native),

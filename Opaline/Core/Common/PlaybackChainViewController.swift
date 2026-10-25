@@ -1,6 +1,6 @@
 import UIKit
 
-/// Enables playback paths and orders ties after quality and native delivery.
+/// Enables playback paths and sets their sequential selection order.
 ///
 /// Replaces the old single-source picker. Which client and delivery works is
 /// YouTube's decision to change, not ours to hardcode — this puts the order in
