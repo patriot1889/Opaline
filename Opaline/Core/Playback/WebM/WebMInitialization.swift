@@ -186,6 +186,7 @@ extension WebMInitialization {
         var width: UInt64 = 0
         var height: UInt64 = 0
         var colour: [UInt64: UInt64] = [:]
+        var presentation: [UInt64: UInt64] = [:]
         while !reader.isAtEnd {
             let element = try reader.element()
             switch element.id {
@@ -195,6 +196,8 @@ extension WebMInitialization {
                 height = try reader.unsigned(element)
             case 0x55B0:
                 colour = try colourValues(data, range: element.payload)
+            case 0x54B0, 0x54BA, 0x54B2, 0x54B3, 0x54AA, 0x54BB, 0x54CC, 0x54DD, 0x53B8, 0x53C0:
+                presentation[element.id] = try reader.unsigned(element)
             default:
                 break
             }
@@ -202,7 +205,18 @@ extension WebMInitialization {
         guard width > 0, height > 0, width <= UInt64(Int32.max), height <= UInt64(Int32.max) else {
             throw WebMError.invalidElement
         }
+        try validatePresentation(presentation, width: width, height: height)
         return VideoMetadata(width: Int(width), height: Int(height), colour: colour)
+    }
+
+    private static func validatePresentation(
+        _ values: [UInt64: UInt64], width: UInt64, height: UInt64
+    ) throws {
+        let otherValues = values.filter { $0.key != 0x54B0 && $0.key != 0x54BA }.values
+        guard values[0x54B0, default: width] == width, values[0x54BA, default: height] == height,
+              otherValues.allSatisfy({ $0 == 0 }) else {
+            throw WebMError.unsupported("video crop, display geometry, stereo or alpha")
+        }
     }
 
     private static func colourValues(_ data: Data, range: Range<Int>) throws -> [UInt64: UInt64] {
@@ -215,7 +229,9 @@ extension WebMInitialization {
             guard element.id != 0x55D0 else {
                 throw WebMError.unsupported("HDR mastering metadata")
             }
-            values[element.id] = try reader.unsigned(element)
+            guard values.updateValue(try reader.unsigned(element), forKey: element.id) == nil else {
+                throw WebMError.invalidElement
+            }
         }
         return values
     }

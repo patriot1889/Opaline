@@ -1,10 +1,10 @@
 # Shared WebM playback groundwork
 
-The shared layer demuxes compressed VP9 packets and fetches cue-bounded media ranges over the existing HTTPTransport. It does not enable WebM formats in the playback chain, create CoreMedia samples, or remux into MP4 yet.
+The shared layer demuxes compressed VP9 packets, fetches cue-bounded media ranges over HTTPTransport and converts a finite SDR profile-0 batch into fragmented MP4 using CoreMedia and AVAssetWriter passthrough. WebM formats remain disabled in the playback chain.
 
 ## Shared ownership
 
-The implementation lives in `Opaline/Core/Playback/WebM/`. All Swift files import only Foundation and have no platform conditionals, UIKit, AVFoundation, VideoToolbox or playback-setting dependencies. The parser is standalone; the range adapter depends on the shared HTTPTransport, HTTP header constants and CancellationToken. Models contain immutable values and are Sendable.
+The implementation lives in `Opaline/Core/Playback/WebM/`. The parser, range fetcher and VP9 configuration files at the directory root import only Foundation. The `Apple/` subdirectory contains the CoreMedia/AVFoundation adapter, shared directly by iOS and tvOS. Neither layer imports UIKit or depends on app playback settings or platform conditionals. The parser is standalone; the range adapter depends on the shared HTTPTransport, HTTP header constants and CancellationToken. Models contain immutable values and are Sendable.
 
 The iOS synchronized source group picks up these files automatically. The `tvos` branch already uses explicit upstream source references in `OpalineTV.xcodeproj`; when integrating this slice there, add these same files to its shared sources group and compile sources:
 
@@ -18,6 +18,11 @@ The iOS synchronized source group picks up these files automatically. The `tvos`
 - `WebMClusterSequence.swift`
 - `WebMRangeFetcher.swift`
 - `WebMRangeFetcher+Response.swift`
+- `WebMVP9Header.swift`
+- `WebMVP9Configuration.swift`
+- `Apple/WebMVP9Samples.swift`
+- `Apple/WebMVP9Fragments.swift`
+- `Apple/WebMVP9FragmentWriter.swift`
 
 The tvOS target already references the transport, header constants and cancellation files used by the adapter. Those existing shared references must remain in its compile sources.
 
@@ -27,7 +32,7 @@ Hardware decoder registration, profile eligibility and rendering remain adapter 
 
 ## Buffer contracts
 
-`WebMInitialization.parse` accepts a file prefix beginning with EBML and containing Segment, Info and Tracks. A declared Segment may extend beyond that prefix or have unknown size. The parser identifies a single VP9 video track, retains CodecPrivate and scalar Colour metadata, and reports the absolute file offset of the Segment payload. It does not parse codec-private feature bytes into a decoder configuration yet.
+`WebMInitialization.parse` accepts a file prefix beginning with EBML and containing Segment, Info and Tracks. A declared Segment may extend beyond that prefix or have unknown size. The parser identifies a single VP9 video track, retains CodecPrivate and scalar Colour metadata, and reports the absolute file offset of the Segment payload. The separate VP9 configuration adapter parses codec-private feature bytes when creating a decoder configuration.
 
 `WebMCue.parse` accepts one complete Cues element, the parsed initialization and the file length. CueClusterPosition is relative to Segment payload, so the parser converts it into a checked absolute file offset. Cue times are converted to integer nanoseconds using TimecodeScale; other tracks' cues are ignored. Relative block positions are retained but not yet used for seeking.
 
@@ -51,6 +56,18 @@ The default limit is 16 MiB per requested range, configurable at construction. O
 
 Each request owns a lock-protected buffer; there is no mutable global or active-playback state. Cancellation uses the existing CancellationToken contract: pre-cancelled work does not start, arriving chunks stop when cancellation is observed, and cancelled operations suppress their completion callback. Completion runs on the transport's callback queue, outside the buffer lock. The playback adapter will own tokens and generation checks when integrating seeks and quality changes.
 
+## Apple passthrough adapter
+
+`WebMVP9Configuration` validates WebM CodecPrivate TLVs and checks profile, dimensions, range and colour against an actual VP9 keyframe header. It creates the version-1 `vpcC` FullBox payload. Missing level and colour tags remain unspecified; the adapter does not advertise an invented level or HDR capability. Nondefault WebM crop/display geometry, stereo and alpha are rejected by initialization parsing so they cannot silently disappear during conversion. That focused parser change is shared by both platforms and requires no iOS project restructuring.
+
+`WebMVP9Samples` creates CoreMedia-owned copies of compressed packets and one ready sample buffer per supported frame. It preserves integer nanosecond PTS/DTS and sync attachments. Explicit packet durations take priority; otherwise the following PTS supplies duration, with DefaultDuration required for a final sample lacking an explicit duration. Duplicate, decreasing, negative or overflowing timestamps, overlapping explicit durations and an unknown final duration fail. A batch must begin with a matching visible keyframe; later keyframes must keep the same configuration.
+
+The current adapter supports only visible, single-frame, 8-bit profile-0 SDR packets. Invisible reference frames, show-existing frames and indexed superframes are explicitly rejected, including when WebM flags contradict the bitstream. The parser still preserves these packets. Full interframe reference/size validation and superframe handling remain prerequisites for accepting general YouTube streams. Rejecting unsupported packets prevents this limited adapter from silently discarding reference data.
+
+`WebMVP9FragmentWriter.write` owns a finite job on a private serial queue, respects AVAssetWriter input readiness and emits Apple HLS initialization/media fragments using compressed passthrough. Its two-second target waits for keyframes. Segment reports retain absolute cue start times; sample times are not rebased. Input is capped at 4,096 packets and 16 MiB, retained output at 32 MiB, and the job has a 30-second deadline. These bounds cover adapter-owned samples/output; AVAssetWriter manages its own internal allocations. The delegate collector uses a lock because Apple may call it from another queue.
+
+Completion is delivered once on the job queue, including failure, deadline and cancellation. This finite writer's `cancel()` reports `WebMRemuxError.cancelled`; unlike transport CancellationToken, it does not silence completion. Cancellation after completion has no effect. Completion releases retained samples and collector data. Callers must still bound concurrent jobs and use playback-generation checks before publishing results. The portable readiness API supports the existing iOS 15/tvOS 17 deployment targets; the macOS 27 host compiler reports its new deprecations.
+
 ## Verification
 
 Run the host fixture and malformed-input checks with:
@@ -60,6 +77,16 @@ bash scripts/check_webm.sh
 ```
 
 The checked-in 32×32 SDR VP9 fixture was generated locally from FFmpeg's test pattern. Golden ffprobe output independently verifies every compressed packet SHA-256, timestamp and keyframe flag. The checks also exercise metadata-only opening, ranged packet reconstruction, seek boundaries, duplicate cue positions, multi-Cluster spans, false Cluster markers inside compressed data, HTTP range/status/header validation, early size limits, transport errors, cancellation and repeated callbacks. The parser's malformed-input coverage includes nonzero Data startIndex, signed times, unknown sizes, unsupported features, overflow and truncation. FFmpeg and network access are not required to run these checks.
+
+For CoreMedia and AVAssetWriter passthrough checks on a Mac, run:
+
+```sh
+bash scripts/check_webm_apple.sh
+```
+
+This checks exact CoreMedia bytes/timing/sync flags, unsupported codec/colour/frame layouts, final duration requirements, cancellation, exactly-once completion, nonzero cue starts verified through fragment reports and structural `tfdt`/`mdhd` inspection, and Apple MP4 readback of all 30 fixture packets. Empty AVAssetReader boundary markers are excluded from compressed-packet counts. AVURLAsset normalizes a standalone nonzero-start fragment to an asset-local origin during readback; the underlying fragment decode time remains absolute.
+
+The larger `vp9-sdr-playback.webm` fixture is intended for hardware playback checks. On the Duo (iOS 27.1), a temporary diagnostic app fed this file through the shared parser/writer and served the output with the existing loopback HLS generator/server. AVPlayer decoded 25 distinct frames through 2.49 seconds, crossing the fragment boundary with no playback error. The 32×32 parser fixture produced valid MP4 readback but failed playback on that device with decoder error -12911; it is not used as evidence of hardware playback. This local test establishes basic video passthrough, not general YouTube, 4K, HDR or tvOS hardware playback support.
 
 For integration with the shipping URLSessionTransport, StreamingSession and loopback media server, run:
 
@@ -79,8 +106,8 @@ This creates temporary framework targets referencing the shared files directly, 
 
 ## Next slice
 
-Translate VP9 codec metadata and packet timing into CoreMedia format descriptions and compressed sample buffers for AVAssetWriter passthrough. The earlier device spike validated Apple's VP9 fragment writer using MP4-derived compressed samples; it did not validate a direct WebM-to-writer adapter.
+Handle VP9 superframes, invisible/show-existing reference frames and their decode/presentation timing, then validate representative YouTube WebM packets. Connect bounded range delivery to fragment serving only after that coverage exists.
 
-Seeking, superframe handling, cancellation, quality/audio changes, SABR delivery, 4K and HDR each need verification before enabling this delivery. Keep existing MP4/SIDX and native HLS selection unchanged until those checks pass.
+Audio synchronization, playback seeking/cancellation, quality changes, SABR delivery, 4K, HDR and actual Apple TV decoding still need verification before enabling this delivery. Keep existing MP4/SIDX and native HLS selection unchanged until those checks pass.
 
 References: [WebM container guidelines](https://www.webmproject.org/docs/container/), [VP9 MP4 binding](https://www.webmproject.org/vp9/mp4/).

@@ -8,8 +8,8 @@ enum WebMError: Error, Equatable {
     case unsupported(String)
 }
 
-/// Container metadata only. Decoder registration and CoreMedia conversion
-/// belong to a later adapter, shared or platform-owned as appropriate.
+/// Container metadata only. The Apple adapter validates this against VP9
+/// headers; decoder registration remains the playback owner's responsibility.
 struct WebMVideoTrack: Equatable, Sendable {
     let number: UInt64
     let width: Int
