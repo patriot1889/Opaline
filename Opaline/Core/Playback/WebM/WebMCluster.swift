@@ -116,7 +116,7 @@ enum WebMCluster {
         let invisible = flags & 0x08 != 0
         let duration = try block.durationTicks.map {
             UInt64(try WebMTime.nanoseconds($0, scale: initialization.timecodeScale))
-        } ?? initialization.video.defaultDurationNanoseconds
+        }
         let bytes = EBMLReader.Element(id: block.element.id, payload: reader.position..<reader.end)
         return WebMPacket(
             data: reader.bytes(bytes),

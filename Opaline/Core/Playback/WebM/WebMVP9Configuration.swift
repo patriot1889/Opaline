@@ -14,8 +14,9 @@ struct WebMVP9Configuration: Equatable, Sendable {
     let record: Data
 
     static func parse(track: WebMVideoTrack, keyframe: WebMPacket) throws -> WebMVP9Configuration {
-        let header = try WebMVP9Header.parse(keyframe.data)
-        guard keyframe.isKeyframe, !keyframe.isInvisible, header.isKeyframe,
+        let frames = try WebMVP9Superframe.split(keyframe.data)
+        let header = try WebMVP9Header.parse(frames[0])
+        guard keyframe.isKeyframe, header.isKeyframe,
               header.width == track.width, header.height == track.height else {
             throw WebMError.unsupported("VP9 keyframe or dimensions disagree with WebM")
         }

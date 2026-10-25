@@ -9,8 +9,8 @@ enum WebMRemuxError: Error {
     case timeout
 }
 
-/// Finite, bounded batch. Each packet must be one visible profile-0 frame.
-/// No decoding, reordering, inferred reference frames or timestamp rebasing.
+/// Finite, bounded profile-0 batch, normalized into one sample per display.
+/// Hidden reference frames remain inside superframes; timestamps are not rebased.
 struct WebMVP9Samples {
     let format: CMVideoFormatDescription
     let buffers: [CMSampleBuffer]
@@ -20,29 +20,13 @@ struct WebMVP9Samples {
               packets.reduce(0, { $0 + min($1.data.count, 16_777_217) }) <= 16_777_216 else {
             throw WebMRemuxError.capacity
         }
-        let configuration = try WebMVP9Configuration.parse(track: track, keyframe: packets[0])
-        let format = try Self.format(configuration)
+        let units = try WebMVP9AccessUnits(track: track, packets: packets)
+        let packets = units.packets
+        let format = try Self.format(units.configuration)
         self.format = format
         buffers = try packets.indices.map { index in
-            try Self.validate(packets[index], track: track, configuration: configuration)
             let duration = try Self.duration(at: index, packets: packets, track: track)
             return try Self.sample(packets[index], duration: duration, format: format)
-        }
-    }
-
-    private static func validate(
-        _ packet: WebMPacket,
-        track: WebMVideoTrack,
-        configuration: WebMVP9Configuration
-    ) throws {
-        let header = try WebMVP9Header.parse(packet.data)
-        guard packet.timestampNanoseconds >= 0, !packet.isInvisible,
-              packet.isKeyframe == header.isKeyframe else {
-            throw WebMError.unsupported("VP9 packet flags or timestamp")
-        }
-        if header.isKeyframe,
-           try WebMVP9Configuration.parse(track: track, keyframe: packet) != configuration {
-            throw WebMError.unsupported("VP9 configuration change")
         }
     }
 

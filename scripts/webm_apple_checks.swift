@@ -25,11 +25,11 @@ remuxRejects("Empty batch") { _ = try WebMVP9Samples(track: realInit.video, pack
 remuxRejects("Start must be a keyframe") { _ = try WebMVP9Samples(track: realInit.video, packets: Array(realPackets.dropFirst())) }
 remuxRejects("Negative timestamps") { _ = try WebMVP9Samples(track: realInit.video, packets: [packet(realPackets[0], time: -1)]) }
 remuxRejects("Equal timestamps") { _ = try WebMVP9Samples(track: realInit.video, packets: [realPackets[0], packet(realPackets[1], time: 0)]) }
-remuxRejects("Invisible frames remain unsupported") { _ = try WebMVP9Samples(track: realInit.video, packets: [packet(realPackets[0], invisible: true)]) }
+remuxRejects("Container invisibility must agree with the bitstream") { _ = try WebMVP9Samples(track: realInit.video, packets: [packet(realPackets[0], invisible: true)]) }
 remuxRejects("Truncated keyframe header") { _ = try WebMVP9Header.parse(Data([0x82])) }
 remuxRejects("Profile 2 must not silently become SDR") { _ = try WebMVP9Header.parse(Data([0x92])) }
-remuxRejects("Show-existing packets need explicit handling") { _ = try WebMVP9Header.parse(Data([0x88])) }
-remuxRejects("Superframes need explicit handling") { _ = try WebMVP9Header.parse(realPackets[0].data + Data([0xC0, 1, 0xC0])) }
+check(try WebMVP9Header.parse(Data([0x88])).existingFrameIndex == 0, "Show-existing header retains its slot")
+remuxRejects("Malformed superframe lengths") { _ = try WebMVP9Superframe.split(realPackets[0].data + Data([0xC0, 1, 0xC0])) }
 
 final class RemuxResultBox: @unchecked Sendable {
     private let lock = NSLock()
@@ -170,3 +170,49 @@ let playbackFragments = try playbackBox.get()
 check(playbackFragments.media.count == 2 && playbackFragments.media.reduce(0) { $0 + $1.duration.seconds } == 3,
       "Hardware fixture covers a fragment boundary and three seconds")
 print("WebM Apple checks complete (\(checks) total assertions)")
+// Pass real hidden references through the Apple writer, then independently
+// demux its MP4. Some Apple readers split superframes; compare elementary bytes.
+let referenceSamples = try WebMVP9Samples(track: altrefInit.video, packets: separatedAltref)
+check(referenceSamples.buffers.count == 180, "192 elementary frames become 180 displayed MP4 samples")
+for index in 0..<179 {
+    check(CMSampleBufferGetDuration(referenceSamples.buffers[index]) == CMTime(
+        value: altrefPackets[index + 1].timestampNanoseconds - altrefPackets[index].timestampNanoseconds,
+        timescale: 1_000_000_000), "30fps quantized PTS determines adjacent duration")
+}
+let referenceBox = RemuxResultBox()
+_ = WebMVP9FragmentWriter.write(track: altrefInit.video, packets: separatedAltref) { referenceBox.complete($0) }
+check(referenceBox.semaphore.wait(timeout: .now() + 35) == .success, "Reference-frame remux completes")
+let referenceFragments = try referenceBox.get()
+check(referenceFragments.media.count == 3, "Six-second reference clip crosses two fragment boundaries")
+let referenceFile = file.deletingLastPathComponent().appendingPathComponent("altref.mp4")
+try referenceFragments.media.reduce(referenceFragments.initialization) { $0 + $1.data }.write(to: referenceFile)
+let referenceAsset = AVURLAsset(url: referenceFile)
+let referenceReader = try AVAssetReader(asset: referenceAsset)
+let referenceOutput = AVAssetReaderTrackOutput(track: referenceAsset.tracks(withMediaType: .video).first!, outputSettings: nil)
+referenceReader.add(referenceOutput)
+check(referenceReader.startReading(), "Apple reads the reference-frame MP4")
+var referenceFrames: [Data] = []
+var referenceDisplays = 0
+while let sample = referenceOutput.copyNextSampleBuffer() {
+    guard CMSampleBufferGetNumSamples(sample) > 0 else { continue }
+    let block = CMSampleBufferGetDataBuffer(sample)!
+    var bytes = Data(count: CMBlockBufferGetDataLength(block))
+    let status = bytes.withUnsafeMutableBytes { CMBlockBufferCopyDataBytes(block, atOffset: 0, dataLength: $0.count, destination: $0.baseAddress!) }
+    check(status == noErr, "Reference sample data is readable")
+    let frames = try WebMVP9Superframe.split(bytes)
+    let displays = try frames.map(WebMVP9Header.parse).filter(\.isVisible)
+    if !displays.isEmpty {
+        check(CMSampleBufferGetPresentationTimeStamp(sample) == CMTime(value: altrefPackets[referenceDisplays].timestampNanoseconds, timescale: 1_000_000_000), "Displayed alt-ref PTS survives writer/readback")
+        referenceDisplays += 1
+    }
+    referenceFrames += frames
+}
+check(referenceReader.status == .completed && referenceDisplays == 180, "All 180 displays survive writer/readback")
+check(referenceFrames == altrefFrames, "All 192 elementary frames retain bytes and decode order after MP4")
+let showSample = try WebMVP9Samples(track: realInit.video, packets: [realPackets[0], existing])
+check(showSample.buffers.count == 2, "Show-existing becomes a displayed CoreMedia sample")
+let showBox = RemuxResultBox()
+_ = WebMVP9FragmentWriter.write(track: realInit.video, packets: [realPackets[0], existing]) { showBox.complete($0) }
+check(showBox.semaphore.wait(timeout: .now() + 35) == .success, "Show-existing remux completes")
+check(try showBox.get().media.count == 1, "Show-existing writes a real media fragment")
+print("WebM Apple reference checks passed (\(checks) total assertions; 192 exact frames, 180 displays)")

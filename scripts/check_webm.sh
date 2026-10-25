@@ -10,6 +10,7 @@ cat "$ROOT/Opaline/Core/Config/HTTPConstants.swift" \
     "$ROOT"/Opaline/Core/Playback/WebM/*.swift \
     "$ROOT/scripts/webm_checks.swift" \
     "$ROOT/scripts/webm_vp9_checks.swift" \
+    "$ROOT/scripts/webm_superframe_checks.swift" \
     "$ROOT/scripts/webm_range_checks.swift" > "$CHECK_TMP/main.swift"
 swiftc -swift-version 5 -module-cache-path /tmp/opaline-webm-module-cache \
     "$CHECK_TMP/main.swift" -o "$CHECK_TMP/checks"

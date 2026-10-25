@@ -38,6 +38,8 @@ struct WebMCue: Equatable, Sendable {
 struct WebMPacket: Equatable, Sendable {
     let data: Data
     let timestampNanoseconds: Int64
+    /// Explicit BlockDuration, or zero for an invisible reference. DefaultDuration
+    /// stays on the track: it must not override quantized adjacent display PTS.
     let durationNanoseconds: UInt64?
     let isKeyframe: Bool
     let isInvisible: Bool

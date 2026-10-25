@@ -87,8 +87,9 @@ let group = element(0xA0, element(0xA1, simpleBlock(flags: 0)) + number(0x9B, 40
 let grouped = try WebMCluster.parse(cluster(blocks: group), initialization: config)[0]
 check(grouped.isKeyframe && grouped.durationNanoseconds == 40_000_000, "BlockGroup sync and duration differ from SimpleBlock")
 let defaultDuration = try WebMInitialization.parse(initialization(trackExtras: number(0x0023_E383, 100_000_000)))
-check(try WebMCluster.parse(single, initialization: defaultDuration)[0].durationNanoseconds == 100_000_000,
-      "DefaultDuration uses nanoseconds directly, not timestamp ticks")
+let defaultPacket = try WebMCluster.parse(single, initialization: defaultDuration)[0]
+check(defaultDuration.video.defaultDurationNanoseconds == 100_000_000 && defaultPacket.durationNanoseconds == nil,
+      "DefaultDuration stays on the track and is not mistaken for an explicit BlockDuration")
 let referenced = element(0xA0, element(0xA1, simpleBlock()) + element(0xFB, Data([0xFF])))
 check(try !WebMCluster.parse(cluster(blocks: referenced), initialization: config)[0].isKeyframe,
       "A referenced BlockGroup is not a keyframe even if its reserved flag bit is set")

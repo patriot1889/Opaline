@@ -22,3 +22,24 @@ ffmpeg -hide_banner -loglevel error -f lavfi -i testsrc2=size=640x360:rate=10 \
   -t 3 -an -c:v libvpx-vp9 -deadline good -cpu-used 4 -b:v 300k -g 10 \
   -lag-in-frames 0 -pix_fmt yuv420p -dash 1 -cues_to_front 1 vp9-sdr-playback.webm
 ```
+
+`vp9-altref.webm` is a six-second 640×360, 30 fps two-pass clip. It contains 180 displayed packets and 192 elementary VP9 frames, including 12 hidden references carried in indexed superframes. Regenerate it with both golden files together:
+
+```sh
+ffmpeg -hide_banner -loglevel error -f lavfi -i testsrc2=size=640x360:rate=30 \
+  -t 6 -an -c:v libvpx-vp9 -deadline good -cpu-used 4 -b:v 300k -g 60 \
+  -lag-in-frames 25 -auto-alt-ref 1 -pix_fmt yuv420p \
+  -pass 1 -passlogfile /tmp/opaline-vp9-altref-pass -f null /dev/null
+ffmpeg -hide_banner -loglevel error -f lavfi -i testsrc2=size=640x360:rate=30 \
+  -t 6 -an -c:v libvpx-vp9 -deadline good -cpu-used 4 -b:v 300k -g 60 \
+  -lag-in-frames 25 -auto-alt-ref 1 -pix_fmt yuv420p \
+  -pass 2 -passlogfile /tmp/opaline-vp9-altref-pass \
+  -dash 1 -cues_to_front 1 vp9-altref.webm
+ffprobe -v error -select_streams v:0 -show_packets \
+  -show_entries packet=pts_time,duration_time,flags,size,data_hash \
+  -show_data_hash sha256 -of json vp9-altref.webm > vp9-altref-packets.json
+ffmpeg -hide_banner -loglevel error -i vp9-altref.webm -map 0:v:0 \
+  -c:v copy -bsf:v vp9_superframe_split -f framehash vp9-altref-frames.sha256
+```
+
+The superframe tests also separate the hidden frames into synthetic WebMPackets, retaining their bytes and decode order, and verify regrouping against the original indexed packets. The checked-in SHA-256 list comes from FFmpeg's independent splitter; no encoder or FFmpeg executable is needed for routine checks.
