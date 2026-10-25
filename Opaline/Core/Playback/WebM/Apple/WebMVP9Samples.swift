@@ -15,7 +15,9 @@ struct WebMVP9Samples {
     let format: CMVideoFormatDescription
     let buffers: [CMSampleBuffer]
 
-    init(track: WebMVideoTrack, packets: [WebMPacket]) throws {
+    init(
+        track: WebMVideoTrack, packets: [WebMPacket], endTimeNanoseconds: Int64? = nil
+    ) throws {
         guard !packets.isEmpty, packets.count <= 4_096,
               packets.reduce(0, { $0 + min($1.data.count, 16_777_217) }) <= 16_777_216 else {
             throw WebMRemuxError.capacity
@@ -25,22 +27,28 @@ struct WebMVP9Samples {
         let format = try Self.format(units.configuration)
         self.format = format
         buffers = try packets.indices.map { index in
-            let duration = try Self.duration(at: index, packets: packets, track: track)
+            let duration = try Self.duration(
+                at: index, packets: packets, track: track, endTime: endTimeNanoseconds
+            )
             return try Self.sample(packets[index], duration: duration, format: format)
         }
     }
 
     private static func duration(
-        at index: Int, packets: [WebMPacket], track: WebMVideoTrack
+        at index: Int, packets: [WebMPacket], track: WebMVideoTrack, endTime: Int64?
     ) throws -> Int64 {
         let packet = packets[index]
-        let next = index + 1 < packets.count ? packets[index + 1].timestampNanoseconds : nil
+        let next = index + 1 < packets.count ? packets[index + 1].timestampNanoseconds : endTime
         let delta = next.map { $0.subtractingReportingOverflow(packet.timestampNanoseconds) }
         guard delta.map({ !$0.overflow && $0.partialValue > 0 }) ?? true else {
             throw WebMError.invalidTimestamp
         }
         let duration = packet.durationNanoseconds ?? delta.map { UInt64($0.partialValue) }
             ?? track.defaultDurationNanoseconds ?? 0
+        if index == packets.count - 1, endTime != nil,
+           delta.map({ duration != UInt64($0.partialValue) }) ?? true {
+            throw WebMError.invalidTimestamp
+        }
         guard duration > 0, duration <= UInt64(Int64.max),
               duration <= UInt64(Int64.max - packet.timestampNanoseconds),
               delta.map({ duration <= UInt64($0.partialValue) }) ?? true else {

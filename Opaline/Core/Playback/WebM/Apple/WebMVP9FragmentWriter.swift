@@ -20,13 +20,17 @@ final class WebMVP9FragmentWriter: @unchecked Sendable {
     static func write(
         track: WebMVideoTrack,
         packets: [WebMPacket],
+        endTimeNanoseconds: Int64? = nil,
         completion: @escaping @Sendable (Result<WebMVP9Fragments, Error>) -> Void
     ) -> WebMVP9FragmentWriter {
         let job = WebMVP9FragmentWriter()
         job.queue.async {
             job.completion = completion
             do {
-                try job.start(WebMVP9Samples(track: track, packets: packets))
+                let samples = try WebMVP9Samples(
+                    track: track, packets: packets, endTimeNanoseconds: endTimeNanoseconds
+                )
+                try job.start(samples)
             } catch {
                 job.finish(.failure(error))
             }

@@ -1,6 +1,6 @@
 # Shared WebM playback groundwork
 
-The shared layer demuxes compressed VP9 packets, fetches cue-bounded media ranges over HTTPTransport and converts a finite SDR profile-0 batch into fragmented MP4 using CoreMedia and AVAssetWriter passthrough. WebM formats remain disabled in the playback chain.
+The shared layer demuxes compressed VP9 packets, fetches cue-bounded media ranges over HTTPTransport and converts SDR profile-0 batches into fragmented MP4 using CoreMedia and AVAssetWriter passthrough, and serves cue ranges on demand through a bounded delivery owner. WebM formats remain disabled in the playback chain.
 
 ## Shared ownership
 
@@ -23,9 +23,13 @@ The iOS synchronized source group picks up these files automatically. The `tvos`
 - `WebMVP9Superframe.swift`
 - `WebMVP9References.swift`
 - `WebMVP9AccessUnits.swift`
+- `WebMVP9DeliveryPlan.swift`
 - `Apple/WebMVP9Samples.swift`
 - `Apple/WebMVP9Fragments.swift`
 - `Apple/WebMVP9FragmentWriter.swift`
+- `Apple/WebMVP9DeliverySegment.swift`
+- `Apple/WebMVP9DeliveryJob.swift`
+- `Apple/WebMVP9Delivery.swift`
 
 The tvOS target already references the transport, header constants and cancellation files used by the adapter. Those existing shared references must remain in its compile sources.
 
@@ -63,7 +67,7 @@ Each request owns a lock-protected buffer; there is no mutable global or active-
 
 `WebMVP9Configuration` validates WebM CodecPrivate TLVs and checks profile, dimensions, range and colour against an actual VP9 keyframe header. It creates the version-1 `vpcC` FullBox payload. Missing level and colour tags remain unspecified; the adapter does not advertise an invented level or HDR capability. Nondefault WebM crop/display geometry, stereo and alpha are rejected by initialization parsing so they cannot silently disappear during conversion. That focused parser change is shared by both platforms and requires no iOS project restructuring.
 
-`WebMVP9Samples` creates CoreMedia-owned copies and one ready sample buffer per displayed access unit, retaining preceding invisible frames in a VP9 superframe. It preserves integer nanosecond PTS/DTS and sync attachments. Explicit packet durations take priority; otherwise the following PTS supplies duration, with DefaultDuration required for a final sample lacking an explicit duration. Duplicate display timestamps, decreasing timestamps, negative or overflowing times, overlapping explicit durations and an unknown final duration fail. Hidden references can share the following display timestamp but cannot cross it. A batch must begin with a matching keyframe and finish on a displayed access unit; later keyframes must keep the same configuration. A hidden keyframe followed by show-existing can form a sync access unit.
+`WebMVP9Samples` creates CoreMedia-owned copies and one ready sample buffer per displayed access unit, retaining preceding invisible frames in a VP9 superframe. It preserves integer nanosecond PTS/DTS and sync attachments. Explicit packet durations take priority; otherwise the following PTS supplies duration, with an explicit batch end boundary supplying the last duration, or DefaultDuration required if neither the boundary nor an explicit final duration is available. A supplied boundary must agree with an explicit final BlockDuration; it cannot silently stretch or truncate it. Duplicate display timestamps, decreasing timestamps, negative or overflowing times, overlapping explicit durations and an unknown final duration fail. Hidden references can share the following display timestamp but cannot cross it. A batch must begin with a matching keyframe and finish on a displayed access unit; later keyframes must keep the same configuration. A hidden keyframe followed by show-existing can form a sync access unit.
 
 The adapter supports 8-bit profile-0 SDR elementary frames, indexed superframes, separately stored invisible reference frames and show-existing frames. `WebMVP9Superframe` validates both index markers, one-to-four-byte little-endian sizes, frame counts and exact payload coverage without scanning compressed bytes. An isolated marker-like final byte remains compressed data. Existing valid indexed packets pass through byte-exactly. `WebMVP9AccessUnits` groups separate hidden references with the next displayed frame in decode order, using that display's PTS/duration, and emits a fresh index when grouping changes. Every access unit must contain exactly one displayed frame at the end and at most eight elementary frames. Trailing hidden references, contradictory WebM flags, multiple displays without individual timing and capacity overruns fail.
 
@@ -74,6 +78,22 @@ The explicit/default duration distinction matters at 30 fps: millisecond WebM ti
 `WebMVP9FragmentWriter.write` owns a finite job on a private serial queue, respects AVAssetWriter input readiness and emits Apple HLS initialization/media fragments using compressed passthrough. Its two-second target waits for keyframes. Segment reports retain absolute cue start times; sample times are not rebased. Input is capped at 4,096 packets and 16 MiB, retained output at 32 MiB, and the job has a 30-second deadline. These bounds cover adapter-owned samples/output; AVAssetWriter manages its own internal allocations. The delegate collector uses a lock because Apple may call it from another queue.
 
 Completion is delivered once on the job queue, including failure, deadline and cancellation. This finite writer's `cancel()` reports `WebMRemuxError.cancelled`; unlike transport CancellationToken, it does not silence completion. Cancellation after completion has no effect. Completion releases retained samples and collector data. Callers must still bound concurrent jobs and use playback-generation checks before publishing results. The portable readiness API supports the existing iOS 15/tvOS 17 deployment targets; the macOS 27 host compiler reports its new deprecations.
+
+## On-demand delivery
+
+`WebMVP9DeliveryPlan` turns an opened cue index and an explicit, accurate video end time in nanoseconds into a finite VOD timeline. It requires a zero-based first cue, strictly increasing cue times and at most 32,768 intervals. The end of each interval is the next cue time, with the supplied video end closing the last interval. Do not substitute a rounded display duration when composing video and audio.
+
+`WebMVP9Delivery` takes the existing range fetcher and opened metadata; construction and playlist requests fetch no media. Init/media requests fetch only their selected cue range, normalize its VP9 packets and run a finite passthrough writer. The actual first packet must match the cue time, every packet must precede the interval end, and writer reports must cover the interval exactly. Each job passes the exact end to the sample builder, avoiding accumulated DefaultDuration rounding at independently remuxed cue boundaries. The first successful configuration is pinned; a later cue cannot quietly change dimensions or colour configuration.
+
+Each cue has its own `EXT-X-MAP` and independently generated init/media resources, retaining absolute fragment decode times. A cue can contain several writer fragments; those contiguous fragments are concatenated into that cue's media resource. The playlist uses integer-derived, nine-decimal durations and a distinct UUID path per owner so old video/quality URLs cannot address a replacement owner. Unknown or noncanonical paths fail without transport work. The returned resources contain bytes and MIME types; the existing LocalMediaServer can supply HTTP HEAD/range behavior without changes.
+
+One fetch/remux job runs at a time. Requests for the active cue coalesce; other requests queue. Defaults retain at most two cue results and 32 MiB total cached init/media, with at most 32 pending/active cue completions and a 60-second fetch/remux deadline. The owner rejects cue ranges over 16 MiB before networking, even if the caller configures a larger fetcher; the writer keeps its existing packet/output limits. Cached entries use LRU eviction; a backward seek refetches an evicted range directly. A result exceeding the cache budget fails rather than being retained outside it. Cache bounds exclude bodies already handed to clients/server connections and Apple's own allocations.
+
+All delivery state and callbacks run on a private serial queue. Every accepted load/resource request completes once with a result, including cancellation, timeout and capacity failure. `cancelPendingRequests()` cancels the active generation and queued requests, preserving immutable cached media for a seek. Unique job IDs and terminal job guards prevent late network/writer callbacks from publishing into a new generation. `close()` is terminal: it cancels requests and releases the cache. The playback owner must call it before stopping/replacing the delivery; dropping the owner also cancels underlying work, but callers needing a terminal reply must close explicitly.
+
+The delivery layer emits video resources. Audio can use the existing MP4/SIDX path on the same zero-based timeline, with HLSGenerator supplying the audio playlist and master. A local six-second fixture test serves VP9 via real HTTP range fetch/remux and an independent AAC rendition. Video intervals total exactly 6.0 seconds; AAC totals 6.021333 seconds, within one 1,024-sample AAC frame at 48 kHz. On the Duo, AVPlayer decoded 111 frames through 5.94 seconds across the three independently remuxed cues, reported two item tracks and selected the audible rendition with no playback error. This verifies timeline composition and rendition selection; perceptual A/V offset on real YouTube content still needs validation.
+
+This owner does not resolve YouTube URLs, sign requests, select formats, start a server or create an AVPlayerItem. Those remain the playback-source composition's responsibilities. No tvOS UI/lifecycle/configuration or existing iOS playback source is changed.
 
 ## Verification
 
@@ -107,6 +127,14 @@ bash scripts/check_webm_http.sh
 
 This opens only a local loopback listener, reconstructs all 30 fixture packets through real HTTP 206 requests, fetches a seek-selected range and checks non-2xx propagation. It uses no external service. Host sandbox settings must permit the loopback listener/client.
 
+For the complete local HTTP range-fetch/remux/resource-serving pipeline and companion AAC playlist, run:
+
+```sh
+bash scripts/check_webm_delivery_http.sh
+```
+
+This uses two loopback listeners and the shipping transport/server/HLS helpers. It opens metadata with two HTTP ranges, serves each cue's initialization/media/partial-byte probes from one fetched range, refetches an evicted backward cue and verifies the companion AAC timeline. No external network or FFmpeg executable is required. The Apple host checks also cover exact interval boundaries, request coalescing, cache eviction/budget, capacity, deadlines, stale-generation cancellation, session-specific paths, false cue times and configuration changes.
+
 To verify shared SDK compatibility, install XcodeGen and XcodeBuildMCP, select installed simulator IDs, and run:
 
 ```sh
@@ -117,8 +145,8 @@ This creates temporary framework targets referencing the shared files directly, 
 
 ## Next slice
 
-Connect bounded range fetching to fragment serving, with a playback owner for cancellation/generation checks, then synchronize the remuxed video timeline with an independently delivered audio track. When stitching batches, that owner must supply next-cue/file-end timing instead of accumulating the last-sample DefaultDuration fallback and its timestamp quantization residual. Validate representative YouTube WebM ranges before changing format selection.
+Compose a playback source that supplies resolved WebM URL/headers, initialization/index byte ranges and an accurate end time, then connects these video resources with the existing AAC path and loopback server. Keep format selection gated while testing representative YouTube videos and real A/V offset.
 
-Playback seeking, quality changes, SABR delivery, 4K, HDR and actual Apple TV decoding still need verification before enabling this delivery. Keep existing MP4/SIDX and native HLS selection unchanged until those checks pass.
+Actual AVPlayer seeking, quality changes, SABR delivery, 4K, HDR and Apple TV decoding still need verification before enabling this delivery. The range owner has deterministic cancellation and backward-cue coverage, but that does not by itself validate the entire player's seek lifecycle. Keep existing MP4/SIDX and native HLS selection unchanged until those checks pass.
 
 References: [WebM container guidelines](https://www.webmproject.org/docs/container/), [VP9 MP4 binding](https://www.webmproject.org/vp9/mp4/), [libvpx uncompressed-header decoding](https://github.com/webmproject/libvpx/blob/main/vp9/decoder/vp9_decodeframe.c), [FFmpeg independent superframe splitter](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/bsf/vp9_superframe_split.c).

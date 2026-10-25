@@ -12,7 +12,9 @@ cat "$ROOT/Opaline/Core/Config/HTTPConstants.swift" \
     "$ROOT/scripts/webm_checks.swift" \
     "$ROOT/scripts/webm_vp9_checks.swift" \
     "$ROOT/scripts/webm_superframe_checks.swift" \
-    "$ROOT/scripts/webm_apple_checks.swift" > "$CHECK_TMP/main.swift"
+    "$ROOT/scripts/webm_delivery_plan_checks.swift" \
+    "$ROOT/scripts/webm_apple_checks.swift" \
+    "$ROOT/scripts/webm_delivery_checks.swift" > "$CHECK_TMP/main.swift"
 swiftc -swift-version 5 \
     -module-cache-path /tmp/opaline-webm-module-cache "$CHECK_TMP/main.swift" -o "$CHECK_TMP/checks"
 "$CHECK_TMP/checks" "$ROOT/scripts/fixtures/webm" "$CHECK_TMP"

@@ -43,3 +43,10 @@ ffmpeg -hide_banner -loglevel error -i vp9-altref.webm -map 0:v:0 \
 ```
 
 The superframe tests also separate the hidden frames into synthetic WebMPackets, retaining their bytes and decode order, and verify regrouping against the original indexed packets. The checked-in SHA-256 list comes from FFmpeg's independent splitter; no encoder or FFmpeg executable is needed for routine checks.
+
+`aac-sync.m4a` is a locally generated six-second, 48 kHz, 1 kHz sine tone in fragmented AAC/MP4, for the companion-audio HLS integration check. Its SIDX duration includes one AAC frame of encoder padding (6.021333 seconds). Generate it with:
+
+```sh
+ffmpeg -hide_banner -loglevel error -f lavfi -i sine=frequency=1000:sample_rate=48000 \
+  -t 6 -c:a aac -b:a 96k -movflags +dash+frag_keyframe+empty_moov aac-sync.m4a
+```
