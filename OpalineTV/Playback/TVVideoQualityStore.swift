@@ -1,10 +1,15 @@
 import Foundation
 
 enum VideoQualityStore {
-    /// 1440p/2160p exist only as av01 — offered solely where decodable.
+    /// Higher tiers require a hardware-supported AV1 or VP9 delivery.
     static var options: [String] {
+        options(supportsAV1: AV1Support.isHardwareSupported,
+                supportsVP9: NativeHLSCodecs.isVP9HardwareSupported)
+    }
+
+    static func options(supportsAV1: Bool, supportsVP9: Bool) -> [String] {
         var opts = ["Auto", "1080p", "720p", "480p", "360p"]
-        if AV1Support.isHardwareSupported {
+        if supportsAV1 || supportsVP9 {
             opts.insert(contentsOf: ["2160p", "1440p"], at: 1)
         }
         return opts

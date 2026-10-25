@@ -142,10 +142,8 @@ extension PlaybackFacade {
 
     /// Restarts playback after a mid-playback failure (segment 403, fatal
     /// stall). A source cannot see these itself — its manifest loaded fine —
-    /// so the chain is walked from here: rebuild the same step once (that
-    /// fixes genuine URL expiry), then move to the next step, then stop.
-    /// Returns false when the budget is spent, and the shell shows the error
-    /// rather than hammering the API forever.
+    /// so recovery refreshes once for URL expiry, then consumes the remaining
+    /// ranked candidates. Returns false when those candidates are exhausted.
     func recover(cancellationToken: CancellationToken) -> Bool {
         guard let videoId = currentVideoId,
               let apiClient = currentApiClient else {
@@ -157,13 +155,12 @@ extension PlaybackFacade {
         }
         lastRecoveryAt = Date()
         recoveryAttempts += 1
-        guard recoveryAttempts <= 2 else {
+        guard recoveryAttempts <= 2 || activeChain?.hasNextCandidate == true else {
             AppLog.player("recovery: retries spent, giving up")
             return false
         }
         AppLog.player("recovery attempt \(recoveryAttempts)")
-        // Once for a URL that simply expired; the second time the step itself
-        // is failing, so the video goes to the next step in the user's chain.
+        // Refresh expired URLs once, then consume the remaining ranked candidates.
         guard recoveryAttempts > 1, let chain = activeChain else {
             start(
                 videoId: videoId,

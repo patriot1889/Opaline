@@ -41,9 +41,19 @@ Playback uses the native AVKit transport bar, with quality, dubbed audio, extern
 
 Search loads results automatically after a short typing pause. Suggestions occupy a compact row above the results and do not interrupt loading or pagination.
 
-Settings cover account, language/region, appearance, autoplay, quality, preferred audio/captions, SponsorBlock categories, and the solver server. New TV-specific strings currently fall back to English when a translation is unavailable.
+Settings cover account, language/region, appearance, autoplay, playback sources, quality, preferred audio/captions, SponsorBlock categories, and the solver server. New TV-specific strings currently fall back to English when a translation is unavailable.
 
 Shorts, comments, offline downloads, the Open In share extension, phone gestures, notifications, and background audio are outside this first TV release. The TV target does not embed the iOS extension. Static Top Shelf artwork is included; there is no dynamic Top Shelf extension.
+
+## Playback sources and quality
+
+Settings → Playback sources enables/disables each delivery and changes its tie-breaking order with Move up/Move down. Existing saved orders and enabled selections are preserved. Signed-in TV SABR is excluded in guest mode. Changes apply to the next playback.
+
+The TV registry composes shared native HLS, MP4 byte ranges, SABR, experimental WebM VP9 and progressive fallback sources. Selection probes enabled sources and ranks resolution within the selected quality cap, then frame rate, native delivery, and saved source order. Discovery has a ten-second deadline; unknown tiers remain last-resort candidates. Recovery refreshes once and then consumes the remaining ranked candidates. Automatic dubbing follows the shared quality-first policy.
+
+1440p and 2160p preferences appear when AV1 or supplemental VP9 hardware support is available; each source still filters actual playable formats. Auto retains its 1080p cap. VP9 delivery currently requires tvOS 26.2 or later and a positive hardware capability check. Apple TV HD and older systems retain compatible fallback paths.
+
+WebM remains disabled by default. It remuxes supported 8-bit SDR profile-0 VP9 with AAC audio into generated HLS, without software decoding or transcoding. Physical Apple TV validation is still required for sustained native VP9/WebM playback, seeking, A/V sync, and recovery. See [the playback support matrix](playback-support-matrix.md).
 
 ## Storage and code sharing
 
@@ -51,9 +61,9 @@ Settings → Accounts supports adding YouTube accounts with the device-code flow
 
 Saved credentials and the active selection use a tvOS-only Keychain vault. The previous single-account credential migrates on first launch. Settings use UserDefaults; recent searches and bounded watch progress use separate keys for each saved account and guest mode. Switching resets the queue, account caches and sync state, discards late API/OAuth responses, and rebuilds the TV screens. These local histories remain subject to tvOS storage eviction. Signed-in history sync uses the existing YouTube services. Image disk cache is limited to 64 MiB and feed cache to 16 MiB on tvOS. Cache directories can disappear between sessions and are recreated on writes. Streaming buffers and servers are released when playback ends; no offline download store is compiled into the TV target.
 
-The two projects are independent: `Opaline.xcodeproj` contains only the upstream iOS app and extension, while `OpalineTV.xcodeproj` contains only the TV app and tests. The iOS source, extension, project and local-config template match upstream commit `26622322ddaccd1e6b9e27fc9988786b8aa8abb6` exactly. Local signing overrides remain in the ignored `Config/Local.xcconfig`.
+The two projects are independent: `Opaline.xcodeproj` contains only the upstream iOS app and extension, while `OpalineTV.xcodeproj` contains only the TV app and tests. The iOS source, extension, project and local-config template match the integrated `main` baseline `af64d075c814e38c528016c942ec707e379d9a2e` exactly. The original upstream reference remains available in Git history. Local signing overrides remain in the ignored `Config/Local.xcconfig`.
 
-The TV project references 154 unchanged Swift files under **TV Shared Sources**. It does not copy the shared core or generate patched source during builds. New files under `OpalineTV` and `OpalineTVTests` are synchronized with their respective targets. Shared source membership is explicit, so upstream UI files and new iOS features cannot accidentally enter the TV build.
+The TV project references 190 unchanged Swift files under **TV Shared Sources**. It does not copy the shared core or generate patched source during builds. New files under `OpalineTV` and `OpalineTVTests` are synchronized with their respective targets. Shared source membership is explicit, so upstream UI files and new iOS features cannot accidentally enter the TV build.
 
 TV-only code is organized as follows:
 
@@ -61,7 +71,7 @@ TV-only code is organized as follows:
 | --- | --- |
 | `OpalineTV/Accounts` | Account UI, Keychain vault, OAuth client/polling, session boundary, scoped history/progress and sync, account-aware transport |
 | `OpalineTV/Platform` | Service composition, TV network/AV1 behavior, localization table lookup, safe collection access and optional offline-library adapters |
-| `OpalineTV/Playback` | Online playback facade, stale-response protection and quality preferences extracted from the upstream iOS settings UI |
+| `OpalineTV/Playback` | Online playback facade, TV source registry and settings, stale-response protection and quality preferences |
 | `OpalineTV/Search` | Search result model/parser with channel and playlist results |
 | `OpalineTV/Storage` | Disposable TV disk caches and bounded cache eviction |
 

@@ -51,3 +51,16 @@
 "TV.player.signInMessage" = "Sign in from Accounts to like videos and subscribe to channels.";
 "TV.player.actionFailed" = "Couldn’t update your account. Please try again.";
 "TV.player.readMore" = "Read more";
+"TV.playbackSources" = "Playback sources";
+"TV.source.nativeHLS" = "Native HLS";
+"TV.source.ranges" = "MP4 byte ranges";
+"TV.source.sabr" = "SABR";
+"TV.source.signedInSABR" = "SABR · signed-in TV client";
+"TV.source.webm" = "WebM VP9 (experimental)";
+"TV.source.progressive" = "Progressive 360p";
+"TV.source.signInRequired" = "Sign-in required";
+"TV.source.enable" = "Enable";
+"TV.source.disable" = "Disable";
+"TV.source.moveUp" = "Move up";
+"TV.source.moveDown" = "Move down";
+"TV.sources.explanation" = "Playback prefers your chosen resolution, then frame rate, then native delivery. Source order breaks ties. Changes apply to the next playback. WebM is experimental, requires supported VP9 hardware, and is off by default.";

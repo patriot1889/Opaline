@@ -64,8 +64,9 @@ final class PlaybackTests: XCTestCase {
             XCTAssertNotNil(try? result.get())
             XCTAssertEqual(failed.loads, 1)
             XCTAssertEqual(success.loads, 1)
-            chain.releaseResources()
             XCTAssertEqual(failed.releases, 1)
+            chain.releaseResources()
+            XCTAssertEqual(failed.releases, 2)
             XCTAssertEqual(success.releases, 1)
             resolved.fulfill()
         }
@@ -85,8 +86,12 @@ final class PlaybackTests: XCTestCase {
         let first = FixtureSource()
         let next = FixtureSource()
         let chain = makeChain([first, next])
-        chain.loadPlayback(videoId: "fixture", cancellation: nil) { _ in }
-        chain.advance(videoId: "fixture", cancellation: nil) { _ in }
+        let loaded = expectation(description: "Initial candidate prepared")
+        chain.loadPlayback(videoId: "fixture", cancellation: nil) { _ in loaded.fulfill() }
+        wait(for: [loaded], timeout: 2)
+        let advanced = expectation(description: "Next candidate prepared")
+        chain.advance(videoId: "fixture", cancellation: nil) { _ in advanced.fulfill() }
+        wait(for: [advanced], timeout: 2)
         XCTAssertTrue(chain.active === next)
         let quality = VideoQuality(id: "720", label: "720p", height: 720, fps: 30)
         chain.selectQuality(quality, resumeAt: 123) { result in

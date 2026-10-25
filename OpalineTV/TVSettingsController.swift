@@ -27,6 +27,9 @@ final class TVSettingsController: TVMenuController {
             },
             toggle("TV.autoplay".tvLocalized, enabled: AutoplayPreference.isEnabled) { AutoplayPreference.isEnabled = $0 },
             toggle("TV.playlistAutoplay".tvLocalized, enabled: AutoplayPreference.isMixEnabled) { AutoplayPreference.isMixEnabled = $0 },
+            TVMenuRow("TV.playbackSources".tvLocalized) { [weak self] in
+                self?.navigationController?.pushViewController(TVPlaybackSourcesController(), animated: true)
+            },
             TVMenuRow("player.menu.quality".localized, detail: VideoQualityStore.displayName(VideoQualityStore.wifi)) { [weak self] in
                 self?.choose("player.menu.quality".localized, values: VideoQualityStore.options.map(VideoQualityStore.displayName)) {
                     VideoQualityStore.wifi = VideoQualityStore.options[$0]

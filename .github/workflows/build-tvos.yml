@@ -3,7 +3,7 @@ name: Build Apple TV
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, tvos]
     paths-ignore:
       - "source/**"
       - "**.md"
