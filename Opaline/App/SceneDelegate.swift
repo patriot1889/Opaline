@@ -30,6 +30,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appDelegate?.applicationDidBecomeActive(UIApplication.shared)
     }
 
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        appDelegate?.scheduleBackgroundRefresh()
+    }
+
     func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
         openLinks(contexts)
     }

@@ -15,7 +15,7 @@ final class PlaylistVideosViewController: UIViewController {
     private var continuationToken: String?
     private var isLoadingMore = false
     let tableView = UITableView()
-    private let spinner = UIActivityIndicatorView(style: .white)
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let emptyLabel = UILabel()
     private lazy var topBarHider = TopBarAutoHider(owner: self)
 
@@ -95,6 +95,7 @@ final class PlaylistVideosViewController: UIViewController {
     }
 
     private func setupSpinner() {
+        spinner.color = .white
         spinner.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinner)
         NSLayoutConstraint.activate([

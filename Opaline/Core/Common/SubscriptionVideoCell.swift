@@ -90,7 +90,9 @@ class SubscriptionVideoCell: UITableViewCell {
         dateLabel.font = UIFont.systemFont(ofSize: 12)
         contentView.addSubview(dateLabel)
         menuButton.setImage(resizedNavBarIcon("icon_ellipsis_vertical", size: 16), for: .normal)
-        menuButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        menuButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 4, leading: 8, bottom: 4, trailing: 8
+        ))
         menuButton.addTarget(self, action: #selector(handleMenuTap), for: .touchUpInside)
         contentView.addSubview(menuButton)
     }

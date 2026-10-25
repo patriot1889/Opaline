@@ -158,6 +158,7 @@ extension VideoPlayerView {
     }
 
     private func setupSpinner() {
+        spinner.color = .white
         spinner.translatesAutoresizingMaskIntoConstraints = false
         spinner.hidesWhenStopped = true
         addSubview(spinner)

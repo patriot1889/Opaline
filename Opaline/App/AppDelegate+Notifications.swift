@@ -1,20 +1,55 @@
+import BackgroundTasks
 import UIKit
 import UserNotifications
 
-/// Legacy background fetch (single code path for iOS 12…latest — see
-/// `configureLegacyBackgroundFetch`) and notification-tap handling.
+/// Background feed refresh and notification-tap handling.
 extension AppDelegate {
-    /// `@objc` is explicit: this is an optional protocol requirement
-    /// implemented in an extension, and UIKit finds it through the ObjC
-    /// runtime — without the attribute a silent miss is very hard to spot.
-    @objc
-    @available(iOS, deprecated: 13.0, message: "Single code path for iOS 12+.")
-    func application(
-        _ application: UIApplication,
-        performFetchWithCompletionHandler completionHandler:
-            @escaping (UIBackgroundFetchResult) -> Void
-    ) {
-        AppLog.notifications("background fetch woke the app")
+    static let backgroundRefreshIdentifier =
+        (Bundle.main.bundleIdentifier ?? "co.uk.adenbeckitt.opa") + ".refresh"
+
+    func registerBackgroundRefresh() {
+        BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: Self.backgroundRefreshIdentifier,
+            using: .main
+        ) { [weak self] task in
+            guard let self else {
+                task.setTaskCompleted(success: false)
+                return
+            }
+            self.runBackgroundRefresh(task)
+        }
+    }
+
+    func scheduleBackgroundRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: Self.backgroundRefreshIdentifier)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            AppLog.notifications("could not schedule background refresh: \(error)")
+        }
+    }
+
+    private func runBackgroundRefresh(_ task: BGTask) {
+        scheduleBackgroundRefresh()
+        // Both completion paths run on main and finish the task exactly once.
+        var finished = false
+        let finish: (Bool) -> Void = { success in
+            guard !finished else {
+                return
+            }
+            finished = true
+            task.expirationHandler = nil
+            task.setTaskCompleted(success: success)
+        }
+        task.expirationHandler = {
+            DispatchQueue.main.async { finish(false) }
+        }
+        refreshBackgroundContent { finish(true) }
+    }
+
+    private func refreshBackgroundContent(completion: @escaping () -> Void) {
+        AppLog.notifications("background refresh woke the app")
         // News check and feed warm-up share the one ~30s window. `force`:
         // the 2h throttle exists to keep foreground launches from hammering
         // the manifest, while iOS hands out these windows sparingly and on
@@ -33,7 +68,7 @@ extension AppDelegate {
         }
         group.notify(queue: .main) {
             AppLog.notifications("background fetch finished: newData=\(newData)")
-            completionHandler(newData ? .newData : .noData)
+            completion()
         }
     }
 }

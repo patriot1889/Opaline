@@ -136,9 +136,9 @@ final class ChannelAvatarBarView: UIView {
     private func setupAllButton() {
         allButton.setTitle("subscriptions.allButton".localized, for: .normal)
         allButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium)
-        allButton.contentEdgeInsets = UIEdgeInsets(
-            top: 8, left: 12, bottom: 8, right: 16
-        )
+        allButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 8, leading: 12, bottom: 8, trailing: 16
+        ))
         allButton.addTarget(
             self,
             action: #selector(allTapped),

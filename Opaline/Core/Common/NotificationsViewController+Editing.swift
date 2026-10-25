@@ -45,7 +45,7 @@ extension NotificationsViewController {
         editToolbar.isHidden = !editing
         let inset: CGFloat = editing ? NotificationsViewController.editToolbarHeight : 0
         tableView.contentInset.bottom = inset
-        tableView.scrollIndicatorInsets.bottom = inset
+        tableView.verticalScrollIndicatorInsets.bottom = inset
         updateToolbarButtonsState()
     }
 

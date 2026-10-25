@@ -29,7 +29,7 @@ class SubscriptionsViewController: UIViewController, ScrollableToTop {
     var seenVideoIds: Set<String> = []
     var sortDatesByVideoId: [String: Date] = [:]
     let tableView = UITableView()
-    let spinner = UIActivityIndicatorView(style: .white)
+    let spinner = UIActivityIndicatorView(style: .medium)
     let channelBar = ChannelAvatarBarView()
     var subscribedChannels: [SubscribedChannel] = []
     var selectedChannel: SubscribedChannel?

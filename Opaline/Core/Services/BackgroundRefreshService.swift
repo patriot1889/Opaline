@@ -1,13 +1,10 @@
 import Foundation
 
-/// Refreshes the home and subscriptions feeds from a background fetch wake-up,
+/// Refreshes the home and subscriptions feeds from a background refresh task,
 /// so the cache is warm the next time either screen opens.
 ///
-/// Not wired up here — call `refresh(completion:)` from
-/// `AppDelegate+Notifications.swift`'s
-/// `application(_:performFetchWithCompletionHandler:)`, alongside the
-/// existing `UpdateNotificationService.shared.checkIfNeeded` call. The two
-/// share the ~30s background execution window.
+/// Called by `AppDelegate+Notifications.swift` alongside the update check.
+/// The two share the task's background execution window.
 final class BackgroundRefreshService {
     static let shared = BackgroundRefreshService()
 

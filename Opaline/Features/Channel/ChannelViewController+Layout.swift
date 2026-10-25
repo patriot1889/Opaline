@@ -50,7 +50,7 @@ extension ChannelViewController {
     ) {
         let topInset = baseTabsInset()
         collectionView.contentInset.top = topInset
-        collectionView.scrollIndicatorInsets.top = topInset
+        collectionView.verticalScrollIndicatorInsets.top = topInset
         collectionView.setContentOffset(
             CGPoint(x: 0, y: -topInset),
             animated: false
@@ -63,7 +63,7 @@ extension ChannelViewController {
         }
         let topInset = baseTabsInset() + ChannelFilterBarView.preferredHeight
         cv.contentInset.top = topInset
-        cv.scrollIndicatorInsets.top = topInset
+        cv.verticalScrollIndicatorInsets.top = topInset
         cv.setContentOffset(CGPoint(x: 0, y: -topInset), animated: false)
     }
 
@@ -92,7 +92,7 @@ extension ChannelViewController {
 
     func updateScrollInsets(for scrollView: UIScrollView) {
         let extra = filterBar.isHidden ? 0 : ChannelFilterBarView.preferredHeight
-        scrollView.scrollIndicatorInsets.top =
+        scrollView.verticalScrollIndicatorInsets.top =
             (headerView.heightRef?.constant ?? 0)
             + ChannelTabsView.preferredHeight + extra
     }

@@ -183,6 +183,7 @@ extension WatchViewController {
     }
 
     func setupPlayerOverlays() {
+        playerSpinner.color = .white
         let ps = playerSpinner, sl = playerStatusLabel, pc = playerContainer
         [ps, sl].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         ps.startAnimating()
@@ -242,7 +243,9 @@ extension WatchViewController {
         cv.addSubview(channelMetaLabel)
         subscribeButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         subscribeButton.layer.cornerRadius = 18
-        subscribeButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 18, bottom: 10, right: 18)
+        subscribeButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 10, leading: 18, bottom: 10, trailing: 18
+        ))
         subscribeButton.isEnabled = !OAuthClient.shared.isAnonymous
         let sel = #selector(subscribeButtonTapped)
         subscribeButton.addTarget(self, action: sel, for: .touchUpInside)

@@ -34,7 +34,9 @@ final class SignInEmptyStateView: UIView {
         btn.backgroundColor = ThemeManager.shared.accent
         btn.setTitleColor(.white, for: .normal)
         btn.layer.cornerRadius = 20
-        btn.contentEdgeInsets = UIEdgeInsets(top: 10, left: 32, bottom: 10, right: 32)
+        btn.setContentPadding(NSDirectionalEdgeInsets(
+            top: 10, leading: 32, bottom: 10, trailing: 32
+        ))
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()

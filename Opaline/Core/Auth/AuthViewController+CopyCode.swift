@@ -8,9 +8,9 @@ extension AuthViewController {
             ofSize: 15, weight: .medium
         )
         copyButton.setTitleColor(ThemeManager.shared.accent, for: .normal)
-        copyButton.contentEdgeInsets = UIEdgeInsets(
-            top: 8, left: 16, bottom: 8, right: 16
-        )
+        copyButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 8, leading: 16, bottom: 8, trailing: 16
+        ))
         copyButton.addTarget(
             self,
             action: #selector(copyDeviceCode),

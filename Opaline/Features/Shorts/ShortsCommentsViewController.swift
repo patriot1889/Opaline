@@ -7,7 +7,7 @@ final class ShortsCommentsViewController: UIViewController {
     private let watchService: WatchService
     private let tableView = UITableView()
     private let titleLabel = UILabel()
-    private let spinner = UIActivityIndicatorView(style: .gray)
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private var comments: [Comment] = []
     private var continuation: String?
     private var isLoading = false
@@ -36,6 +36,7 @@ final class ShortsCommentsViewController: UIViewController {
             return
         }
         isLoading = true
+        spinner.color = .gray
         spinner.startAnimating()
         watchService.fetchComments(
             videoId: videoId,

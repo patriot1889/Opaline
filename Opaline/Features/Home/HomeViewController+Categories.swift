@@ -69,7 +69,7 @@ extension HomeViewController {
             chipBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         collectionView?.contentInset.top = ChipBarView.preferredHeight
-        collectionView?.scrollIndicatorInsets.top = ChipBarView.preferredHeight
+        collectionView?.verticalScrollIndicatorInsets.top = ChipBarView.preferredHeight
     }
 
     func selectCategory(at index: Int) {

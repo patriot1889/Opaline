@@ -110,9 +110,9 @@ final class ChipBarView: UIView {
         btn.titleLabel?.font = .systemFont(ofSize: 13, weight: .medium)
         btn.layer.cornerRadius = 14
         btn.layer.borderWidth = 1
-        btn.contentEdgeInsets = UIEdgeInsets(
-            top: 6, left: 14, bottom: 6, right: 14
-        )
+        btn.setContentPadding(NSDirectionalEdgeInsets(
+            top: 6, leading: 14, bottom: 6, trailing: 14
+        ))
         btn.tag = tag
         btn.addTarget(
             self, action: #selector(chipTapped(_:)), for: .touchUpInside

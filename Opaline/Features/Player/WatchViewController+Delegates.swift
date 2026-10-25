@@ -170,7 +170,7 @@ extension WatchViewController {
     func keepOpeningOrientation() {
         guard usesRotationDrivenFullscreen(),
               HeldOrientation.current.isLandscape,
-              UIApplication.shared.statusBarOrientation.isPortrait else {
+              view.window?.windowScene?.interfaceOrientation.isPortrait == true else {
             return
         }
         orientationLock = .portrait

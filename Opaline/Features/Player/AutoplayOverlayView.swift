@@ -100,7 +100,9 @@ final class AutoplayOverlayView: UIView {
         playButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
         playButton.backgroundColor = UIColor.white.withAlphaComponent(0.2)
         playButton.layer.cornerRadius = 14
-        playButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 14, bottom: 6, right: 14)
+        playButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 6, leading: 14, bottom: 6, trailing: 14
+        ))
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
         addSubview(playButton)

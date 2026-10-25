@@ -12,7 +12,7 @@ final class AuthViewController: UIViewController {
     let openButton = UIButton(type: .system)
     let copyButton = UIButton(type: .system)
     private let anonymousButton = UIButton(type: .system)
-    let spinner = UIActivityIndicatorView(style: .white)
+    let spinner = UIActivityIndicatorView(style: .medium)
     private let contentStack = UIStackView()
 
     var verificationURL: URL?
@@ -118,9 +118,9 @@ private extension AuthViewController {
         openButton.backgroundColor = ThemeManager.shared.accent
         openButton.setTitleColor(.white, for: .normal)
         openButton.layer.cornerRadius = 10
-        openButton.contentEdgeInsets = UIEdgeInsets(
-            top: 14, left: 28, bottom: 14, right: 28
-        )
+        openButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 14, leading: 28, bottom: 14, trailing: 28
+        ))
         openButton.addTarget(
             self,
             action: #selector(openVerificationURL),
@@ -147,6 +147,7 @@ private extension AuthViewController {
     }
 
     func configureSpinner() {
+        spinner.color = .white
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
     }

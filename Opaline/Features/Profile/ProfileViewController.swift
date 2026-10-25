@@ -92,8 +92,8 @@ class ProfileViewController: UIViewController {
         )
         clearImageCacheButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         clearImageCacheButton.layer.cornerRadius = 10
-        let cacheInsets = UIEdgeInsets(top: 12, left: 18, bottom: 12, right: 18)
-        clearImageCacheButton.contentEdgeInsets = cacheInsets
+        let cacheInsets = NSDirectionalEdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 18)
+        clearImageCacheButton.setContentPadding(cacheInsets)
         clearImageCacheButton.translatesAutoresizingMaskIntoConstraints = false
         clearImageCacheButton.addTarget(
             self,

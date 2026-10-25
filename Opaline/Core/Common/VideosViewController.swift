@@ -23,7 +23,7 @@ class VideosViewController: UIViewController, ScrollableToTop {
     private(set) var collectionView: UICollectionView?
     let channelViewControllerFactory: (String, String) -> UIViewController
     let videoRouter: VideoRouter
-    let spinner = UIActivityIndicatorView(style: .white)
+    let spinner = UIActivityIndicatorView(style: .medium)
     var isLoadingInitial = true
     var isLoadingMore = false
     /// Hides the navigation bar on scroll-down; subclasses with extra
@@ -149,6 +149,7 @@ class VideosViewController: UIViewController, ScrollableToTop {
     }
 
     private func setupSpinner() {
+        spinner.color = .white
         spinner.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinner)
         NSLayoutConstraint.activate([

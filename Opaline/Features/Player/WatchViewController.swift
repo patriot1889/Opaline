@@ -107,7 +107,7 @@ final class WatchViewController: UIViewController {
     let landscapeRelatedLayout: UICollectionViewFlowLayout
     let playerContainer = UIView()
     let playerSpinner = UIActivityIndicatorView(
-        style: .whiteLarge
+        style: .large
     )
     let playerStatusLabel = UILabel()
     var statsOverlay: StatsOverlayView?

@@ -80,6 +80,7 @@ extension SubscriptionsViewController {
     }
 
     func setupSpinner() {
+        spinner.color = .white
         spinner.translatesAutoresizingMaskIntoConstraints =
             false
         view.addSubview(spinner)

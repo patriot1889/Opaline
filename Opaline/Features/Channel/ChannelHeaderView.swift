@@ -150,9 +150,9 @@ final class ChannelHeaderView: UIView {
             ofSize: 14, weight: .semibold
         )
         subscribeButton.layer.cornerRadius = 16
-        subscribeButton.contentEdgeInsets = UIEdgeInsets(
-            top: 8, left: 16, bottom: 8, right: 16
-        )
+        subscribeButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 8, leading: 16, bottom: 8, trailing: 16
+        ))
         subscribeButton.setContentCompressionResistancePriority(
             .required, for: .horizontal
         )

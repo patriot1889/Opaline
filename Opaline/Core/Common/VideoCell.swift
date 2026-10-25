@@ -197,7 +197,9 @@ extension VideoCell {
         menuButton.setImage(resizedNavBarIcon("icon_ellipsis_vertical", size: 16), for: .normal)
         // Keeps the 40pt hit box while the glyph itself sits near the card edge.
         menuButton.contentHorizontalAlignment = .right
-        menuButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
+        menuButton.setContentPadding(NSDirectionalEdgeInsets(
+            top: 0, leading: 0, bottom: 0, trailing: 6
+        ))
         menuButton.addTarget(self, action: #selector(handleMenuTap), for: .touchUpInside)
         contentView.addSubview(menuButton)
         let avatarTap = UITapGestureRecognizer(target: self, action: #selector(handleChannelTap))

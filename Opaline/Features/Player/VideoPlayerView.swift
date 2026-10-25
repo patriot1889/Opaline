@@ -82,7 +82,7 @@ final class VideoPlayerView: UIView {
 
     let controlsView = UIView()
     let spinner = UIActivityIndicatorView(
-        style: .whiteLarge
+        style: .large
     )
     let settingsButton = UIButton(type: .system)
     let pipButton = UIButton(type: .system)
@@ -138,12 +138,12 @@ final class VideoPlayerView: UIView {
             .withAlphaComponent(0.8).cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 4
-        button.contentEdgeInsets = UIEdgeInsets(
+        button.setContentPadding(NSDirectionalEdgeInsets(
             top: 7,
-            left: 14,
+            leading: 14,
             bottom: 7,
-            right: 14
-        )
+            trailing: 14
+        ))
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

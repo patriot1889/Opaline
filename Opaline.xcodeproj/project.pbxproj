@@ -315,6 +315,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				/* These targets have no App Intents metadata to generate. */
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				INFOPLIST_FILE = Opaline/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Opaline;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -349,6 +351,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				/* These targets have no App Intents metadata to generate. */
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				INFOPLIST_FILE = Opaline/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Opaline;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -500,6 +504,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				/* These targets have no App Intents metadata to generate. */
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				INFOPLIST_FILE = OpalineOpenIn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -526,6 +532,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				/* These targets have no App Intents metadata to generate. */
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				INFOPLIST_FILE = OpalineOpenIn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
