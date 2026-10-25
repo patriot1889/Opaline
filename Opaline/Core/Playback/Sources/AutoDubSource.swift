@@ -50,6 +50,20 @@ final class AutoDubSource: VideoSource {
     ) {
         active = wrapped
         decided = false
+        if wrapped.prioritizesVideoQuality {
+            decided = true
+            loadWrapped(videoId: videoId, cancellation: cancellation, completion: completion)
+            probeForMenu(videoId: videoId, cancellation: cancellation)
+            return
+        }
+        loadWithDubPreference(videoId: videoId, cancellation: cancellation, completion: completion)
+    }
+
+    private func loadWithDubPreference(
+        videoId: String,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    ) {
         // Without the preference on, or with nowhere to play a dub, there is
         // nothing to decide: play, and let the probe fill the menu behind it.
         guard AutoDubPreference.isEnabled, let dub = dubSource() else {

@@ -596,3 +596,5 @@
 "settings.thumbnailQuality.maximum" = "Maximum (1280×720)";
 "settings.footer.thumbnailQuality" = "Auto picks a level from the amount of memory your device has. Higher quality means larger downloads and more memory per thumbnail, which can slow scrolling on devices with little RAM.";
 "player.error.noSources" = "No playback sources are enabled. Turn one on in Settings → Debug → Playback sources.";
+
+"settings.playbackChain.qualityFirstFooter" = "Your Wi-Fi or cellular quality is tried across enabled sources before a lower quality. At the same resolution and frame rate, native playback comes first, then MP4 delivery, then experimental WebM remuxing. Drag to order sources within those groups. Disable sources you do not want to use.";

@@ -55,6 +55,36 @@ extension InnertubeVideoSource {
         .filter { seenLabels.insert($0.label).inserted }
     }
 
+    func loadPlayback(
+        videoId: String,
+        quality: VideoQuality,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    ) {
+        fetchInfo(videoId: videoId, cancellation: cancellation) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self, cancellation?.isCancelled != true else {
+                    return
+                }
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let info):
+                    self.apply(self.deliveryFactory.playbackInfo(info))
+                    guard let target = self.availableQualities.first(where: { $0 == quality })
+                    else {
+                        completion(.failure(Self.deliveryUnavailableError))
+                        return
+                    }
+                    let resumeAt = WatchProgressStore.shared.resumeSeconds(
+                        forVideoId: videoId, duration: info.duration
+                    )
+                    self.selectQuality(target, resumeAt: resumeAt, completion: completion)
+                }
+            }
+        }
+    }
+
     /// One `/player` fetch, formats only — no delivery is opened and no state
     /// is published, so a probe racing a real load cannot disturb it.
     func probeQualities(

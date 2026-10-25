@@ -113,6 +113,23 @@ check((try? invalidQuality.get()) == nil && source.currentQuality == chosen, "Un
 let probed: [VideoQuality] = awaitCallback { source.probeQualities(videoId: "probe", completion: $0) }
 check(!probed.isEmpty && source.currentQuality == chosen, "Quality probe must not mutate active playback")
 
+// A refreshed HLS response changes signed variant URLs; match the advertised
+// resolution/frame rate instead of reusing an expired probe URL as an id.
+transport.response = HTTPResponse(status: 200, headers: [:], data: Data(
+    master.replacingOccurrences(of: ".m3u8", with: ".m3u8?fresh=1").utf8))
+let targeted: Result<PreparedPlayback, Error> = awaitCallback {
+    source.loadPlayback(videoId: "targeted", quality: chosen, cancellation: nil, completion: $0)
+}
+check((try? targeted.get()) != nil && source.currentQuality?.height == 1080,
+      "Targeted load must choose the requested tier, even above the source's default cap")
+check(source.currentQuality?.id != chosen.id, "Targeted load must retain the fresh variant URL")
+let unavailableTier: Result<PreparedPlayback, Error> = awaitCallback {
+    source.loadPlayback(videoId: "targeted", quality: VideoQuality(id: "absent", label: "4320p",
+                        height: 4320, fps: 30), cancellation: nil, completion: $0)
+}
+check((try? unavailableTier.get()) == nil,
+      "An unavailable requested tier must fail instead of silently returning lower quality")
+
 transport.response = HTTPResponse(status: 503, headers: [:], data: Data(master.utf8))
 let httpFailure: Result<PreparedPlayback, Error> = awaitCallback { source.loadPlayback(videoId: "bad", cancellation: nil, completion: $0) }
 check((try? httpFailure.get()) == nil && source.availableQualities.isEmpty, "HTTP failure must return to the chain")

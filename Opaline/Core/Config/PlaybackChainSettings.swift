@@ -1,6 +1,6 @@
 import Foundation
 
-/// The user's playback chain: which steps are on, and in what order.
+/// Enabled playback paths and their tie-breaking order after quality/delivery.
 ///
 /// Playback used to pick sources by a hardcoded ladder, and every time YouTube
 /// moved, the ladder was wrong in a way only a release could fix. This is the
@@ -10,7 +10,7 @@ enum PlaybackChainSettings {
     /// play past the anonymous one-minute cut-off, and TV needs an account
     /// to run at all.
     static let defaultOrder = [
-        "visionos.hls", "visionos.range", "visionos.sabr", "tv.sabr", "progressive", "visionos.webm"
+        "visionos.hls", "visionos.range", "visionos.sabr", "tv.sabr", "visionos.webm", "progressive"
     ]
     /// Established paths remain enabled; WebM is opt-in during real-stream
     /// validation. Unsupported steps still skip themselves at runtime.

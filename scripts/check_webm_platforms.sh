@@ -16,7 +16,12 @@ import sys
 
 source_root = pathlib.Path(sys.argv[1]) / "Opaline/Core/Playback/WebM"
 shared = json.loads((pathlib.Path(sys.argv[1]) / 'scripts/webm_playback_sources.json').read_text())
-shared += ['scripts/webm_playback_support.swift']
+shared += [
+    'scripts/webm_playback_support.swift', 'scripts/playback_selection_support.swift',
+    'Opaline/Core/Playback/PlaybackCandidate.swift',
+    'Opaline/Core/Playback/Sources/FallbackChainSource.swift',
+    'Opaline/Core/Playback/Sources/AutoDubSource.swift',
+]
 targets = {}
 for name, platform, minimum in [("WebMCoreIOS", "iOS", "15.0"), ("WebMCoreTV", "tvOS", "17.0")]:
     targets[name] = {

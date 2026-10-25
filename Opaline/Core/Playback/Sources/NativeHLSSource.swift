@@ -65,6 +65,34 @@ final class NativeHLSSource: VideoSource {
         }
     }
 
+    func loadPlayback(
+        videoId: String,
+        quality: VideoQuality,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    ) {
+        releaseResources()
+        let requestGeneration = generation
+        fetchManifest(videoId: videoId, cancellation: cancellation) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self, self.generation == requestGeneration,
+                      cancellation?.isCancelled != true else {
+                          return
+                      }
+                completion(result.flatMap { manifest in
+                    self.manifest = manifest
+                    self.availableQualities = manifest.variants.map(\.quality)
+                    guard let variant = manifest.variants.first(where: {
+                        $0.quality.height == quality.height && $0.quality.fps == quality.fps
+                    }) else {
+                        return .failure(Self.unavailable)
+                    }
+                    return self.prepare(variant)
+                })
+            }
+        }
+    }
+
     func selectQuality(
         _ quality: VideoQuality,
         resumeAt: Double?,

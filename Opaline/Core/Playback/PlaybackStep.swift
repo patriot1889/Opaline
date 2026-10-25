@@ -13,6 +13,7 @@ struct PlaybackStep {
     /// Steps that need an account skip themselves when there is no session,
     /// which is what keeps "are we signed in?" out of the playback code.
     let requiresSignIn: Bool
+    var deliveryPreference: PlaybackDeliveryPreference = .generatedHLS
     let make: (WatchService) -> VideoSource
 }
 
@@ -26,7 +27,8 @@ struct PlaybackStepRegistry {
         PlaybackStep(
             id: "visionos.hls",
             title: "visionOS · native HLS",
-            requiresSignIn: false
+            requiresSignIn: false,
+            deliveryPreference: .native
         ) { NativeHLSSource(apiClient: $0) },
         PlaybackStep(
             id: "visionos.range",
@@ -38,30 +40,6 @@ struct PlaybackStepRegistry {
                 client: VisionOSClient(),
                 delivery: ByteRangeDeliveryFactory(),
                 title: "visionos.range"
-            )
-        },
-        PlaybackStep(
-            id: "visionos.webm",
-            title: "visionOS · WebM VP9 (experimental)",
-            requiresSignIn: false
-        ) { apiClient in
-            innertube(
-                apiClient: apiClient,
-                client: VisionOSClient(),
-                delivery: WebMVP9DeliveryFactory(),
-                title: "visionos.webm"
-            )
-        },
-        PlaybackStep(
-            id: "tv.sabr",
-            title: "TV · SABR",
-            requiresSignIn: true
-        ) { apiClient in
-            innertube(
-                apiClient: apiClient,
-                client: TVClient(),
-                delivery: SABRDeliveryFactory(),
-                title: "tv.sabr"
             )
         },
         PlaybackStep(
@@ -77,9 +55,35 @@ struct PlaybackStepRegistry {
             )
         },
         PlaybackStep(
+            id: "tv.sabr",
+            title: "TV · SABR",
+            requiresSignIn: true
+        ) { apiClient in
+            innertube(
+                apiClient: apiClient,
+                client: TVClient(),
+                delivery: SABRDeliveryFactory(),
+                title: "tv.sabr"
+            )
+        },
+        PlaybackStep(
+            id: "visionos.webm",
+            title: "visionOS · WebM VP9 (experimental)",
+            requiresSignIn: false,
+            deliveryPreference: .remuxedWebM
+        ) { apiClient in
+            innertube(
+                apiClient: apiClient,
+                client: VisionOSClient(),
+                delivery: WebMVP9DeliveryFactory(),
+                title: "visionos.webm"
+            )
+        },
+        PlaybackStep(
             id: "progressive",
             title: "Progressive 360p",
-            requiresSignIn: false
+            requiresSignIn: false,
+            deliveryPreference: .native
         ) { apiClient in
             ProgressiveSource(apiClient: apiClient)
         }
