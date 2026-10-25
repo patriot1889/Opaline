@@ -63,4 +63,4 @@
 "TV.source.disable" = "Disable";
 "TV.source.moveUp" = "Move up";
 "TV.source.moveDown" = "Move down";
-"TV.sources.explanation" = "Playback prefers your chosen resolution, then frame rate, then native delivery. Source order breaks ties. Changes apply to the next playback. WebM is experimental, requires supported VP9 hardware, and is off by default.";
+"TV.sources.explanation" = "Sources are checked in order until one serves your selected resolution, using its best available frame rate. If none can, the best lower quality is used. Changes apply to the next playback. WebM is experimental, requires supported VP9 hardware, and is off by default.";

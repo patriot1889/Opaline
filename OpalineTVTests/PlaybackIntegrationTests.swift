@@ -29,7 +29,7 @@ final class PlaybackIntegrationTests: XCTestCase {
         }
     }
 
-    func testTVChainRanksQualityThenDeliveryAndRecoversThroughRemainingCandidates() {
+    func testTVChainStopsAtSelectedResolutionAndDiscoversRecoverySourcesOnDemand() {
         withPlaybackPreferences {
             VideoQualityStore.wifi = "2160p"
             let low = RankedTVSource(height: 720)
@@ -43,15 +43,16 @@ final class PlaybackIntegrationTests: XCTestCase {
             }
             let chain = FallbackChainSource(steps: steps, apiClient: InnertubeClient())
             defer { chain.releaseResources() }
-            let loaded = expectation(description: "Quality and native preference")
+            let loaded = expectation(description: "First source meeting selected resolution")
             chain.loadPlayback(videoId: "fixture", cancellation: nil) { result in
                 XCTAssertNotNil(try? result.get())
-                XCTAssertTrue(chain.active === native)
+                XCTAssertTrue(chain.active === remux)
+                XCTAssertEqual(native.probes, 0)
                 XCTAssertEqual(low.loads, 0)
                 loaded.fulfill()
             }
             wait(for: [loaded], timeout: 2)
-            for source in [remux, low] {
+            for source in [native, low] {
                 let recovered = expectation(description: "Remaining candidate")
                 chain.advance(videoId: "fixture", cancellation: nil) { result in
                     XCTAssertNotNil(try? result.get())
@@ -80,10 +81,12 @@ private final class RankedTVSource: VideoSource {
     let availableQualities: [VideoQuality]
     var currentQuality: VideoQuality?
     var loads = 0
+    var probes = 0
     init(height: Int) {
         availableQualities = [VideoQuality(id: "\(height)", label: "\(height)p", height: height, fps: 30)]
     }
     func probeQualities(videoId: String, completion: @escaping ([VideoQuality]) -> Void) {
+        probes += 1
         completion(availableQualities)
     }
     func loadPlayback(videoId: String, cancellation: CancellationToken?,
