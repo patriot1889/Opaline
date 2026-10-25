@@ -7,7 +7,7 @@ func check(_ condition: Bool, _ message: String) {
 }
 func rejects(_ message: String, _ body: () throws -> Void) {
     checks += 1
-    do { try body(); preconditionFailure(message) } catch is WebMError {} catch { preconditionFailure("Unexpected error: \(error)") }
+    do { try body(); preconditionFailure(message) } catch is WebMError {} catch is WebMRangeError {} catch { preconditionFailure("Unexpected error: \(error)") }
 }
 func uint(_ value: UInt64) -> Data {
     var bytes = withUnsafeBytes(of: value.bigEndian) { Data($0) }
