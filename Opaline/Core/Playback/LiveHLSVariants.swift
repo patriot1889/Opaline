@@ -5,13 +5,17 @@ struct LiveHLSVariant: Equatable {
     let quality: VideoQuality
     /// Absolute media-playlist URL — doubles as the quality id.
     let uri: String
+    var codecs: String = ""
+    var bandwidth: Int = 0
 }
 
 /// Parses live HLS multivariant playlists into selectable variants and filters
 /// a playlist down to a single variant, so a `VideoSource` can pin a fixed
 /// live quality instead of leaving AVPlayer's ABR to sit on a low rung.
 enum LiveHLSVariants {
-    static func parse(playlist: String, baseURL: URL) -> [LiveHLSVariant] {
+    static func parse(
+        playlist: String, baseURL: URL, deduplicate: Bool = true
+    ) -> [LiveHLSVariant] {
         var variants: [LiveHLSVariant] = []
         var pendingInf: String?
         for raw in playlist.components(separatedBy: .newlines) {
@@ -25,7 +29,7 @@ enum LiveHLSVariants {
                 pendingInf = nil
             }
         }
-        return dedupedSorted(variants)
+        return deduplicate ? dedupedSorted(variants) : variants
     }
 
     /// Rewrites the playlist keeping only `variant`'s `#EXT-X-STREAM-INF`
@@ -48,13 +52,31 @@ enum LiveHLSVariants {
                 }
                 pendingInf = nil
             } else if pendingInf == nil {
-                lines.append(raw)
+                lines.append(absoluteURIs(in: raw, baseURL: baseURL))
             }
         }
         return lines.joined(separator: "\n")
     }
 
     // MARK: - Private
+
+    /// Media, subtitle and key URIs also need their original base when the
+    /// master playlist moves to the resource loader's custom scheme.
+    private static func absoluteURIs(in line: String, baseURL: URL) -> String {
+        guard let regex = try? NSRegularExpression(pattern: "URI=\"([^\"]+)\"") else {
+            return line
+        }
+        var result = line
+        let range = NSRange(line.startIndex..., in: line)
+        for match in regex.matches(in: line, range: range).reversed() {
+            guard let valueRange = Range(match.range(at: 1), in: result),
+                  let url = URL(string: String(result[valueRange]), relativeTo: baseURL) else {
+                continue
+            }
+            result.replaceSubrange(valueRange, with: url.absoluteURL.absoluteString)
+        }
+        return result
+    }
 
     private static func isURILine(_ line: String) -> Bool {
         !line.isEmpty && !line.hasPrefix("#")
@@ -77,7 +99,12 @@ enum LiveHLSVariants {
         let absolute = url.absoluteString
         return LiveHLSVariant(
             quality: VideoQuality(id: absolute, label: label, height: height, fps: fps),
-            uri: absolute
+            uri: absolute,
+            codecs: HLSStreamResolver.firstMatch(in: inf, pattern: "CODECS=\"([^\"]+)\"") ?? "",
+            bandwidth: HLSStreamResolver.firstMatch(
+                in: inf, pattern: "(?:^|[:,])BANDWIDTH=(\\d+)"
+            )
+            .flatMap(Int.init) ?? 0
         )
     }
 

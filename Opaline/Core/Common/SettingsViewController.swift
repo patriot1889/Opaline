@@ -989,10 +989,10 @@ private final class ToggleCell: UITableViewCell {
 // MARK: - VideoQualityStore
 
 enum VideoQualityStore {
-    /// 1440p/2160p exist only as av01 — offered solely where decodable.
+    /// Higher tiers use AV1 in DASH or VP9 in native HLS.
     static var options: [String] {
         var opts = ["Auto", "1080p", "720p", "480p", "360p"]
-        if AV1Support.isHardwareSupported {
+        if AV1Support.isHardwareSupported || NativeHLSCodecs.isVP9HardwareSupported {
             opts.insert(contentsOf: ["2160p", "1440p"], at: 1)
         }
         return opts

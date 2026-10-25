@@ -1,7 +1,6 @@
 import UIKit
 
-/// Builds the playback chain: which ways of playing a video are on, and the
-/// order they are tried in.
+/// Enables playback paths and orders ties after quality and native delivery.
 ///
 /// Replaces the old single-source picker. Which client and delivery works is
 /// YouTube's decision to change, not ours to hardcode — this puts the order in
@@ -111,7 +110,7 @@ extension PlaybackChainViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(
         _ tableView: UITableView, titleForFooterInSection section: Int
     ) -> String? {
-        "settings.playbackChain.footer".localized
+        "settings.playbackChain.qualityFirstFooter".localized
     }
 
     func tableView(

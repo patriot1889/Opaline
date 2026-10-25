@@ -25,7 +25,7 @@ extension InnertubeVideoSource {
     }
 
     /// One entry per tier label: with av01 admitted alongside avc1 the same
-    /// height appears twice — keep the first (higher-bitrate) format.
+    /// height appears twice — keep the parser's preferred format per label.
     ///
     /// Audio-only leads the list. It needs a DASH pair to strip the video from,
     /// so live and progressive videos never offer it.
@@ -52,8 +52,37 @@ extension InnertubeVideoSource {
                 fps: format.fps
             )
         }
-        .sorted { ($0.height ?? 0) > ($1.height ?? 0) }
         .filter { seenLabels.insert($0.label).inserted }
+    }
+
+    func loadPlayback(
+        videoId: String,
+        quality: VideoQuality,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    ) {
+        fetchInfo(videoId: videoId, cancellation: cancellation) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self, cancellation?.isCancelled != true else {
+                    return
+                }
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let info):
+                    self.apply(self.deliveryFactory.playbackInfo(info))
+                    guard let target = self.availableQualities.first(where: { $0 == quality })
+                    else {
+                        completion(.failure(Self.deliveryUnavailableError))
+                        return
+                    }
+                    let resumeAt = WatchProgressStore.shared.resumeSeconds(
+                        forVideoId: videoId, duration: info.duration
+                    )
+                    self.selectQuality(target, resumeAt: resumeAt, completion: completion)
+                }
+            }
+        }
     }
 
     /// One `/player` fetch, formats only — no delivery is opened and no state
@@ -62,14 +91,13 @@ extension InnertubeVideoSource {
         videoId: String,
         completion: @escaping ([VideoQuality]) -> Void
     ) {
+        let factory = deliveryFactory
         fetchInfo(videoId: videoId, cancellation: nil) { result in
-            DispatchQueue.main.async {
-                guard case .success(let info) = result else {
-                    completion([])
-                    return
-                }
-                completion(Self.qualities(from: info))
+            let projected = result.map { info in
+                Self.qualities(from: factory.playbackInfo(info))
             }
+            let qualities = (try? projected.get()) ?? []
+            DispatchQueue.main.async { completion(qualities) }
         }
     }
 }

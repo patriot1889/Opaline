@@ -31,6 +31,14 @@ protocol StreamDelivery: AnyObject {
         _ request: DeliveryRequest,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
     )
+
+    /// Stop preparation and owned resources even if a callback still retains
+    /// this delivery. Stateless legacy deliveries keep the default behavior.
+    func releaseResources()
+}
+
+extension StreamDelivery {
+    func releaseResources() {}
 }
 
 /// Byte-range delivery over the `adaptiveFormats` URLs: fetch each stream's

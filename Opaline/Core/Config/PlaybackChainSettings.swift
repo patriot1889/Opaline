@@ -1,20 +1,20 @@
 import Foundation
 
-/// The user's playback chain: which steps are on, and in what order.
+/// Enabled playback paths and their tie-breaking order after quality/delivery.
 ///
 /// Playback used to pick sources by a hardcoded ladder, and every time YouTube
 /// moved, the ladder was wrong in a way only a release could fix. This is the
 /// same decision expressed as data, so it can be reordered on the device.
 enum PlaybackChainSettings {
-    /// VisionOS first, both of its steps: it is the client googlevideo lets
+    /// VisionOS first: it is the client googlevideo lets
     /// play past the anonymous one-minute cut-off, and TV needs an account
     /// to run at all.
     static let defaultOrder = [
-        "visionos.range", "visionos.sabr", "tv.sabr", "progressive"
+        "visionos.hls", "visionos.range", "visionos.sabr", "tv.sabr", "visionos.webm", "progressive"
     ]
-    /// Everything is on by default: a step that cannot run (TV without an
-    /// account) already skips itself.
-    static let defaultEnabled = defaultOrder
+    /// Established paths remain enabled; WebM is opt-in during real-stream
+    /// validation. Unsupported steps still skip themselves at runtime.
+    static let defaultEnabled = defaultOrder.filter { $0 != "visionos.webm" }
 
     static var order: [String] {
         get {

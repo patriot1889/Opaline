@@ -159,6 +159,7 @@ final class InnertubeVideoSource: VideoSource {
         videoId: String,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
     ) {
+        let info = deliveryFactory.playbackInfo(info)
         apply(info)
         // Build straight at the saved playhead: a sequential stream (SABR)
         // would otherwise deliver the opening minutes and be seeked away from

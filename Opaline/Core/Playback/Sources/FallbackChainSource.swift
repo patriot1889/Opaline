@@ -1,11 +1,7 @@
 import Foundation
 
-/// Plays a video by walking the user's chain of steps: the first step that
-/// loads wins, and a failure moves to the next one.
-///
-/// Quality and audio-track questions are delegated to whichever step is
-/// playing, so the player shell keeps talking to a single `VideoSource` and
-/// never learns that there is a chain at all.
+/// Tries advertised quality tiers across enabled sources before stepping down.
+/// Native delivery breaks quality ties, followed by the user's source order.
 final class FallbackChainSource: VideoSource {
     private static let exhaustedError = NSError(
         domain: "FallbackChainSource",
@@ -15,13 +11,16 @@ final class FallbackChainSource: VideoSource {
 
     private let steps: [PlaybackStep]
     private let apiClient: WatchService
-    /// Sources already built, by step id — a step is built once per video and
-    /// reused if the chain comes back to it.
+    private let probeTimeout: TimeInterval
     private var built: [String: VideoSource] = [:]
+    private var generation = 0
+    private var candidates: [PlaybackCandidate] = []
+    private var candidateIndex = 0
     /// The step answering playback and quality questions right now.
     private(set) var active: VideoSource?
-    private(set) var activeIndex = 0
 
+    var hasNextCandidate: Bool { candidateIndex + 1 < candidates.count }
+    var prioritizesVideoQuality: Bool { true }
     var name: String { active?.name ?? steps.first?.id ?? "chain" }
     var listsAudioTracks: Bool { dubCapableSource() != nil }
     var supportsQualitySelection: Bool { active?.supportsQualitySelection ?? false }
@@ -31,9 +30,10 @@ final class FallbackChainSource: VideoSource {
     var availableAudioTracks: [AudioTrack] { active?.availableAudioTracks ?? [] }
     var currentAudioTrack: AudioTrack? { active?.currentAudioTrack }
 
-    init(steps: [PlaybackStep], apiClient: WatchService) {
+    init(steps: [PlaybackStep], apiClient: WatchService, probeTimeout: TimeInterval = 10) {
         self.steps = steps
         self.apiClient = apiClient
+        self.probeTimeout = probeTimeout
     }
 
     func loadPlayback(
@@ -41,20 +41,40 @@ final class FallbackChainSource: VideoSource {
         cancellation: CancellationToken?,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
     ) {
-        attempt(
-            from: 0, videoId: videoId, cancellation: cancellation, completion: completion
-        )
+        releaseResources()
+        let requestGeneration = generation
+        // Audio-only retains its existing source/track policy.
+        guard !AudioOnlyMode.isEnabled else {
+            candidates = steps.enumerated().map {
+                PlaybackCandidate(
+                    stepIndex: $0.offset, quality: nil, delivery: $0.element.deliveryPreference
+                )
+            }
+            attemptCandidate(
+                at: 0, videoId: videoId, cancellation: cancellation, completion: completion
+            )
+            return
+        }
+        discover(videoId: videoId, cancellation: cancellation) { [weak self] plan in
+            guard let self, self.generation == requestGeneration else {
+                return
+            }
+            self.candidates = plan
+            self.attemptCandidate(
+                at: 0, videoId: videoId, cancellation: cancellation, completion: completion
+            )
+        }
     }
 
-    /// Rebuilds on the next step after the current one — what a mid-playback
-    /// failure needs, since the step that died will die again.
+    /// Continues the ranked attempts after a mid-playback failure.
     func advance(
         videoId: String,
         cancellation: CancellationToken?,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
     ) {
-        attempt(
-            from: activeIndex + 1,
+        active?.releaseResources()
+        attemptCandidate(
+            at: candidateIndex + 1,
             videoId: videoId,
             cancellation: cancellation,
             completion: completion
@@ -96,9 +116,6 @@ final class FallbackChainSource: VideoSource {
         source.probeAudioTracks(videoId: videoId, completion: completion)
     }
 
-    /// Asked of the step that would play, without playing it: the answer is
-    /// the ladder the network offers, which is all a downloaded video needs
-    /// to show alongside its saved copy.
     func probeQualities(
         videoId: String,
         completion: @escaping ([VideoQuality]) -> Void
@@ -111,6 +128,8 @@ final class FallbackChainSource: VideoSource {
     }
 
     func releaseResources() {
+        generation += 1
+        candidates = []
         built.values.forEach { $0.releaseResources() }
         built.removeAll()
         active = nil
@@ -129,43 +148,136 @@ final class FallbackChainSource: VideoSource {
         return nil
     }
 
-    private func attempt(
-        from index: Int,
+    private func source(for step: PlaybackStep) -> VideoSource {
+        if let existing = built[step.id] {
+            return existing
+        }
+        let source = step.make(apiClient)
+        built[step.id] = source
+        return source
+    }
+}
+
+// MARK: - Quality-first discovery and attempts
+
+private extension FallbackChainSource {
+    /// Probes metadata only; failed/slow probes remain last-resort candidates.
+    /// All callbacks enter main before touching discovery or chain state.
+    func discover(
+        videoId: String,
+        cancellation: CancellationToken?,
+        completion: @escaping ([PlaybackCandidate]) -> Void
+    ) {
+        let requestGeneration = generation
+        let cap = VideoQualityStore.maxHeight ?? Int.max
+        var ladders: [Int: [VideoQuality]] = [:]
+        var finished = false
+        let finish: () -> Void = { [weak self] in
+            guard let self, !finished, self.generation == requestGeneration,
+                  cancellation?.isCancelled != true else {
+                return
+            }
+            finished = true
+            completion(self.rankedCandidates(ladders: ladders, cap: cap))
+        }
+        guard !steps.isEmpty else {
+            finish()
+            return
+        }
+        for (index, step) in steps.enumerated() {
+            source(for: step).probeQualities(videoId: videoId) { [weak self] qualities in
+                DispatchQueue.main.async {
+                    guard let self, !finished, self.generation == requestGeneration,
+                          cancellation?.isCancelled != true else {
+                        return
+                    }
+                    let known = self.source(for: step).availableQualities
+                    ladders[index] = qualities.isEmpty ? known : qualities
+                    if ladders.count == self.steps.count { finish() }
+                }
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + probeTimeout, execute: finish)
+    }
+
+    func rankedCandidates(ladders: [Int: [VideoQuality]], cap: Int) -> [PlaybackCandidate] {
+        let plan = steps.enumerated().flatMap { index, step -> [PlaybackCandidate] in
+            let qualities = (ladders[index] ?? []).filter { ($0.height ?? 0) > 0 }
+            if qualities.isEmpty {
+                return [
+                    PlaybackCandidate(
+                        stepIndex: index, quality: nil, delivery: step.deliveryPreference
+                    )
+                ]
+            }
+            return qualities.map {
+                PlaybackCandidate(stepIndex: index, quality: $0, delivery: step.deliveryPreference)
+            }
+        }
+        return PlaybackCandidate.ranked(plan, maximumHeight: cap)
+    }
+
+    func attemptCandidate(
+        at index: Int,
         videoId: String,
         cancellation: CancellationToken?,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
     ) {
-        guard index < steps.count else {
-            completion(.failure(Self.exhaustedError))
-            return
-        }
         guard cancellation?.isCancelled != true else {
             return
         }
-        let step = steps[index]
-        let source = source(for: step)
-        active = source
-        activeIndex = index
-        if index > 0 {
-            PlaybackProgress.step("player.status.tryingFallback")
+        guard index < candidates.count else {
+            completion(.failure(Self.exhaustedError))
+            return
         }
-        source.loadPlayback(videoId: videoId, cancellation: cancellation) { [weak self] result in
-            self?.stepFinished(
-                result,
-                step: step,
-                index: index,
+        let candidate = candidates[index]
+        let step = steps[candidate.stepIndex]
+        generation += 1
+        let requestGeneration = generation
+        candidateIndex = index
+        active = source(for: step)
+        let tier = candidate.quality?.label ?? "unknown quality"
+        AppLog.player("chain: trying \(step.id) at \(tier)")
+        let finished: (Result<PreparedPlayback, Error>) -> Void = { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self, self.generation == requestGeneration,
+                      cancellation?.isCancelled != true else {
+                    return
+                }
+                self.candidateFinished(
+                    result,
+                    videoId: videoId,
+                    cancellation: cancellation,
+                    completion: completion
+                )
+            }
+        }
+        load(candidate, videoId: videoId, cancellation: cancellation, completion: finished)
+    }
+
+    func load(
+        _ candidate: PlaybackCandidate,
+        videoId: String,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    ) {
+        let source = source(for: steps[candidate.stepIndex])
+        if let quality = candidate.quality {
+            source.loadPlayback(
                 videoId: videoId,
+                quality: quality,
                 cancellation: cancellation,
                 completion: completion
+            )
+        } else {
+            source.loadPlayback(
+                videoId: videoId, cancellation: cancellation, completion: completion
             )
         }
     }
 
-    // swiftlint:disable:next function_parameter_count
-    private func stepFinished(
+    func candidateFinished(
         _ result: Result<PreparedPlayback, Error>,
-        step: PlaybackStep,
-        index: Int,
         videoId: String,
         cancellation: CancellationToken?,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
@@ -174,23 +286,13 @@ final class FallbackChainSource: VideoSource {
             completion(result)
             return
         }
-        AppLog.player("chain: \(step.id) failed (\(error.localizedDescription))")
-        DispatchQueue.main.async { [weak self] in
-            self?.attempt(
-                from: index + 1,
-                videoId: videoId,
-                cancellation: cancellation,
-                completion: completion
-            )
-        }
-    }
-
-    private func source(for step: PlaybackStep) -> VideoSource {
-        if let existing = built[step.id] {
-            return existing
-        }
-        let source = step.make(apiClient)
-        built[step.id] = source
-        return source
+        AppLog.player("chain: \(name) failed (\(error.localizedDescription))")
+        active?.releaseResources()
+        attemptCandidate(
+            at: candidateIndex + 1,
+            videoId: videoId,
+            cancellation: cancellation,
+            completion: completion
+        )
     }
 }

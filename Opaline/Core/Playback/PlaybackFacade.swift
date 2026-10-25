@@ -169,13 +169,13 @@ extension PlaybackFacade {
         }
         lastRecoveryAt = Date()
         recoveryAttempts += 1
-        guard recoveryAttempts <= 2 else {
+        guard recoveryAttempts <= 2 || activeChain?.hasNextCandidate == true else {
             AppLog.player("recovery: retries spent, giving up")
             return false
         }
         AppLog.player("recovery attempt \(recoveryAttempts)")
-        // Once for a URL that simply expired; the second time the step itself
-        // is failing, so the video goes to the next step in the user's chain.
+        // Refresh once for expired URLs, then consume the remaining ranked
+        // candidates so a decoder failure cannot skip other paths at this tier.
         guard recoveryAttempts > 1, let chain = activeChain else {
             start(
                 videoId: videoId,

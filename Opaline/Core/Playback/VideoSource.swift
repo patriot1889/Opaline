@@ -70,6 +70,8 @@ struct PreparedPlayback {
 protocol VideoSource: AnyObject {
     /// The step this source came from, for logs and the stats overlay.
     var name: String { get }
+    /// Automatic audio choices must not bypass this source's quality ranking.
+    var prioritizesVideoQuality: Bool { get }
     /// Whether this source exposes a quality menu at all.
     var supportsQualitySelection: Bool { get }
     /// Qualities available for the currently loaded video (empty until loaded).
@@ -91,6 +93,14 @@ protocol VideoSource: AnyObject {
     /// Resolves the video and produces a ready-to-play result.
     func loadPlayback(
         videoId: String,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    )
+
+    /// Loads a specific advertised tier without first preparing a lower tier.
+    func loadPlayback(
+        videoId: String,
+        quality: VideoQuality,
         cancellation: CancellationToken?,
         completion: @escaping (Result<PreparedPlayback, Error>) -> Void
     )
@@ -140,6 +150,7 @@ protocol VideoSource: AnyObject {
 }
 
 extension VideoSource {
+    var prioritizesVideoQuality: Bool { false }
     var currentCodecs: String? { nil }
     var listsAudioTracks: Bool { false }
 
@@ -148,6 +159,29 @@ extension VideoSource {
     var supportsAudioTrackSelection: Bool { availableAudioTracks.count > 1 }
     var availableAudioTracks: [AudioTrack] { [] }
     var currentAudioTrack: AudioTrack? { nil }
+
+    func loadPlayback(
+        videoId: String,
+        quality: VideoQuality,
+        cancellation: CancellationToken?,
+        completion: @escaping (Result<PreparedPlayback, Error>) -> Void
+    ) {
+        loadPlayback(videoId: videoId, cancellation: cancellation) { result in
+            guard cancellation?.isCancelled != true else {
+                return
+            }
+            switch result {
+            case .failure:
+                completion(result)
+            case .success:
+                if self.currentQuality == quality {
+                    completion(result)
+                } else {
+                    self.selectQuality(quality, completion: completion)
+                }
+            }
+        }
+    }
 
     /// Convenience for callers with no playhead to offer.
     func selectQuality(
